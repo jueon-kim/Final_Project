@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>Header</title>
+	<!-- 부트스트랩 -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+	<!-- 부트스트랩 아이콘 -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+	<style type="text/css">
+		a{
+			text-decoration: none;
+			color: black;
+		}
+    </style>
+</head>
+<body>
+
+
+
+<nav class="navbar navbar-expand-lg bg-light" style="height: 150px">
+	<div class="container-fluid">
+
+		<img src="/img/logo.png" style="width: 220px; height: 100px; margin-left: 40px;">
+
+		<div class="d-flex justify-content-end" style="margin-right: 80px;">
+			<div style="margin-top: 20px;">
+			<button type="button" class="btn btn-outline-secondary">
+				<svg xmlns="http://www.w3.org/2000/svg" height="23" width="23" fill="black" class="bi bi-chat-left-dots" viewBox="0 0 16 16">
+					<path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+					<path d="M5 6a1 1 0 1 1-2 0 1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+				</svg>&nbsp;채팅하기
+			</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</div>
+			<div style="margin-top: 20px;">
+			<button type="button" class="btn btn-outline-secondary">
+				<svg fill="none" height="29" viewBox="0 0 24 24" width="28" xmlns="http://www.w3.org/2000/svg">
+					<path d="m10 19h-3.8c-1.1201 0-1.68016 0-2.10798-.218-.37633-.1917-.68229-.4977-.87403-.874-.21799-.4278-.21799-.9879-.21799-2.108v-7.6c0-1.12011 0-1.68016.21799-2.10798.19174-.37633.4977-.68229.87403-.87403.42782-.21799.98788-.21799 2.10798-.21799h11.6c1.1201 0 1.6802 0 2.108.21799.3763.19174.6823.4977.874.87403.218.42782.218.98788.218 2.10798v.3m-12 1v-1m0 1h2.0001m-2.0001 0c-1.11721-.00002-1.99756.12616-1.9999 1.3325-.00176.9003-.00001 1.1675 1.99999 1.1675 2.00001 0 2.00001.2055 2.00001 1.1667 0 .7223-.0001 1.3333-2.0001 1.3333m0 1v-1m0 0h-1.9999m6.9999-4.5h3m-3 10 2.025-.405c.1765-.0353.2648-.053.3471-.0853.0731-.0286.1426-.0658.2069-.1107.0726-.0506.1362-.1142.2636-.2416l4.1574-4.1574c.5523-.5523.5523-1.4477 0-2s-1.4477-.5523-2 0l-4.1574 4.1574c-.1274.1274-.191.191-.2416.2636-.0449.0643-.0821.1338-.1107.2069-.0323.0823-.05.1706-.0853.3471z" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+					</path>
+				</svg>&nbsp;판매하기
+			</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</div>
+
+			<!-- 세션에 사용자 정보가 있는 경우 -->
+			<div th:if="${session.user != null}" style="margin-top: 15px;">
+                <span style="cursor: pointer; margin-right: 50px">
+                    <div class="dropdown">
+                        <a class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img th:src="@{'/files/' + ${session.user.user_photo}}" style="width: 50px; height: 50px; border-radius: 100%">&nbsp;&nbsp;<span th:text="${session.user.user_nick}"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/myPage/">마이페이지</a></li>
+                            <li><hr><a class="dropdown-item" href="/user/logout/">로그아웃</a></li>
+                        </ul>
+                    </div>
+                </span>
+			</div>
+
+			<!-- 세션에 사용자 정보가 없는 경우 -->
+			<div th:unless="${session.user != null}" style="margin-top: 15px;">
+                <span style="cursor: pointer; margin-right: 110px">
+                    <div class="dropdown">
+                        <a class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="https://www.vhv.rs/dpng/f/408-4087347_user-login-man-human-body-mobile-person-comments.png" style="width: 50px; height: 50px; border-radius: 100%">
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/user/login">로그인</a></li>
+                        </ul>
+                    </div>
+                </span>
+			</div>
+		</div>
+	</div>
+</nav>
+<span style="font-weight: bold; font-size: 25px;">
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;카테고리
+		&nbsp;&nbsp;&nbsp;이벤트
+		&nbsp;&nbsp;&nbsp;사기조회
+		&nbsp;&nbsp;&nbsp;시세조회
+		&nbsp;&nbsp;&nbsp;출석체크
+		&nbsp;&nbsp;&nbsp;찜한 상품
+		&nbsp;&nbsp;&nbsp;내 폰 팔기</span>
+
+</body>
+</html>

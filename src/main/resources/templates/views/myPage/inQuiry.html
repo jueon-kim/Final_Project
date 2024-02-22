@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+
+    <style>
+        section{
+            max-width: 60%;
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+
+<section class="container mt-3" style="max-width: 60%; background-color: red;">
+    <div style="width:100%; height: 800px; background-color: lightblue;">
+        <h1>inquiry</h1>
+        <span th:text="${session.user.user_nick}"></span>
+    </div>
+</section>
+
+</body>
+</html>
