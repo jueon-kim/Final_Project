@@ -3,7 +3,10 @@ package com.hwagae.market.user;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Optional;
 
 @Service
@@ -79,25 +82,17 @@ public class UserService {
     }
 
 
-    public void update(UserDTO userDTO) {
-        /*UserEntity userEntity = UserEntity.toUserEntity(userDTO);
-        userRepository.save(userEntity);*/
-        if(userDTO.getUser_photo2().isEmpty()){
-            //첨부파일 없음
+
+
+    public void update(UserDTO userDTO) throws IOException {
             userRepository.save(UserEntity.toUserUpdateEntity(userDTO));
-
-        }else {
-            //첨부파일 없음
-            // 1. DTO에 담긴 파일 꺼내고
-            // 2. 파일 이름 가져오고
-            // 3. 서버저장용 이름으로 수정
-            // 4. 저장경로 설정
-            // 5. 해당 경로에 파일 저장
-            // 6. user테이블에 해당 데이터 update
-            // 8. user_file 테이블에 해당 데이터 update
-        }
-
     }
+
+/*    public void update(UserDTO userDTO) {
+            userRepository.save(UserEntity.toUserUpdateEntity(userDTO));
+    }*/
+
+
 
 
     @Transactional

@@ -69,13 +69,13 @@
 
                             <input type="text" name="user_num" th:value="${updateInfo.user_num}">
                             <input type="text" name="user_id" th:value="${updateInfo.user_id}">
-                            <input type="text" name="user_email" th:value="${updateInfo.user_email}">
                             <input type="text" name="user_nick" th:value="${updateInfo.user_nick}">
                             <input type="text" name="user_phone" th:value="${updateInfo.user_phone}">
+                            <input type="text" name="user_email" th:value="${updateInfo.user_email}">
                             <input type="text" name="user_birth" th:value="${updateInfo.user_birth}">
                             <input type="text" name="user_name" th:value="${updateInfo.user_name}">
-                            <input type="text" name="user_photo" th:value="${updateInfo.user_photo}">
                             <input type="text" name="user_joindate" th:value="${updateInfo.user_joindate}">
+                            <input type="text" name="user_photo" th:value="${updateInfo.user_photo}">
                         </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary">저장</button>
@@ -125,13 +125,13 @@
 
                     <input type="text" name="user_num" th:value="${updateInfo.user_num}">
                     <input type="text" name="user_id" th:value="${updateInfo.user_id}">
-                    <input type="text" name="user_email" th:value="${updateInfo.user_email}">
                     <input type="text" name="user_pw" th:value="${updateInfo.user_pw}">
                     <input type="text" name="user_phone" th:value="${updateInfo.user_phone}">
+                    <input type="text" name="user_email" th:value="${updateInfo.user_email}">
                     <input type="text" name="user_birth" th:value="${updateInfo.user_birth}">
                     <input type="text" name="user_name" th:value="${updateInfo.user_name}">
-                    <input type="text" name="user_photo" th:value="${updateInfo.user_photo}">
                     <input type="text" name="user_joindate" th:value="${updateInfo.user_joindate}">
+                    <input type="text" name="user_photo" th:value="${updateInfo.user_photo}">
 
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">저장</button>
@@ -155,7 +155,7 @@
 
         <div class="form-group">
             <label class="form-label">프로필사진 변경</label>
-            <input type="button" name="user_photo" class="form-control" data-bs-toggle="modal" data-bs-target="#photoModal" value="변경하기">
+            <input type="button" class="form-control" data-bs-toggle="modal" data-bs-target="#photoModal" value="변경하기">
         </div><br>
 
         <form action="/user/photoUpdate" method="post" enctype="multipart/form-data">
@@ -174,12 +174,12 @@
 
                         <input type="text" name="user_num" th:value="${updateInfo.user_num}">
                         <input type="text" name="user_id" th:value="${updateInfo.user_id}">
-                        <input type="text" name="user_email" th:value="${updateInfo.user_email}">
                         <input type="text" name="user_pw" th:value="${updateInfo.user_pw}">
                         <input type="text" name="user_nick" th:value="${updateInfo.user_nick}">
+                        <input type="text" name="user_phone" th:value="${updateInfo.user_phone}">
+                        <input type="text" name="user_email" th:value="${updateInfo.user_email}">
                         <input type="text" name="user_birth" th:value="${updateInfo.user_birth}">
                         <input type="text" name="user_name" th:value="${updateInfo.user_name}">
-                        <input type="text" name="user_photo" th:value="${updateInfo.user_photo}">
                         <input type="text" name="user_joindate" th:value="${updateInfo.user_joindate}">
 
                         <div class="modal-footer">

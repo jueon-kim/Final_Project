@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 @Controller
 @RequiredArgsConstructor
@@ -124,7 +125,7 @@ public class UserController {
 
 
     @PostMapping("/user/pwUpdate")
-    public String UpdatePW(@ModelAttribute UserDTO userDTO){
+    public String UpdatePW(@ModelAttribute UserDTO userDTO) throws IOException {
         userService.update(userDTO);
         UserDTO updatedUser = userService.login(userDTO);
 
@@ -132,7 +133,7 @@ public class UserController {
     }
 
     @PostMapping("/user/nickUpdate")
-    public String UpdateNick(@ModelAttribute UserDTO userDTO){
+    public String UpdateNick(@ModelAttribute UserDTO userDTO) throws IOException {
         userService.update(userDTO);
         UserDTO updatedUser = userService.login(userDTO);
 
