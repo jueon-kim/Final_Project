@@ -21,6 +21,8 @@ public class UserDTO {
     private String user_role;
     private String user_joindate;
     private String user_photo;
+    private MultipartFile upLoadFile;
+
 
 
 

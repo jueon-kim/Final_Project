@@ -22,11 +22,9 @@
 
     <th:block th:choose>
         <th:block th:if="${not #strings.isEmpty(findID)}">
-            <p>ID:</p>
             <p th:text="${findID}"></p>
         </th:block>
         <th:block th:if="${not #strings.isEmpty(findPW)}">
-            <p>PW:</p>
             <p th:text="${findPW}"></p>
         </th:block>
     </th:block>

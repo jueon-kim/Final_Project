@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.io.IOException;
 
 @Controller
@@ -95,10 +97,10 @@ public class UserController {
 
     @PostMapping("/user/findID")
     public String findID(@ModelAttribute UserDTO userDTO, Model model) {
-        UserDTO result = userService.findID(userDTO);
+        String result = userService.findID(userDTO); // 반환 타입을 String으로 변경
         System.out.println("ID 찾기 = " + result);
         System.out.println("ID 정보 = " + userDTO);
-        model.addAttribute("findID", result.getUser_id()); // Thymeleaf에서 사용할 수 있도록 모델에 추가
+        model.addAttribute("findID", result); // Thymeleaf에서 사용할 수 있도록 모델에 추가
         return "views/user/result";
     }
 
@@ -124,25 +126,94 @@ public class UserController {
     }
 
 
-    @PostMapping("/user/pwUpdate")
+/*    @PostMapping("/user/pwUpdate")
     public String UpdatePW(@ModelAttribute UserDTO userDTO) throws IOException {
-        userService.update(userDTO);
+        userService.updatePw(userDTO);
         UserDTO updatedUser = userService.login(userDTO);
 
         return "redirect:/myPage/userUpdate";
+    }*/
+
+    @PostMapping("/user/pwUpdate")
+    public String UpdatePW(@ModelAttribute UserDTO userDTO, HttpSession session) throws IOException {
+        // 세션에 저장된 사용자 정보 가져오기
+        UserDTO sessionUser = (UserDTO) session.getAttribute("user");
+
+        // 세션의 user_num과 폼에서 전송된 user_num이 일치하는 경우에만 수행
+        if (sessionUser.getUser_num().equals(userDTO.getUser_num())) {
+            // 비밀번호 업데이트 수행
+            userService.updatePw(userDTO);
+            // 세션에서 기존 사용자 정보 제거
+            session.removeAttribute("user");
+            // 업데이트된 사용자 정보를 세션에 설정
+            session.setAttribute("user", sessionUser);
+        }
+
+        return "redirect:/myPage/userUpdate";
     }
+
 
     @PostMapping("/user/nickUpdate")
-    public String UpdateNick(@ModelAttribute UserDTO userDTO) throws IOException {
-        userService.update(userDTO);
+    public String UpdateNick(@ModelAttribute UserDTO userDTO, HttpSession session) throws IOException {
+        userService.updateNick(userDTO);
         UserDTO updatedUser = userService.login(userDTO);
+
+        UserDTO sessionUser = (UserDTO) session.getAttribute("user");
+        // 사용자 정보 업데이트
+        sessionUser.setUser_nick(userDTO.getUser_nick()); // 닉네임으로 변경 예시
+        // 세션에서 기존 사용자 정보 제거
+        session.removeAttribute("user");
+        // 업데이트된 사용자 정보를 세션에 설정
+        session.setAttribute("user", sessionUser);
 
         return "redirect:/myPage/userUpdate";
     }
 
+/*    @PostMapping("/user/photoUpdate")
+    public String UpdatePhoto(@ModelAttribute UserDTO userDTO) throws IOException {
+        if(userDTO.getUser_id()!=null){
+            String fileName = null;
+            MultipartFile upLoadFile = userDTO.getUpLoadFile();
+            System.out.println("upLoadFile = " + upLoadFile);
+            if(!upLoadFile.isEmpty()){
+                fileName = upLoadFile.getOriginalFilename();
+                System.out.println(fileName);
+                upLoadFile.transferTo(new File("C:\\image\\"+fileName));
+                userDTO.setUser_photo(fileName);
+            }
+        }
+        userService.updatePhoto(userDTO);
+        UserDTO updatedUser = userService.login(userDTO);
+
+        return "redirect:/myPage/userUpdate";
+    }*/
 
 
+    @PostMapping("/user/photoUpdate")
+    public String UpdatePhoto(@ModelAttribute UserDTO userDTO, HttpSession session) throws IOException {
+        MultipartFile upLoadFile = userDTO.getUpLoadFile();
+        if (upLoadFile != null && !upLoadFile.isEmpty()) {
+            String fileName = System.currentTimeMillis()+ "_" + upLoadFile.getOriginalFilename();
+            System.out.println("Uploaded file name: " + fileName);
 
+            // 파일을 서버에 저장
+            upLoadFile.transferTo(new File("C:/image/" + fileName));
+
+            // 사용자 정보 업데이트
+            userDTO.setUser_photo(fileName);
+            userService.updatePhoto(userDTO);
+
+            UserDTO sessionUser = (UserDTO) session.getAttribute("user");
+            // 사용자 정보 업데이트
+            sessionUser.setUser_photo(fileName);
+            // 세션에서 기존 사용자 정보 제거
+            session.removeAttribute("user");
+            // 업데이트된 사용자 정보를 세션에 설정
+            session.setAttribute("user", sessionUser);
+
+        }
+        return "redirect:/myPage/userUpdate";
+    }
 
     @GetMapping("/myPage/purchaseList/{userNick}")
     public String Purchase(@PathVariable("userNick") String userNick){

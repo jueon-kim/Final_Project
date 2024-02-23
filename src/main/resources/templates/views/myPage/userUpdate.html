@@ -60,23 +60,14 @@
                         <div class="modal-body">
                             <div class="form-group" style="position: relative;">
                                 <label class="form-label">변경할 비밀번호</label>
-                                <input type="password" class="form-control" name="user_pw" id="user_pw" th:value="${updateInfo.user_pw}" required>
+                                <input type="password" class="form-control" name="user_pw" id="user_pw" required>
                             </div><br>
                             <div class="form-group" style="position: relative;">
                                 <label class="form-label">비밀번호 확인</label>
                                 <input type="password" class="form-control" id="confirm_password" required>
                             </div><br>
-
-                            <input type="text" name="user_num" th:value="${updateInfo.user_num}">
-                            <input type="text" name="user_id" th:value="${updateInfo.user_id}">
-                            <input type="text" name="user_nick" th:value="${updateInfo.user_nick}">
-                            <input type="text" name="user_phone" th:value="${updateInfo.user_phone}">
-                            <input type="text" name="user_email" th:value="${updateInfo.user_email}">
-                            <input type="text" name="user_birth" th:value="${updateInfo.user_birth}">
-                            <input type="text" name="user_name" th:value="${updateInfo.user_name}">
-                            <input type="text" name="user_joindate" th:value="${updateInfo.user_joindate}">
-                            <input type="text" name="user_photo" th:value="${updateInfo.user_photo}">
                         </div>
+                            <input type="text" name="user_num" th:value="${updateInfo.user_num}">
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary">저장</button>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
@@ -124,14 +115,6 @@
                     </div>
 
                     <input type="text" name="user_num" th:value="${updateInfo.user_num}">
-                    <input type="text" name="user_id" th:value="${updateInfo.user_id}">
-                    <input type="text" name="user_pw" th:value="${updateInfo.user_pw}">
-                    <input type="text" name="user_phone" th:value="${updateInfo.user_phone}">
-                    <input type="text" name="user_email" th:value="${updateInfo.user_email}">
-                    <input type="text" name="user_birth" th:value="${updateInfo.user_birth}">
-                    <input type="text" name="user_name" th:value="${updateInfo.user_name}">
-                    <input type="text" name="user_joindate" th:value="${updateInfo.user_joindate}">
-                    <input type="text" name="user_photo" th:value="${updateInfo.user_photo}">
 
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">저장</button>
@@ -168,20 +151,10 @@
                         </div>
                         <div class="modal-body">
                             <div class="input-group">
-                                <input type="file" name="user_photo" class="form-control" id="user_photo" placeholder="닉네임을 입력해주세요." required>
+                                <input type="file" name="upLoadFile" class="form-control" id="user_photo" required>
                             </div>
                         </div>
-
                         <input type="text" name="user_num" th:value="${updateInfo.user_num}">
-                        <input type="text" name="user_id" th:value="${updateInfo.user_id}">
-                        <input type="text" name="user_pw" th:value="${updateInfo.user_pw}">
-                        <input type="text" name="user_nick" th:value="${updateInfo.user_nick}">
-                        <input type="text" name="user_phone" th:value="${updateInfo.user_phone}">
-                        <input type="text" name="user_email" th:value="${updateInfo.user_email}">
-                        <input type="text" name="user_birth" th:value="${updateInfo.user_birth}">
-                        <input type="text" name="user_name" th:value="${updateInfo.user_name}">
-                        <input type="text" name="user_joindate" th:value="${updateInfo.user_joindate}">
-
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">저장</button>
                         </div>

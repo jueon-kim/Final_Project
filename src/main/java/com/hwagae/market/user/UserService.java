@@ -40,20 +40,29 @@ public class UserService {
     }
 
 
-    public UserDTO findID(UserDTO userDTO) {
+    public String findID(UserDTO userDTO) {
         Optional<UserEntity> findID = userRepository.findByUserName(userDTO.getUser_name());
         if(findID.isPresent()){
             UserEntity userEntity = findID.get();
-            if (userEntity.getUserName().equals(userDTO.getUser_name())){
-                UserDTO dto = UserDTO.toUserDTO(userEntity);
-                return dto;
-            }else{
-                return null;
+            if (userEntity.getUserName().equals(userDTO.getUser_name()) &&
+                    userEntity.getUserEmail().equals(userDTO.getUser_email()) &&
+                    userEntity.getUserPhone().equals(userDTO.getUser_phone())) {
+                return userEntity.getUserId();
+            } else {
+                String message = "일치하는 정보가 없습니다. ";
+                if (!userEntity.getUserEmail().equals(userDTO.getUser_email()) || !userEntity.getUserPhone().equals(userDTO.getUser_phone())) {
+                    message += "이메일주소 혹은 전화번호를 다시 확인하세요. ";
+                }
+                if (!userEntity.getUserName().equals(userDTO.getUser_name())) {
+                    message += "이름 혹은 이메일주소를 다시 확인하세요. ";
+                }
+                return message;
             }
-        }else {
-            return null;
+        } else {
+            return "일치하는 정보가 없습니다.";
         }
     }
+
 
 
     public UserDTO findPW(UserDTO userDTO) {
@@ -81,17 +90,72 @@ public class UserService {
         }
     }
 
-
-
-
-    public void update(UserDTO userDTO) throws IOException {
-            userRepository.save(UserEntity.toUserUpdateEntity(userDTO));
+    public void updatePw(UserDTO userDTO) {
+        Optional<UserEntity> optionalUserEntity = userRepository.findById(userDTO.getUser_num());
+        if(optionalUserEntity.isPresent()){
+            userDTO.setUser_id(optionalUserEntity.get().getUserId());
+            userDTO.setUser_nick(optionalUserEntity.get().getUserNick());
+            userDTO.setUser_phone(optionalUserEntity.get().getUserPhone());
+            userDTO.setUser_email(optionalUserEntity.get().getUserEmail());
+            userDTO.setUser_birth(optionalUserEntity.get().getUserBirth());
+            userDTO.setUser_name(optionalUserEntity.get().getUserName());
+            userDTO.setUser_joindate(optionalUserEntity.get().getUserJoindate());
+            userDTO.setUser_photo(optionalUserEntity.get().getUserPhoto());
+        }else {
+            throw new NullPointerException("에러");
+        }
+        userRepository.save(UserEntity.toUserUpdateEntity(userDTO));
     }
 
-/*    public void update(UserDTO userDTO) {
-            userRepository.save(UserEntity.toUserUpdateEntity(userDTO));
+    public void updateNick(UserDTO userDTO) {
+        Optional<UserEntity> optionalUserEntity = userRepository.findById(userDTO.getUser_num());
+        if(optionalUserEntity.isPresent()){
+            userDTO.setUser_id(optionalUserEntity.get().getUserId());
+            userDTO.setUser_pw(optionalUserEntity.get().getUserPw());
+            userDTO.setUser_phone(optionalUserEntity.get().getUserPhone());
+            userDTO.setUser_email(optionalUserEntity.get().getUserEmail());
+            userDTO.setUser_birth(optionalUserEntity.get().getUserBirth());
+            userDTO.setUser_name(optionalUserEntity.get().getUserName());
+            userDTO.setUser_joindate(optionalUserEntity.get().getUserJoindate());
+            userDTO.setUser_photo(optionalUserEntity.get().getUserPhoto());
+        }else {
+            throw new NullPointerException("에러");
+        }
+        userRepository.save(UserEntity.toUserUpdateEntity(userDTO));
+    }
+
+/*    public void updatePhoto(UserDTO userDTO) {
+        Optional<UserEntity> optionalUserEntity = userRepository.findById(userDTO.getUser_num());
+        if(optionalUserEntity.isPresent()){
+            userDTO.setUser_id(optionalUserEntity.get().getUserId());
+            userDTO.setUser_pw(optionalUserEntity.get().getUserPw());
+            userDTO.setUser_phone(optionalUserEntity.get().getUserPhone());
+            userDTO.setUser_email(optionalUserEntity.get().getUserEmail());
+            userDTO.setUser_birth(optionalUserEntity.get().getUserBirth());
+            userDTO.setUser_name(optionalUserEntity.get().getUserName());
+            userDTO.setUser_joindate(optionalUserEntity.get().getUserJoindate());
+        }else {
+            throw new NullPointerException("에러");
+        }
+        userRepository.save(UserEntity.toUserUpdateEntity(userDTO));
     }*/
 
+    public void updatePhoto(UserDTO userDTO) {
+        Optional<UserEntity> optionalUserEntity = userRepository.findById(userDTO.getUser_num());
+        if(optionalUserEntity.isPresent()){
+            UserEntity userEntity = optionalUserEntity.get();
+            userEntity.setUserPhoto(userDTO.getUser_photo()); // 사용자 사진 업데이트
+            userRepository.save(userEntity); // 변경된 정보를 저장
+        } else {
+            throw new NullPointerException("에러");
+        }
+    }
+
+
+
+/*    public void update(UserDTO userDTO) throws IOException {
+            userRepository.save(UserEntity.toUserUpdateEntity(userDTO));
+    }*/
 
 
 
