@@ -7,47 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <!-- 부트스트랩 아이콘 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <style>
-        section{
-            max-width: 60%;
-            display: flex;
-            justify-content: center;
-        }
-
-        .token__button1 {
-            width: 120px;
-            height: 40px;
-            font-size: 16px;
-            background-color: white;
-            color: #FF7A6B;
-            border: 1px solid #FF7A6B;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .token__button1[disabled] {
-            background-color: #f2f2f2;
-            border: 1px solid #d2d2d2;
-            color: #d2d2d2;
-            cursor: not-allowed;
-        }
-        .token__button2 {
-            width: 120px;
-            height: 40px;
-            font-size: 16px;
-            background-color: #FF7A6B;
-            color: white;
-            border: 1px solid #FF7A6B;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .token__button2[disabled] {
-            background-color: #f2f2f2;
-            border: 1px solid #d2d2d2;
-            color: #d2d2d2;
-            cursor: not-allowed;
-        }
-
-    </style>
+    <link rel="stylesheet" href="/css/user/join.css">
 </head>
 <body>
 
@@ -94,11 +54,22 @@
             </div><br>
 
 
-            <div class="form-group">
+            <div class="form-group" style="position: relative;">
                 <label class="form-label">이메일</label>
                 <div class="input-group">
-                    <input type="text" name="user_email" id="user_email" class="form-control" style="width: calc(100% - 130px);" placeholder="이메일을 입력해주세요." required>
-                    <button type="button" class="btn btn-primary" style="width: 130px;" onclick="mailCheck()">인증번호 전송</button>
+                    <input type="email" class="form-control" name="user_email" id="user_email"
+                           style="width: calc(100% - 120px);" onkeyup="email(this);" placeholder="이메일을 입력해주세요." required>
+                    <button type="button" class="token1" id="emailToken" onclick="mailCheck()" >인증번호 전송</button>
+                </div>
+            </div><br>
+
+
+
+            <div class="form-group" style="right: 0px; position: relative;">
+                <div class="input-group">
+                    <input class="form-control" style="width: calc(100% - 120px); color: #FF7A6B;">
+                    <button type="button" class="token2">인증 확인</button>
+                    <div id="timer1" style="font-size: 18px; color: gray; position: absolute; right: 138px; top: 5px; z-index: 5;"></div>
                 </div>
             </div><br>
 
@@ -113,28 +84,29 @@
 
 
             <div class="form-group">
-                <label class="form-label">생일</label>
-                <input type="date" name="user_birth" class="form-control">
+                <label class="form-label">생년월일</label>
+                <input type="date" name="user_birth" class="form-control" max="3000-12-31">
             </div><br>
 
 
             <div class="form-group" style="position: relative;">
                 <label class="form-label">전화번호</label>
                 <div class="input-group">
-                    <input type="tel" class="form-control" name="user_phone" style="width: calc(100% - 120px);" id="tel" onkeyup="test(this);"
-                           placeholder="휴대폰 번호를 입력해주세요." maxlength="13" required>
-                    <button type="button" class="token__button1" id="token-send" onclick="auth()" disabled="disabled">인증번호 전송</button>
+                    <input type="tel" class="form-control" name="user_phone" id="tel"
+                           style="width: calc(100% - 120px);" onkeyup="tel(this);" placeholder="휴대폰 번호를 입력해주세요." maxlength="13" required>
+                    <button type="button" class="token1" id="phoneToken" onclick="phoneAuth()" disabled>인증번호 전송</button>
                 </div>
             </div><br>
 
 
-            <div class="body__token2 form-group" style="right: 0px; position: relative; display: none;" id="confirmNum">
+            <div class="form-group" style="right: 0px; position: relative; display: none;" id="phoneConfirm">
                 <div class="input-group">
-                    <input class="form-control" id="number" style="width: calc(100% - 120px); color: #FF7A6B;"></input>
-                    <button type="button" class="token__button2" id="finish" onclick="authFinish()"	style="width: 120px;">인증 확인</button>
-                    <div id="timer" style="font-size: 18px; color: gray; position: absolute; right: 138px; top: 5px; z-index: 5;"></div>
+                    <input class="form-control" id="phoneAuthKey" style="width: calc(100% - 120px); color: #FF7A6B;">
+                    <button type="button" class="token2" id="phoneAuthFinish" onclick="phoneAuthFinish()">인증 확인</button>
+                    <div id="timer2" style="font-size: 18px; color: gray; position: absolute; right: 138px; top: 5px; z-index: 5;"></div>
                 </div>
             </div><br>
+
 
             <div class="form-group">
                 <input type="hidden" name="user_joindate" class="form-control" id="user_joindate">
@@ -146,6 +118,8 @@
         </form>
     </div>
 </section>
+
+
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -164,7 +138,6 @@
 </div>
 
 
-
 <script th:inline="javascript">
 
     // 전화번호 입력 필드에 숫자만 입력되도록 처리하는 함수
@@ -175,10 +148,10 @@
         input.value = phoneNumber;
         // 입력된 전화번호의 길이가 10자리 이상인 경우 전송 버튼을 활성화
         if (phoneNumber.length >= 11) {
-            document.getElementById("token-send").disabled = false;
+            document.getElementById("phoneToken").disabled = false;
         } else {
             // 전화번호가 10자리 미만인 경우 전송 버튼을 비활성화
-            document.getElementById("token-send").disabled = true;
+            document.getElementById("phoneToken").disabled = true;
         }
     }
 
@@ -187,7 +160,7 @@
         PhoneNumber(this);
     });
 
-    function test(e) {
+    function tel(e) {
         var number = e.value.replace(/[^0-9]/g, "");
         var phone = "";
 
@@ -207,14 +180,14 @@
 
     let timer;
     let isStarted = false; //타이머 작동여부
-    let auth = () => {
+    let phoneAuth = () => {
         if (isStarted === false) {
             // 타이머가 작동 중이 아닐 때
             isStarted = true; // 타이머 작동 상태로 변경
-            document.getElementById("finish").disabled = false; // 인증 확인 버튼 활성화
+            document.getElementById("phoneAuthFinish").disabled = false; // 인증 확인 버튼 활성화
             const token = Math.floor(100000 + Math.random() * 900000); // 6자리 랜덤 숫자 생성
-            document.getElementById("number").value = token; // 생성된 랜덤 숫자를 입력 필드에 설정
-            document.getElementById("confirmNum").style.display = "block"; // 인증번호 입력 영역 표시
+            document.getElementById("phoneAuthKey").value = token; // 생성된 랜덤 숫자를 입력 필드에 설정
+            document.getElementById("phoneConfirm").style.display = "block"; // 인증번호 입력 영역 표시
 
             let time = 60;
             timer = setInterval(function () {
@@ -223,7 +196,7 @@
                     // 시간이 0초 이상이면
                     const min = Math.floor(time / 60);
                     const sec = String(time % 60).padStart(2, "0");
-                    document.getElementById("timer").innerText = min + ":" + sec;
+                    document.getElementById("timer2").innerText = min + ":" + sec;
                     time = time - 1;
                 } else {
 
@@ -232,10 +205,10 @@
                     const min = Math.floor(time / 60);
                     const sec = String(time % 60).padStart(2, "0");
 
-                    document.getElementById("finish").disabled = true; // 인증 확인 버튼 비활성화
+                    document.getElementById("phoneAuthFinish").disabled = true; // 인증 확인 버튼 비활성화
                     isStarted = false;
                     clearInterval(timer); // 타이머 중지
-                    document.getElementById("number").value = ""; // 인증번호 입력 필드 초기화
+                    document.getElementById("phoneAuthKey").value = ""; // 인증번호 입력 필드 초기화
                 }
             }, 1000);
         } else {
@@ -246,14 +219,14 @@
 
     let isAuthCompleted = false;
 
-    let authFinish = () => {
+    let phoneAuthFinish = () => {
         if (isStarted) {
             //isStarted가 true 일 때(타이머가 작동 중일 때)
             alert("인증이 완료되었습니다");
             clearInterval(timer);
-            document.getElementById("token-send").disabled = true;
-            document.getElementById("finish").textContent = "인증 완료"; //인증 확인 버튼을 인증 완료 버튼으로 변경
-            document.getElementById("finish").disabled = true;
+            document.getElementById("phoneToken").disabled = true;
+            document.getElementById("phoneAuthFinish").textContent = "인증 완료"; //인증 확인 버튼을 인증 완료 버튼으로 변경
+            document.getElementById("phoneAuthFinish").disabled = true;
             isAuthCompleted = true; // 인증 완료 상태로 변경
             checkJoinButton(); // 회원가입 버튼 상태를 확인하여 변경
         }
@@ -426,7 +399,7 @@
             return;
         }
 
-console.log(user_email);
+    console.log(user_email);
         // 여기에 이메일 주소의 유효성을 검사하는 코드를 추가할 수 있습니다.
         // 예를 들어 정규 표현식을 사용하여 이메일 형식을 확인할 수 있습니다.
 

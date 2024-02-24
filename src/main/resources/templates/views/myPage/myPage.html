@@ -43,7 +43,7 @@
 
         <div id="" style="margin: 0 auto; line-height: 2.7rem; font-size: 20px;">
             <div style="float: left;">
-                <img src="/files/${User.user_photo }">
+                <img th:src="@{|/upload/${session.user.user_photo}|}">
             </div>
 
             <div style="margin-left: 60px; float: left;">

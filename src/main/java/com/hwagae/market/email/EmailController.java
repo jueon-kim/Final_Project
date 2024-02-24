@@ -31,7 +31,7 @@ public class EmailController {
         String subject = "[화개장터] 인증확인 메일입니다.";
         System.out.println("333333333333333333333333333 " + userEmail);
 
-        String text = "인증번호" + randomString;
+        String text = "인증번호 : " + randomString;
         System.out.println("4444444444444444444444444444 " + userEmail);
 
         emailService.sendEmail(userEmail, subject, text);
