@@ -186,4 +186,13 @@ public class UserService {
             return "ok";
         }
     }
+
+    public String emailCheck(String userEmail) {
+        Optional<UserEntity> byUserEmail = userRepository.findByUserEmail(userEmail);
+        if(byUserEmail.isPresent()){
+            return null;
+        }else {
+            return "ok";
+        }
+    }
 }

@@ -40,7 +40,7 @@ public class UserEntity {
     @Column(nullable = false)
     private String userJoindate;
 
-    @Column(nullable = false)
+    @Column
     private String userPhoto;
 
     public static UserEntity toUserEntity(UserDTO userDTO) {

@@ -10,27 +10,22 @@
     <link rel="stylesheet" href="/css/user/join.css">
 </head>
 <body>
-
 <div th:include="/views/header.html"></div>
 <section class="container mt-3">
     <div style="width:560px; height: auto; margin: 0 auto; background-color: white;">
-
         <form action="/user/join" method="post" onsubmit="setJoinDate()">
-
             <div class="form-group" style="position: relative;">
                 <label class="form-label">이름</label>
                 <input type="text" name="user_name" class="form-control" placeholder="이름을 입력해주세요." required>
             </div><br>
-
-
             <div class="form-group">
                 <label class="form-label">아이디</label>
                 <div class="input-group">
                     <input type="text" name="user_id" id="user_id" class="form-control" style="width: calc(100% - 90px);" placeholder="아이디를 입력해주세요." required>
                     <button type="button" class="btn btn-primary" style="width: 90px;" onclick="idCheck()" data-bs-toggle="modal" data-bs-target="#exampleModal">중복확인</button>
                 </div>
+                <span id="id_info"></span>
             </div><br>
-
 
             <div class="form-group">
                 <label class="form-label">비밀번호</label>
@@ -41,7 +36,6 @@
                     </button>
                 </div>
             </div><br>
-
 
             <div class="form-group">
                 <label class="form-label">비밀번호 확인</label>
@@ -54,21 +48,18 @@
             </div><br>
 
 
-            <div class="form-group" style="position: relative;">
+            <div class="form-group">
                 <label class="form-label">이메일</label>
                 <div class="input-group">
-                    <input type="email" class="form-control" name="user_email" id="user_email"
-                           style="width: calc(100% - 120px);" onkeyup="email(this);" placeholder="이메일을 입력해주세요." required>
-                    <button type="button" class="token1" id="emailToken" onclick="mailCheck()" >인증번호 전송</button>
+                    <input type="text" name="user_email" id="user_email" class="form-control" style="width: calc(100% - 130px);" placeholder="이메일을 입력해주세요." required>
+                    <button type="button" class="token1" id="emailToken" onclick="mailCheck()">인증번호 전송</button>
                 </div>
             </div><br>
 
-
-
-            <div class="form-group" style="right: 0px; position: relative;">
+            <div class="form-group" style="right: 0px; position: relative; display: none;" id="emailConfirmNum">
                 <div class="input-group">
-                    <input class="form-control" style="width: calc(100% - 120px); color: #FF7A6B;">
-                    <button type="button" class="token2">인증 확인</button>
+                    <input class="form-control" id="emailAuthKey" style="width: calc(100% - 120px); color: #FF7A6B;"></input>
+                    <button type="button" class="token2" id="emailFinish" onclick="emailAuthFinish()" style="width: 120px;" disabled>인증 확인</button>
                     <div id="timer1" style="font-size: 18px; color: gray; position: absolute; right: 138px; top: 5px; z-index: 5;"></div>
                 </div>
             </div><br>
@@ -80,361 +71,62 @@
                     <input type="text" name="user_nick" id="user_nick" class="form-control" style="width: calc(100% - 90px);" placeholder="닉네임을 입력해주세요." required>
                     <button type="button" class="btn btn-primary" style="width: 90px;" onclick="nickCheck()" data-bs-toggle="modal" data-bs-target="#exampleModal">중복확인</button>
                 </div>
+                <span id="nick_info"></span>
             </div><br>
 
-
             <div class="form-group">
-                <label class="form-label">생년월일</label>
-                <input type="date" name="user_birth" class="form-control" max="3000-12-31">
+                <label class="form-label">생일</label>
+                <input type="date" name="user_birth" class="form-control" min="1900-1-1" max="2500-12-31">
             </div><br>
 
 
             <div class="form-group" style="position: relative;">
                 <label class="form-label">전화번호</label>
                 <div class="input-group">
-                    <input type="tel" class="form-control" name="user_phone" id="tel"
-                           style="width: calc(100% - 120px);" onkeyup="tel(this);" placeholder="휴대폰 번호를 입력해주세요." maxlength="13" required>
+                    <input type="tel" class="form-control" name="user_phone" id="user_phone" style="width: calc(100% - 120px);" onkeyup="phone(this);"
+                           placeholder="휴대폰 번호를 입력해주세요." maxlength="13" required>
                     <button type="button" class="token1" id="phoneToken" onclick="phoneAuth()" disabled>인증번호 전송</button>
                 </div>
             </div><br>
 
-
-            <div class="form-group" style="right: 0px; position: relative; display: none;" id="phoneConfirm">
+            <div class="body__token2 form-group" style="right: 0px; position: relative; display: none;" id="phoneConfirmNum">
                 <div class="input-group">
-                    <input class="form-control" id="phoneAuthKey" style="width: calc(100% - 120px); color: #FF7A6B;">
-                    <button type="button" class="token2" id="phoneAuthFinish" onclick="phoneAuthFinish()">인증 확인</button>
+                    <input class="form-control" id="phoneAuthKey" style="width: calc(100% - 120px); color: #FF7A6B;"></input>
+                    <button type="button" class="token2" id="phoneFinish" onclick="phoneAuthFinish()"	style="width: 120px;">인증 확인</button>
                     <div id="timer2" style="font-size: 18px; color: gray; position: absolute; right: 138px; top: 5px; z-index: 5;"></div>
                 </div>
             </div><br>
 
-
             <div class="form-group">
                 <input type="hidden" name="user_joindate" class="form-control" id="user_joindate">
+                <input type="hidden" name="user_photo" class="form-control" id="user_photo" value="default.png">
             </div><br>
-
-
             <button type="submit" class="btn btn-outline-secondary" id="joinButton" disabled>회원가입</button>&nbsp;&nbsp;
             <a class="btn btn-outline-danger" href="#" onclick="confirmed()">취소</a>
         </form>
+
     </div>
+
 </section>
 
 
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel"><span id="check-result1"></span></h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <span id="check-result2"></span>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 
-<script th:inline="javascript">
-
-    // 전화번호 입력 필드에 숫자만 입력되도록 처리하는 함수
-    function PhoneNumber(input) {
-        // 입력된 값에서 숫자만 추출
-        var phoneNumber = input.value.replace(/[^0-9]/g, "");
-        // 숫자만 입력된 값으로 입력 필드의 값을 설정
-        input.value = phoneNumber;
-        // 입력된 전화번호의 길이가 10자리 이상인 경우 전송 버튼을 활성화
-        if (phoneNumber.length >= 11) {
-            document.getElementById("phoneToken").disabled = false;
-        } else {
-            // 전화번호가 10자리 미만인 경우 전송 버튼을 비활성화
-            document.getElementById("phoneToken").disabled = true;
-        }
+<script type="text/javascript">
+    //URL에서 success 매개변수를 확인하여 업데이트 성공 여부를 판단
+    var urlParams = new URLSearchParams(window.location.search);
+    var success = urlParams.get('success');
+    if (success === 'false') {
+        alert('인증이 완료되지 않았습니다');
     }
-
-    // 전화번호 입력 필드의 입력 이벤트에 함수 연결
-    document.getElementById("tel").addEventListener("input", function() {
-        PhoneNumber(this);
-    });
-
-    function tel(e) {
-        var number = e.value.replace(/[^0-9]/g, "");
-        var phone = "";
-
-        if (number.length < 4) {
-            return number;
-        } else {
-            phone += number.substr(0, 3);
-            phone += "-";
-            phone += number.substr(3, 4);
-            phone += "-";
-            phone += number.substr(7, 4);
-        }
-
-        e.value = phone;
-    }
-
-
-    let timer;
-    let isStarted = false; //타이머 작동여부
-    let phoneAuth = () => {
-        if (isStarted === false) {
-            // 타이머가 작동 중이 아닐 때
-            isStarted = true; // 타이머 작동 상태로 변경
-            document.getElementById("phoneAuthFinish").disabled = false; // 인증 확인 버튼 활성화
-            const token = Math.floor(100000 + Math.random() * 900000); // 6자리 랜덤 숫자 생성
-            document.getElementById("phoneAuthKey").value = token; // 생성된 랜덤 숫자를 입력 필드에 설정
-            document.getElementById("phoneConfirm").style.display = "block"; // 인증번호 입력 영역 표시
-
-            let time = 60;
-            timer = setInterval(function () {
-                if (time >= 0) {
-
-                    // 시간이 0초 이상이면
-                    const min = Math.floor(time / 60);
-                    const sec = String(time % 60).padStart(2, "0");
-                    document.getElementById("timer2").innerText = min + ":" + sec;
-                    time = time - 1;
-                } else {
-
-                    // 시간이 0초 이하이면
-                    time += 1;
-                    const min = Math.floor(time / 60);
-                    const sec = String(time % 60).padStart(2, "0");
-
-                    document.getElementById("phoneAuthFinish").disabled = true; // 인증 확인 버튼 비활성화
-                    isStarted = false;
-                    clearInterval(timer); // 타이머 중지
-                    document.getElementById("phoneAuthKey").value = ""; // 인증번호 입력 필드 초기화
-                }
-            }, 1000);
-        } else {
-
-            // 타이머가 작동 중일 때
-        }
-    };
-
-    let isAuthCompleted = false;
-
-    let phoneAuthFinish = () => {
-        if (isStarted) {
-            //isStarted가 true 일 때(타이머가 작동 중일 때)
-            alert("인증이 완료되었습니다");
-            clearInterval(timer);
-            document.getElementById("phoneToken").disabled = true;
-            document.getElementById("phoneAuthFinish").textContent = "인증 완료"; //인증 확인 버튼을 인증 완료 버튼으로 변경
-            document.getElementById("phoneAuthFinish").disabled = true;
-            isAuthCompleted = true; // 인증 완료 상태로 변경
-            checkJoinButton(); // 회원가입 버튼 상태를 확인하여 변경
-        }
-    };
-
-    function checkJoinButton() {
-        if (isAuthCompleted) {
-            // 인증이 완료되었을 때
-            document.getElementById("joinButton").disabled = false; // 회원가입 버튼 활성화
-            document.getElementById("joinButton").classList.remove("btn-outline-secondary"); // btn-outline-secondary 클래스 제거
-            document.getElementById("joinButton").classList.add("btn-outline-primary"); // btn-outline-primary 클래스 추가
-        } else {
-            // 인증이 완료되지 않았을 때
-            document.getElementById("joinButton").disabled = true; // 회원가입 버튼 비활성화
-            document.getElementById("joinButton").classList.remove("btn-outline-primary"); // btn-outline-primary 클래스 제거
-            document.getElementById("joinButton").classList.add("btn-outline-secondary"); // btn-outline-secondary 클래스 추가
-        }
-    }
-
-
-
-    function confirmed() {
-
-        const userResponse = window.confirm("회원가입을 정말 취소하시겠습니까?");
-        if (userResponse) {
-            window.location.href = "/user/login";
-        } else {
-
-        }
-    }
-
-    function setJoinDate() {
-
-        var currentDate = new Date();
-        var year = currentDate.getFullYear();
-        var month = ('0' + (currentDate.getMonth() + 1)).slice(-2);
-        var day = ('0' + currentDate.getDate()).slice(-2);
-        var formattedDate = year + '-' + month + '-' + day;
-
-        // user_joindate 필드의 값을 설정
-        document.getElementById('user_joindate').value = formattedDate;
-    }
-
-
-
-    let isPasswordVisible = false;
-
-    function togglePassword() {
-        const passwordInput = document.getElementById("pw");
-        const toggleButton = document.getElementById("pwToggle");
-
-        if (isPasswordVisible) {
-            passwordInput.type = "password";
-            toggleButton.innerHTML = '<i class="bi bi-eye"></i>';
-        } else {
-            passwordInput.type = "text";
-            toggleButton.innerHTML = '<i class="bi bi-eye-slash"></i>';
-        }
-        isPasswordVisible = !isPasswordVisible;
-    }
-
-    function togglerePassword() {
-        const passwordInput = document.getElementById("repw");
-        const toggleButton = document.getElementById("repwToggle");
-
-        if (isPasswordVisible) {
-            passwordInput.type = "password";
-            toggleButton.innerHTML = '<i class="bi bi-eye"></i>';
-        } else {
-            passwordInput.type = "text";
-            toggleButton.innerHTML = '<i class="bi bi-eye-slash"></i>';
-        }
-        isPasswordVisible = !isPasswordVisible;
-    }
-
-
-
-    const idCheck = () => {
-        const user_id = document.getElementById("user_id").value;
-        const checkResult1 = document.getElementById("check-result1");
-        const checkResult2 = document.getElementById("check-result2");
-
-        if (user_id.trim() === "") {
-            checkResult1.innerHTML = "아이디 중복확인";
-            checkResult2.style.fontSize = "30px";
-            checkResult2.innerHTML = "내용을 입력하세요.";
-            return;
-        }
-
-        console.log("입력값: ", user_id);
-        $.ajax({
-            type: "post",
-            url: "/user/id-check",
-            data: {
-                "user_id" : user_id
-            },
-            success: function (res){
-                console.log("요청성공",res);
-                if (res == "ok"){
-                    console.log("사용 가능한 아이디");
-                    checkResult1.innerHTML = "아이디 중복확인";
-                    checkResult2.style.color = "blue";
-                    checkResult2.style.fontSize = "30px";
-                    checkResult2.innerHTML = "사용 가능한 아이디입니다.";
-                }else {
-                    console.log("이미 사용중인 아이디입니다");
-                    checkResult1.innerHTML = "아이디 중복확인";
-                    checkResult2.style.color = "red";
-                    checkResult2.style.fontSize = "30px";
-                    checkResult2.innerHTML = "이미 사용중인 아이디입니다.";
-                }
-            },
-            error: function (err){
-                console.log("에러발생",err);
-            }
-        });
-    }
-
-
-    const nickCheck = () => {
-        const user_nick = document.getElementById("user_nick").value;
-        const checkResult1 = document.getElementById("check-result1");
-        const checkResult2 = document.getElementById("check-result2");
-
-        if (user_nick.trim() === "") {
-            checkResult1.innerHTML = "닉네임 중복확인";
-            checkResult2.style.fontSize = "30px";
-            checkResult2.innerHTML = "내용을 입력하세요.";
-            return;
-        }
-
-        console.log("입력값: ", user_nick);
-        $.ajax({
-            type: "post",
-            url: "/user/nick-check",
-            data: {
-                "user_nick" : user_nick
-            },
-            success: function (res){
-                console.log("요청성공",res);
-                if (res == "ok"){
-                    console.log("사용 가능한 닉네임");
-                    checkResult1.innerHTML = "닉네임 중복확인";
-                    checkResult2.style.color = "blue"
-                    checkResult2.style.fontSize = "30px";
-                    checkResult2.innerHTML = "사용 가능한 닉네임입니다.";
-                }else {
-                    console.log("이미 사용중인 닉네임입니다");
-                    checkResult1.innerHTML = "닉네임 중복확인";
-                    checkResult2.style.color = "red";
-                    checkResult2.style.fontSize = "30px";
-                    checkResult2.innerHTML = "이미 사용중인 닉네임입니다.";
-                }
-            },
-            error: function (err){
-                console.log("에러발생",err);
-            }
-        });
-    }
-
-
-
-    function mailCheck() {
-        // 이메일 입력 필드에서 이메일 주소 가져오기
-        let user_email = document.getElementById("user_email").value;
-
-        // 이메일 주소가 비어 있는지 확인
-        if (user_email.trim() === "") {
-            alert("이메일 주소를 입력해주세요.");
-            return;
-        }
-
-    console.log(user_email);
-        // 여기에 이메일 주소의 유효성을 검사하는 코드를 추가할 수 있습니다.
-        // 예를 들어 정규 표현식을 사용하여 이메일 형식을 확인할 수 있습니다.
-
-        // 유효한 이메일 주소인 경우, 서버로 이메일 전송 요청을 보냅니다.
-        $.ajax({
-            type: "POST",
-            url: "/send-email", // 이메일 전송을 처리하는 서버의 엔드포인트 주소
-            data: {
-                user_email: user_email // 이메일 주소를 서버에 전송합니다.
-            },
-            success: function(response) {
-                // 이메일 전송 요청이 성공한 경우, 서버에서의 응답에 따라 처리할 작업을 추가할 수 있습니다.
-                alert("이메일이 성공적으로 전송되었습니다. 인증번호를 확인해주세요.");
-            },
-            error: function(err) {
-                // 이메일 전송 요청이 실패한 경우, 오류 메시지를 출력할 수 있습니다.
-                alert("이메일 전송에 실패했습니다. 다시 시도해주세요.");
-                console.error("이메일 전송 오류:", err);
-            }
-        });
-    }
-
 </script>
 
-
-
-
+<script src="/js/user/join.js"></script>
 <!-- 제이쿼리 3.6.3 -->
 <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
-
 <!-- 파퍼 1.12.9 -->
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-
 <!-- 부트스트랩 5.3.2 자바스크립트 -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-
 </body>
 </html>

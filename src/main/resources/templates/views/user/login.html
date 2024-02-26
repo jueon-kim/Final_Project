@@ -72,14 +72,20 @@
         </form>
     </div>
 </section>
-<script type="text/javascript">
-    //URL에서 success 매개변수를 확인하여 업데이트 성공 여부를 판단
+
+
+<script>
     var urlParams = new URLSearchParams(window.location.search);
     var success = urlParams.get('success');
     if (success === 'true') {
-        alert('회원가입이 완료되었습니다.');
+        alert('회원가입에 성공했습니다. 로그인 해주세요.');
     }
 </script>
+
+<script th:if="${param.loginFailed}">
+    alert("로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요.");
+</script>
+
 <!-- 제이쿼리 3.2.1 -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <!-- 파퍼 1.12.9 -->

@@ -1,5 +1,6 @@
 package com.hwagae.market.user;
 
+import com.hwagae.market.email.EmailController;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +16,7 @@ import java.io.IOException;
 public class UserController {
 
     private final UserService userService;
+    private final EmailController emailController;
 
     @GetMapping("/user/join")
     public String joinForm(){
@@ -24,11 +26,16 @@ public class UserController {
 
     @PostMapping("/user/join")
     public String join(@ModelAttribute UserDTO userDTO){
-        System.out.println("UserController.save");
-        System.out.println("userDTO = " + userDTO);
-        userService.save(userDTO);
-        System.out.println("회원가입 완료");
-        return "redirect:/user/login?success=true"; // 회원가입 성공 시 login 페이지로 리다이렉트하고 success=true 파라미터를 전달
+        if ("ok".equals(emailController.getEmailAuthResult())) {
+            System.out.println("후에엥"+emailController.getEmailAuthResult());
+            System.out.println("UserController.save");
+            System.out.println("userDTO = " + userDTO);
+            userService.save(userDTO);
+            System.out.println("회원가입 완료");
+            return "redirect:/user/login?success=true"; // 회원가입 성공 시 login 페이지로 리다이렉트하고 success=true 파라미터를 전달
+        }else {
+            return "redirect:/user/join?success=false";
+        }
     }
 
     @PostMapping("/user/id-check")
@@ -71,7 +78,7 @@ public class UserController {
             System.out.println("로그인 성공");
             return "views/myPage/myPage";
         }else{
-            return "views/user/login";
+            return "redirect:/user/login?loginFailed=true";
         }
     }
 

@@ -1,9 +1,8 @@
 package com.hwagae.market.email;
 
+import com.hwagae.market.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.SecureRandom;
 
@@ -11,11 +10,43 @@ import java.security.SecureRandom;
 public class EmailController {
 
     private final EmailService emailService;
+    private final UserService userService;
+    private String storedRandomString; // 이메일로 보낸 randomString을 저장하는 변수
+    private String emailAuthResult; // 이메일 인증 결과를 저장할 변수
+
 
     @Autowired
     public EmailController(EmailService emailService) {
         this.emailService = emailService;
     }
+
+    // 랜덤 문자열 생성 메서드는 EmailService 클래스에 구현하거나 별도의 Util 클래스에 구현할 수 있음
+    private String generateRandomString(int length) {
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder randomString = new StringBuilder(length);
+        System.out.println("randomString = " + randomString);
+        SecureRandom secureRandom = new SecureRandom();
+        System.out.println("secureRandom = " + secureRandom);
+
+        for (int i = 0; i < length; i++) {
+            int randomIndex = secureRandom.nextInt(characters.length());
+            randomString.append(characters.charAt(randomIndex));
+        }
+
+        return randomString.toString();
+    }
+
+
+    /*-------------------------------------------------------------------------------------------*/
+    @PostMapping("/user/email-check")
+    public @ResponseBody String emailCheck(@RequestParam("user_email") String user_email){
+        System.out.println("user_email = " + user_email);
+        String checkResult = userService.emailCheck(user_email);
+        return checkResult;
+    }
+    /*------------------------밑에거랑 합쳐서 is.present면 메일 안보냄 -------------------------------*/
+
+
 
     @PostMapping("/send-email")
     public void sendEmail(@RequestBody String user_email) {
@@ -28,27 +59,42 @@ public class EmailController {
         String randomString = generateRandomString(8); // 8자리의 랜덤 문자열 생성
         System.out.println("222222222222222222222222222 " + userEmail);
 
-        String subject = "[화개장터] 인증확인 메일입니다.";
-        System.out.println("333333333333333333333333333 " + userEmail);
+        storedRandomString = randomString; // 보낸 randomString 저장
+        System.out.println("333333333333333333333333333 " + randomString);
 
-        String text = "인증번호 : " + randomString;
+        String subject = "[화개장터] 인증확인 메일입니다.";
         System.out.println("4444444444444444444444444444 " + userEmail);
 
-        emailService.sendEmail(userEmail, subject, text);
+        String text = "인증번호 : " + randomString;
         System.out.println("5555555555555555555555555555 " + userEmail);
+
+        emailService.sendEmail(userEmail, subject, text);
+        System.out.println("6666666666666666666666666666 " + userEmail);
     }
 
-    // 랜덤 문자열 생성 메서드는 EmailService 클래스에 구현하거나 별도의 Util 클래스에 구현할 수 있음
-    private String generateRandomString(int length) {
-        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        StringBuilder randomString = new StringBuilder(length);
-        SecureRandom secureRandom = new SecureRandom();
+    // 이메일 인증 확인 요청 처리
+    @PostMapping("/authKey-check")
+    public String checkAuthKey(@RequestBody String emailAuthKey) {
+        System.out.println("뭘로받아오지? = " + emailAuthKey);
+        String authKey = emailAuthKey.replace("emailAuthKey=", "");
 
-        for (int i = 0; i < length; i++) {
-            int randomIndex = secureRandom.nextInt(characters.length());
-            randomString.append(characters.charAt(randomIndex));
+        if (storedRandomString.equals(authKey)) {
+            // 저장된 randomString과 입력한 emailAuthKey가 일치할 경우
+            System.out.println("인증 성공"+authKey);
+            emailAuthResult = "ok"; // 인증 결과를 저장
+            return "ok";
+        } else {
+            // 불일치할 경우
+            System.out.println("인증 실패"+authKey);
+            emailAuthResult = "fail"; // 인증 결과를 저장
+            return "fail";
         }
-
-        return randomString.toString();
     }
+
+    // 이메일 인증 결과를 반환하는 메서드
+    public String getEmailAuthResult() {
+        return emailAuthResult;
+    }
+
+
 }
