@@ -101,6 +101,7 @@ public class UserService {
             userDTO.setUser_name(optionalUserEntity.get().getUserName());
             userDTO.setUser_joindate(optionalUserEntity.get().getUserJoindate());
             userDTO.setUser_photo(optionalUserEntity.get().getUserPhoto());
+            userDTO.setUser_place(optionalUserEntity.get().getUserPlace());
         }else {
             throw new NullPointerException("에러");
         }
@@ -118,6 +119,7 @@ public class UserService {
             userDTO.setUser_name(optionalUserEntity.get().getUserName());
             userDTO.setUser_joindate(optionalUserEntity.get().getUserJoindate());
             userDTO.setUser_photo(optionalUserEntity.get().getUserPhoto());
+            userDTO.setUser_place(optionalUserEntity.get().getUserPlace());
         }else {
             throw new NullPointerException("에러");
         }
@@ -195,4 +197,8 @@ public class UserService {
             return "ok";
         }
     }
+
+
+
+
 }

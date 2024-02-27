@@ -2,6 +2,7 @@ package com.hwagae.market.email;
 
 import com.hwagae.market.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.SecureRandom;
@@ -11,13 +12,15 @@ public class EmailController {
 
     private final EmailService emailService;
     private final UserService userService;
+
     private String storedRandomString; // 이메일로 보낸 randomString을 저장하는 변수
     private String emailAuthResult; // 이메일 인증 결과를 저장할 변수
 
 
     @Autowired
-    public EmailController(EmailService emailService) {
+    public EmailController(EmailService emailService, UserService userService) {
         this.emailService = emailService;
+        this.userService = userService;
     }
 
     // 랜덤 문자열 생성 메서드는 EmailService 클래스에 구현하거나 별도의 Util 클래스에 구현할 수 있음
@@ -36,20 +39,8 @@ public class EmailController {
         return randomString.toString();
     }
 
-
-    /*-------------------------------------------------------------------------------------------*/
-    @PostMapping("/user/email-check")
-    public @ResponseBody String emailCheck(@RequestParam("user_email") String user_email){
-        System.out.println("user_email = " + user_email);
-        String checkResult = userService.emailCheck(user_email);
-        return checkResult;
-    }
-    /*------------------------밑에거랑 합쳐서 is.present면 메일 안보냄 -------------------------------*/
-
-
-
     @PostMapping("/send-email")
-    public void sendEmail(@RequestBody String user_email) {
+    public ResponseEntity<String> sendEmail(@RequestBody String user_email) {
         // user_email 값에서 'user_email='을 삭제하고, '%40'을 '@'로 변경하여 올바른 이메일 주소로 변환
         String userEmail = user_email.replace("user_email=", "").replace("%40", "@");
 
@@ -68,8 +59,17 @@ public class EmailController {
         String text = "인증번호 : " + randomString;
         System.out.println("5555555555555555555555555555 " + userEmail);
 
-        emailService.sendEmail(userEmail, subject, text);
-        System.out.println("6666666666666666666666666666 " + userEmail);
+
+        String checkResult = userService.emailCheck(userEmail);
+        if(checkResult != null){
+            emailService.sendEmail(userEmail, subject, text);
+            System.out.println("6666666666666666666666666666 " + userEmail);
+            return ResponseEntity.ok("success");
+        }else {
+            System.out.println(" 이미 사용중인 이메일");
+            return ResponseEntity.ok("duplicate");
+        }
+
     }
 
     // 이메일 인증 확인 요청 처리

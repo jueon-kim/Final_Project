@@ -230,41 +230,41 @@ function mailCheck() {
     // 유효한 이메일 주소인 경우, 서버로 이메일 전송 요청을 보냅니다.
     $.ajax({
         type: "POST",
-        url: "/send-email", // 이메일 전송을 처리하는 서버의 엔드포인트 주소
+        url: "/send-email",
         data: {
-            user_email: user_email // 이메일 주소를 서버에 전송합니다.
+            user_email: user_email
         },
         success: function (response) {
-            // 이메일 전송 요청이 성공한 경우, 서버에서의 응답에 따라 처리할 작업을 추가할 수 있습니다.
-            alert("이메일이 성공적으로 전송되었습니다. 인증번호를 확인해주세요.");
-            if (emailTimer === false) {
-                document.getElementById("emailConfirmNum").style.display = "block"; // 인증번호 입력 영역 표시
-                document.getElementById("emailFinish").disabled = false; // 인증 확인 버튼 활성화
-                let time = 180;
-                timer1 = setInterval(function () {
-                    if (time >= 0) {
-                        // 시간이 0초 이상이면
-                        const min = Math.floor(time / 60);
-                        const sec = String(time % 60).padStart(2, "0");
-                        document.getElementById("timer1").innerText = min + ":" + sec;
-                        time = time - 1;
-                    } else {
-                        // 시간이 0초 이하이면
-                        time += 1;
-                        const min = Math.floor(time / 60);
-                        const sec = String(time % 60).padStart(2, "0");
-                        document.getElementById("emailFinish").disabled = true; // 인증 확인 버튼 비활성화
-                        emailTimer = false;
-                        clearInterval(timer1); // 타이머 중지
-                        document.getElementById("emailAuthKey").value = ""; // 인증번호 입력 필드 초기화
-                    }
-                }, 1000);
-            } else {
-                // 타이머가 작동 중일 때
+            if (response === "success") {
+                // 이메일 전송 성공 시
+                alert("이메일이 성공적으로 전송되었습니다. 인증번호를 확인해주세요.");
+                if (emailTimer === false) {
+                    document.getElementById("emailConfirmNum").style.display = "block"; // 인증번호 입력 영역 표시
+                    document.getElementById("emailFinish").disabled = false; // 인증 확인 버튼 활성화
+                    let time = 180;
+                    timer1 = setInterval(function () {
+                        if (time >= 0) {
+                            const min = Math.floor(time / 60);
+                            const sec = String(time % 60).padStart(2, "0");
+                            document.getElementById("timer1").innerText = min + ":" + sec;
+                            time = time - 1;
+                        } else {
+                            time += 1;
+                            const min = Math.floor(time / 60);
+                            const sec = String(time % 60).padStart(2, "0");
+                            document.getElementById("emailFinish").disabled = true; // 인증 확인 버튼 비활성화
+                            emailTimer = false;
+                            clearInterval(timer1); // 타이머 중지
+                            document.getElementById("emailAuthKey").value = ""; // 인증번호 입력 필드 초기화
+                        }
+                    }, 1000);
+                }
+            } else if (response === "duplicate") {
+                // 중복된 이메일인 경우
+                alert("이미 사용중인 이메일입니다.");
             }
         },
         error: function (err) {
-            // 이메일 전송 요청이 실패한 경우, 오류 메시지를 출력할 수 있습니다.
             alert("이메일 전송에 실패했습니다. 다시 시도해주세요.");
             console.error("이메일 전송 오류:", err);
         }
@@ -309,3 +309,118 @@ function emailAuthFinish() {
     });
 
 }
+
+
+
+
+
+
+
+//지도
+
+var map;
+var marker;
+
+function openZipSearch() {
+    new daum.Postcode({
+        oncomplete: function(data) {
+            var addr = data.sigungu + data.bname;
+            console.log(addr);
+
+            $("#addr").val(addr);
+            searchAddress();
+        }
+    }).open();
+    document.getElementById("map").style.top = "";
+
+}
+
+navigator.geolocation.getCurrentPosition(function(position){
+    // 현재 위치의 위도와 경도를 가져옴
+    var latitude = position.coords.latitude;
+    var longitude = position.coords.longitude;
+    console.log(latitude, longitude);
+    initializeMap(latitude, longitude);
+
+});
+
+function current() {
+    navigator.geolocation.getCurrentPosition(function(position){
+        // 현재 위치의 위도와 경도를 가져옴
+        var latitude = position.coords.latitude;
+        var longitude = position.coords.longitude;
+        console.log(latitude, longitude);
+        initializeMap(latitude, longitude);
+    });
+}
+
+
+function initializeMap(latitude, longitude) {
+    var mapContainer = document.getElementById('map');
+    map = new kakao.maps.Map(mapContainer, {
+        center: new kakao.maps.LatLng(latitude, longitude), // 초기 지도 중심 설정 (서울시청)
+        level: 3
+    });
+
+    marker = new kakao.maps.Marker({
+        position: map.getCenter(),
+        map: map
+    });
+
+    // 지도의 중심 좌표가 변경될 때마다 마커의 위치를 재조정합니다.
+    kakao.maps.event.addListener(map, 'center_changed', function() {
+        var center = map.getCenter();
+
+        // 좌표를 주소로 변환
+        var geocoder = new kakao.maps.services.Geocoder();
+        geocoder.coord2Address(center.getLng(), center.getLat(), function(result, status) {
+            if (status === kakao.maps.services.Status.OK) {
+                // 주소를 얻어옴
+                var address = result[0].address.address_name;
+                var parts = address.split(" ");
+                var extractedAddress = parts.slice(1, 3).join(" ");
+                console.log("현재 중심 좌표의 주소: " + extractedAddress);
+                $("#addr").val(extractedAddress); // 주소를 입력란에 채움
+            }
+        });
+        marker.setPosition(map.getCenter());
+    });
+/*
+    var geocoder = new kakao.maps.services.Geocoder();
+    geocoder.coord2Address(longitude, latitude, function(result, status) {
+        if (status === kakao.maps.services.Status.OK) {
+            // 주소를 얻어옴
+            var address = result[0].address.address_name;
+            var parts = address.split(" ");
+            var extractedAddress = parts.slice(1, 3).join(" ");
+            console.log("현재 중심 좌표의 주소: " + extractedAddress);
+            $("#addr").val(extractedAddress); // 주소를 입력란에 채움
+        }
+    });
+    marker.setPosition(map.getCenter());*/
+
+}
+
+function searchAddress() {
+    var addr = document.getElementById('addr').value;
+
+    // 장소 검색 객체를 생성합니다.
+    var geocoder = new kakao.maps.services.Geocoder();
+
+    // 주소로 좌표를 검색합니다.
+    geocoder.addressSearch(addr, function(result, status) {
+        // 정상적으로 검색이 완료됐으면
+        if (status === kakao.maps.services.Status.OK) {
+            var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+            // 지도 중심을 검색된 좌표로 이동시킵니다.
+            map.setCenter(coords);
+
+            // 마커를 생성하고 지도 위에 표시합니다.
+            marker.setPosition(coords);
+        } else {
+            alert('검색에 실패하였습니다.');
+        }
+    });
+}
+

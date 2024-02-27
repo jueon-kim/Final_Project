@@ -43,6 +43,10 @@ public class UserEntity {
     @Column
     private String userPhoto;
 
+    @Column
+    private String userPlace;
+
+
     public static UserEntity toUserEntity(UserDTO userDTO) {
         UserEntity userEntity = new UserEntity();
         userEntity.setUserNum(userDTO.getUser_num());
@@ -55,6 +59,7 @@ public class UserEntity {
         userEntity.setUserPhoto(userDTO.getUser_photo());
         userEntity.setUserName(userDTO.getUser_name());
         userEntity.setUserJoindate(userDTO.getUser_joindate());
+        userEntity.setUserPlace(userDTO.getUser_place());
         return userEntity;
     }
 
@@ -70,6 +75,7 @@ public class UserEntity {
         userEntity.setUserPhoto(userDTO.getUser_photo());
         userEntity.setUserName(userDTO.getUser_name());
         userEntity.setUserJoindate(userDTO.getUser_joindate());
+        userEntity.setUserPlace(userDTO.getUser_place());
         return userEntity;
     }
 }

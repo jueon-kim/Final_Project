@@ -8,6 +8,11 @@
     <!-- 부트스트랩 아이콘 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="/css/user/join.css">
+
+    <!-- 다음 지도-->
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bf290bec6b7de30eb3c7f533f6f6720a&libraries=services"></script>
+    <!-- 다음 주소검색 -->
+    <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
 <body>
 <div th:include="/views/header.html"></div>
@@ -22,7 +27,7 @@
                 <label class="form-label">아이디</label>
                 <div class="input-group">
                     <input type="text" name="user_id" id="user_id" class="form-control" style="width: calc(100% - 90px);" placeholder="아이디를 입력해주세요." required>
-                    <button type="button" class="btn btn-primary" style="width: 90px;" onclick="idCheck()" data-bs-toggle="modal" data-bs-target="#exampleModal">중복확인</button>
+                    <button type="button" class="btn btn-primary" style="width: 90px;" onclick="idCheck()">중복확인</button>
                 </div>
                 <span id="id_info"></span>
             </div><br>
@@ -31,7 +36,7 @@
                 <label class="form-label">비밀번호</label>
                 <div class="input-group">
                     <input id="pw" type="password" name="user_pw" class="form-control" style="width: calc(100% - 40px);" placeholder="비밀번호를 입력해주세요." required>
-                    <button id="pwToggle" type="button" class="btn btn-outline-secondary" style="width: 40px;"onclick="togglePassword()">
+                    <button id="pwToggle" type="button" class="btn btn-outline-secondary" style="width: 40px;" onclick="togglePassword()">
                         <i class="bi bi-eye"></i>
                     </button>
                 </div>
@@ -41,7 +46,7 @@
                 <label class="form-label">비밀번호 확인</label>
                 <div class="input-group">
                     <input id="repw" type="password" class="form-control" style="width: calc(100% - 40px);" placeholder="비밀번호를 다시 입력해주세요." required>
-                    <button id="repwToggle" type="button" class="btn btn-outline-secondary" style="width: 40px;"onclick="togglerePassword()">
+                    <button id="repwToggle" type="button" class="btn btn-outline-secondary" style="width: 40px;" onclick="togglerePassword()">
                         <i class="bi bi-eye"></i>
                     </button>
                 </div>
@@ -69,7 +74,7 @@
                 <label class="form-label">닉네임</label>
                 <div class="input-group">
                     <input type="text" name="user_nick" id="user_nick" class="form-control" style="width: calc(100% - 90px);" placeholder="닉네임을 입력해주세요." required>
-                    <button type="button" class="btn btn-primary" style="width: 90px;" onclick="nickCheck()" data-bs-toggle="modal" data-bs-target="#exampleModal">중복확인</button>
+                    <button type="button" class="btn btn-primary" style="width: 90px;" onclick="nickCheck()">중복확인</button>
                 </div>
                 <span id="nick_info"></span>
             </div><br>
@@ -101,6 +106,17 @@
                 <input type="hidden" name="user_joindate" class="form-control" id="user_joindate">
                 <input type="hidden" name="user_photo" class="form-control" id="user_photo" value="default.png">
             </div><br>
+
+            <div class="form-group">
+                <label class="form-label">활동지역</label>
+                <input type="text" name="user_place" class="form-control" id="addr" onclick="openZipSearch();" placeholder="활동지역 추가하기">
+            </div><br>
+
+            <div id="map" style="width:650px; height:400px; top: -100000px;">
+                <i class="bi bi-crosshair" style="font-size: 38px; position: absolute; z-index: 5; color: blue; right: 20px; bottom: 20px;" onclick="current()"></i>
+            </div><br><br>
+
+
             <button type="submit" class="btn btn-outline-secondary" id="joinButton" disabled>회원가입</button>&nbsp;&nbsp;
             <a class="btn btn-outline-danger" href="#" onclick="confirmed()">취소</a>
         </form>
@@ -108,7 +124,7 @@
     </div>
 
 </section>
-
+<br><br><br><br><br><br>
 
 
 
@@ -120,6 +136,7 @@
         alert('인증이 완료되지 않았습니다');
     }
 </script>
+
 
 <script src="/js/user/join.js"></script>
 <!-- 제이쿼리 3.6.3 -->
