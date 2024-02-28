@@ -94,8 +94,8 @@
                 </div>
             </div><br>
 
-            <div class="body__token2 form-group" style="right: 0px; position: relative; display: none;" id="phoneConfirmNum">
-                <div class="input-group">
+            <div class="form-group" style="right: 0px; position: relative; display: none;" id="phoneConfirmNum">
+                <div class="input-group" style="right: 0px; position: relative; display: none;" id="phoneConfirmNum">
                     <input class="form-control" id="phoneAuthKey" style="width: calc(100% - 120px); color: #FF7A6B;"></input>
                     <button type="button" class="token2" id="phoneFinish" onclick="phoneAuthFinish()"	style="width: 120px;">인증 확인</button>
                     <div id="timer2" style="font-size: 18px; color: gray; position: absolute; right: 138px; top: 5px; z-index: 5;"></div>
@@ -109,10 +109,11 @@
 
             <div class="form-group">
                 <label class="form-label">활동지역</label>
-                <input type="text" name="user_place" class="form-control" id="addr" onclick="openZipSearch();" placeholder="활동지역 추가하기">
+                <input type="hidden" name="user_location" class="form-control" id="user_location" onclick="openZipSearch();" placeholder="활동지역 추가하기">
+                <input type="text" name="user_location2" class="form-control" id="user_location2" onclick="openZipSearch();" placeholder="활동지역 추가하기">
             </div><br>
 
-            <div id="map" style="width:650px; height:400px; top: -100000px;">
+            <div id="map" style="width:560px; height:400px;">
                 <i class="bi bi-crosshair" style="font-size: 38px; position: absolute; z-index: 5; color: blue; right: 20px; bottom: 20px;" onclick="current()"></i>
             </div><br><br>
 

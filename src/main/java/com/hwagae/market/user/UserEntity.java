@@ -44,7 +44,10 @@ public class UserEntity {
     private String userPhoto;
 
     @Column
-    private String userPlace;
+    private String userLocation;
+
+    @Column
+    private String userLocation2;
 
 
     public static UserEntity toUserEntity(UserDTO userDTO) {
@@ -59,7 +62,8 @@ public class UserEntity {
         userEntity.setUserPhoto(userDTO.getUser_photo());
         userEntity.setUserName(userDTO.getUser_name());
         userEntity.setUserJoindate(userDTO.getUser_joindate());
-        userEntity.setUserPlace(userDTO.getUser_place());
+        userEntity.setUserLocation(userDTO.getUser_location());
+        userEntity.setUserLocation2(userDTO.getUser_location2());
         return userEntity;
     }
 
@@ -75,7 +79,8 @@ public class UserEntity {
         userEntity.setUserPhoto(userDTO.getUser_photo());
         userEntity.setUserName(userDTO.getUser_name());
         userEntity.setUserJoindate(userDTO.getUser_joindate());
-        userEntity.setUserPlace(userDTO.getUser_place());
+        userEntity.setUserLocation(userDTO.getUser_location());
+        userEntity.setUserLocation2(userDTO.getUser_location2());
         return userEntity;
     }
 }

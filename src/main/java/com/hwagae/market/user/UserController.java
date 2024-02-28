@@ -2,6 +2,7 @@ package com.hwagae.market.user;
 
 import com.hwagae.market.email.EmailController;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 
+@Log4j2
 @Controller
 @RequiredArgsConstructor
 public class UserController {
@@ -176,6 +178,25 @@ public class UserController {
         return "redirect:/myPage/userUpdate";
     }
 
+
+    @PostMapping("/user/locationUpdate")
+    public String UpdateLocation(@ModelAttribute UserDTO userDTO, HttpSession session) throws IOException {
+        userService.updateLocation(userDTO);
+        UserDTO updatedUser = userService.login(userDTO);
+
+        UserDTO sessionUser = (UserDTO) session.getAttribute("user");
+        // 사용자 정보 업데이트
+        sessionUser.setUser_location2(userDTO.getUser_location2()); // 닉네임으로 변경 예시
+        // 세션에서 기존 사용자 정보 제거
+        session.removeAttribute("user");
+        // 업데이트된 사용자 정보를 세션에 설정
+        session.setAttribute("user", sessionUser);
+
+        return "redirect:/myPage/userUpdate";
+    }
+
+
+
 /*    @PostMapping("/user/photoUpdate")
     public String UpdatePhoto(@ModelAttribute UserDTO userDTO) throws IOException {
         if(userDTO.getUser_id()!=null){
@@ -272,5 +293,12 @@ public class UserController {
     }
 
 
+
+    @GetMapping("/user/chat")
+    public String chatGET(){
+        log.info("@ChatController, chat GET()");
+        System.out.println("채팅하기");
+        return "views/user/chat";
+    }
 
 }

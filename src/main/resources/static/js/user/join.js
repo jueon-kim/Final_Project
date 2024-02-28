@@ -321,25 +321,61 @@ function emailAuthFinish() {
 var map;
 var marker;
 
+//주소검색 검색 api
 function openZipSearch() {
     new daum.Postcode({
         oncomplete: function(data) {
-            var addr = data.sigungu + data.bname;
-            console.log(addr);
+            var addr;
+            if (data.jibunAddress) {
+                addr = data.jibunAddress;
+            } else if (data.autoJibunAddress) {
+                addr = data.autoJibunAddress;
+            } else {
+                // 주소 정보가 없는 경우에 대한 처리
+                addr = "주소 정보를 찾을 수 없습니다.";
+            }
+            var addr2 = data.sigungu + " " + data.bname;
+            console.log("검색된 지번주소:" +addr);
+            console.log("검색된 구+동 주소:" +addr2);
 
-            $("#addr").val(addr);
+            $("#user_location").val(addr);
+
+            //아래에 지정한 함수 바로 불러오기
             searchAddress();
         }
     }).open();
-    document.getElementById("map").style.top = "";
-
 }
+
+//주소를 좌표로 변환 후 지도 표시하기
+function searchAddress() {
+    //user_location에 입력된 값 가져오기
+    var addr = document.getElementById('user_location').value;
+    // 장소 검색 객체를 생성합니다.
+    var geocoder = new kakao.maps.services.Geocoder();
+
+    // 주소로 좌표를 검색합니다.
+    geocoder.addressSearch(addr, function(result, status) {
+        // 정상적으로 검색이 완료됐으면
+        if (status === kakao.maps.services.Status.OK) {
+            var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+            // 지도 중심을 검색된 좌표로 이동시킵니다.
+            map.setCenter(coords);
+
+            // 마커를 생성하고 지도 위에 표시합니다.
+            marker.setPosition(coords);
+        } else {
+            alert('검색에 실패하였습니다.');
+        }
+    });
+}
+
 
 navigator.geolocation.getCurrentPosition(function(position){
     // 현재 위치의 위도와 경도를 가져옴
     var latitude = position.coords.latitude;
     var longitude = position.coords.longitude;
-    console.log(latitude, longitude);
+    console.log("내위치 좌표" + latitude, longitude);
     initializeMap(latitude, longitude);
 
 });
@@ -349,8 +385,22 @@ function current() {
         // 현재 위치의 위도와 경도를 가져옴
         var latitude = position.coords.latitude;
         var longitude = position.coords.longitude;
-        console.log(latitude, longitude);
+        console.log("내위치 좌표"+latitude, longitude);
         initializeMap(latitude, longitude);
+        var geocoder = new kakao.maps.services.Geocoder();
+        geocoder.coord2Address(longitude, latitude, function(result, status) {
+            if (status === kakao.maps.services.Status.OK) {
+                // 주소를 얻어옴
+                var address = result[0].address.address_name;
+                var parts = address.split(" ");
+                var extractedAddress = parts.slice(1, 3).join(" ");
+                console.log("내 위치 좌표의 모든주소: " + address);
+                console.log("내 위치 좌표의 주소: " + extractedAddress);
+                $("#user_location").val(address); // 주소를 입력란에 채움
+                $("#user_location2").val(extractedAddress); // 주소를 입력란에 채움
+            }
+        });
+        marker.setPosition(map.getCenter());
     });
 }
 
@@ -379,48 +429,12 @@ function initializeMap(latitude, longitude) {
                 var address = result[0].address.address_name;
                 var parts = address.split(" ");
                 var extractedAddress = parts.slice(1, 3).join(" ");
-                console.log("현재 중심 좌표의 주소: " + extractedAddress);
-                $("#addr").val(extractedAddress); // 주소를 입력란에 채움
+                console.log("현재 선택한 좌표의 모든주소: " + address);
+                console.log("현재 선택한 좌표의 주소: " + extractedAddress);
+                $("#user_location").val(address); // 주소를 입력란에 채움
+                $("#user_location2").val(extractedAddress); // 주소를 입력란에 채움
             }
         });
         marker.setPosition(map.getCenter());
     });
-/*
-    var geocoder = new kakao.maps.services.Geocoder();
-    geocoder.coord2Address(longitude, latitude, function(result, status) {
-        if (status === kakao.maps.services.Status.OK) {
-            // 주소를 얻어옴
-            var address = result[0].address.address_name;
-            var parts = address.split(" ");
-            var extractedAddress = parts.slice(1, 3).join(" ");
-            console.log("현재 중심 좌표의 주소: " + extractedAddress);
-            $("#addr").val(extractedAddress); // 주소를 입력란에 채움
-        }
-    });
-    marker.setPosition(map.getCenter());*/
-
 }
-
-function searchAddress() {
-    var addr = document.getElementById('addr').value;
-
-    // 장소 검색 객체를 생성합니다.
-    var geocoder = new kakao.maps.services.Geocoder();
-
-    // 주소로 좌표를 검색합니다.
-    geocoder.addressSearch(addr, function(result, status) {
-        // 정상적으로 검색이 완료됐으면
-        if (status === kakao.maps.services.Status.OK) {
-            var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-
-            // 지도 중심을 검색된 좌표로 이동시킵니다.
-            map.setCenter(coords);
-
-            // 마커를 생성하고 지도 위에 표시합니다.
-            marker.setPosition(coords);
-        } else {
-            alert('검색에 실패하였습니다.');
-        }
-    });
-}
-

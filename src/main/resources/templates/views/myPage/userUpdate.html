@@ -7,6 +7,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <!-- 부트스트랩 아이콘 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- 다음 지도-->
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bf290bec6b7de30eb3c7f533f6f6720a&libraries=services"></script>
+    <!-- 다음 주소검색 -->
+    <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <style>
         section{
             max-width: 60%;
@@ -163,6 +167,24 @@
             </div>
         </form>
 
+
+        <div class="form-group" style="position: relative;">
+            <label class="form-label">활동지역 추가</label>
+        <form action="/user/locationUpdate" method="post">
+            <input type="text" name="user_num" th:value="${updateInfo.user_num}">
+            <input type="hidden" name="user_location" class="form-control" id="user_location" onclick="openZipSearch();" style="width: calc(100% - 90px);" th:value="${updateInfo.user_location}">
+            <div class="input-group">
+                <input type="text" name="user_location2" class="form-control" id="user_location2" onclick="openZipSearch();" placeholder="활동지역 수정하기" th:value="${updateInfo.user_location2}">
+                <button type="submit" class="btn btn-primary" style="width: 90px;">변경하기</button>
+            </div>
+        </form>
+            <div class="input-group">
+            </div>
+        </div><br>
+        <div id="map" style="width:560px; height:400px;">
+            <i class="bi bi-crosshair" style="font-size: 38px; position: absolute; z-index: 5; color: blue; right: 20px; bottom: 20px;" onclick="current()"></i>
+        </div><br><br>
+
         <br>
         <span style="float: right; color: gray; font-size: 12px;">탈퇴를 원하시면 회원탈퇴 버튼을 눌러주세요
                 <!--<a class="btn btn-outline-danger" onclick="confirmed()" th:href="@{'/myPage/unRegister/' + ${session.user.user_nick}}"> 회원탈퇴</a>-->
@@ -178,74 +200,7 @@
 
 
 
-<script th:inline="javascript">
-    function confirmed() {
-        event.preventDefault();
-        const userResponse = window.confirm("회원탈퇴 페이지로 이동할까요?");
-        if (userResponse) {
-            // 확인을 누르면 링크로 이동
-            const userNick = "${session.user.user_nick}";
-            window.location.href = "/myPage/unRegister/" + userNick;
-        } else {
-            // 취소를 누른 경우 아무 동작도 하지 않음
-        }
-    }
-
-    // URL에서 success 매개변수를 확인하여 업데이트 성공 여부를 판단
-    const urlParams = new URLSearchParams(window.location.search);
-    const success = urlParams.get('success');
-
-    // 업데이트 성공 시 알림창 띄우기
-    if (success === 'true') {
-        alert('정보가 수정되었습니다.');
-    }
-
-    function validatePassword() {
-        var password = document.getElementById("user_pw").value;
-        var confirmPassword = document.getElementById("confirm_password").value;
-
-        if (password != confirmPassword) {
-            alert("비밀번호가 일치하지 않습니다.");
-            return false;
-        }
-        return true;
-    }
-
-    const nickCheck = () => {
-        const user_nick = document.getElementById("user_nick").value;
-        const checkResult = document.getElementById("check-result");
-
-        if (user_nick.trim() === "") {
-            checkResult.innerHTML = "내용을 입력하세요.";
-            return;
-        }
-
-        console.log("입력값: ", user_nick);
-        $.ajax({
-            type: "post",
-            url: "/user/nick-check",
-            data: {
-                "user_nick" : user_nick
-            },
-            success: function (res){
-                console.log("요청성공",res);
-                if (res == "ok"){
-                    console.log("사용 가능한 닉네임");
-                    checkResult.style.color = "blue"
-                    checkResult.innerHTML = "사용 가능한 닉네임입니다.";
-                }else {
-                    console.log("이미 사용중인 닉네임입니다");
-                    checkResult.style.color = "red";
-                    checkResult.innerHTML = "이미 사용중인 닉네임입니다.";
-                }
-            },
-            error: function (err){
-                console.log("에러발생",err);
-            }
-        });
-    }
-</script>
-
+<script src="/js/myPage/userUpdate.js"></script>
 
 <!-- 제이쿼리 3.6.3 -->
 <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
