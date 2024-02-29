@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://kit.fontawesome.com/e294802e0f.js"
+            crossorigin="anonymous"></script>
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            crossorigin="anonymous">
+    <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <script type="text/javascript">
+
+
+
+    </script>
+    <style>
+        html, body {
+            height: 100%;
+            padding: 0;
+            margin: 0 auto;
+        }
+
+        .header {
+            background-color: #FF7A6B;
+            height: 100px;
+        }
+
+        .section {
+            /*헤더 밑 푸터 전체 구역 */
+            min-height: calc(100% - (100px + 500px));
+            max-width: 60%;
+            padding: 0 35px 0 35px;
+        }
+
+        .title {
+            /* 공지사항 */
+            color: #FF7A6B;
+        }
+
+        .underline {
+            border-bottom: 1px solid #FF7A6B;
+            padding-left: 0;
+        }
+        .btn-submit{
+            outline-color: #ff7a6b;
+        }
+    </style>
+</head>
+<body>
+<div th:include="header.html"></div>
+<section class="section mt-5 mx-auto mb-5">
+    <form action="/admin/updateNotice" method="post" enctype="multipart/form-data">
+        <div class="px-5">
+            <h2 class="text-center fw-bold mb-5 title">공지사항 수정</h2>
+            <div class="my-3">
+                <input type="hidden" name="notice_num" th:value="${noticeUpdate.notice_num}">
+                <label for="notice_title" class="form-label ">공지 제목</label>
+                <input type="text" class="form-control" name="notice_title" th:value="${noticeUpdate.notice_title}">
+            </div>
+            <div class="mb-3">
+                <label for="notice_content" class="form-label">공지 내용</label>
+                <textarea class="form-control" name="notice_content" rows="5" th:text="${noticeUpdate.notice_content}"></textarea>
+            </div>
+            <div class="mb-5">
+                <label for="notice_upLoadFile" class="form-label">파일 첨부</label>
+                <input type="text" name="file_url" th:value="${noticeUpdate.file_url}">
+                <input type="file" name="notice_upLoadFile" multiple class="form-control">
+                현재 파일 이미지 경로 : <span th:each="fileName : ${noticeUpdate.file_url}" th:text="${fileName}"></span>
+            </div>
+            <label class="form-label">
+                현재 이미지 : <span th:text value="${noticeUpdate.file_url"></span>
+            </label><div th:each="fileName: ${noticeUpdate.file_url}" >
+                <!-- 파일 이름이 여러개라 반복문 돌려서 storedFileName에 하나씩 접근할 수 있는 변수 -->
+                <img th:src="@{|/upload/${fileName}|}" alt="" style="width:85%; height:400px;">
+            </div>
+        </div>
+        <div class="mt-4 text-center">
+            <button class="btn btn-submit" type="submit">입력</button>
+            <button class="btn btn-light" type="reset">취소</button>
+        </div>
+    </form>
+</section>
+<div th:include="footer.html"></div>
+</body>
+</html>
