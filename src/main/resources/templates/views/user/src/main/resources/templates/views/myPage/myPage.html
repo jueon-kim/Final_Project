@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>마이페이지</title>
+    <!-- 부트스트랩 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- 부트스트랩 아이콘 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style type="text/css">
+        section{
+            max-width: 60%;
+            display: flex;
+            justify-content: center;
+        }
+        #mypage{
+            margin: 50px auto;
+            width: 800px;
+            height: 210px;
+            box-shadow: 0px 0px 3px 1px #FF7A6B;
+            border-radius: 20px;
+            padding: 30px 50px;
+        }
+        #mypage img{
+            width: 150px;
+            height: 150px;
+            border-radius: 100%;
+            cursor: pointer;
+        }
+        a{
+            text-decoration: none;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+<div th:include="/views/header.html"></div>
+<section class="container mt-3">
+<div th:unless="${session.user != null}">로그인이 필요합니다</div>
+<div th:include="/views/sidebar.html"></div>
+
+    <div id="mypage">
+
+        <div id="" style="margin: 0 auto; line-height: 2.7rem; font-size: 20px;">
+            <div style="float: left;">
+                <img th:src="@{|/upload/${session.user.user_photo}|}">
+            </div>
+
+            <div style="margin-left: 60px; float: left;">
+                <div style="display: flex;">
+                    <div style="width: 80px; color: darkslategray;">닉네임</div>
+                    <div style="margin-left: 20px; min-width: max-content; font-size: 22px; font-weight: 900;" th:text="${session.user.user_nick}"></div>
+                </div>
+                <div style="display: flex;">
+                    <div style="width: 80px; color: darkslategray;">매너온도</div>
+                    <div style="margin-left: 20px; min-width: max-content; font-size: 22px; font-weight: 900;">36도</div>
+                </div>
+                <div style="display: flex;">
+                    <div style="width: 80px; color: darkslategray;">활동지역</div>
+                    <div style="margin-left: 20px; min-width: max-content; font-size: 22px; font-weight: 900;" th:text="${session.user.user_location2}"></div>
+                </div>
+            </div>
+            <div style="margin-right: 60px; float: right;">
+                <div style="display: flex;">
+                    <div style="width: 80px; color: darkslategray;">판매내역</div>
+                    <div style="margin-left: 20px;">
+                        <span style="color: red; font-size: 22px; font-weight: 900;">1</span> 개
+                    </div>
+                </div>
+                <div style="display: flex;">
+                    <div style="width: 80px; color: darkslategray;">구매내역</div>
+                    <div style="margin-left: 20px;">
+                        <span style="color: red; font-size: 22px; font-weight: 900;">1</span> 개
+                    </div>
+                </div>
+                <div style="display: flex;">
+                    <div style="width: 80px; color: darkslategray;">찜한상품</div>
+                    <div style="margin-left: 20px;">
+                        <span style="color: red; font-size: 22px; font-weight: 900;">1</span> 개
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+    <span th:text="${session.user.user_nick}"></span>
+<script>
+    // URL에서 success 매개변수를 확인하여 업데이트 성공 여부를 판단
+    const urlParams = new URLSearchParams(window.location.search);
+    const success = urlParams.get('success');
+
+    // 업데이트 성공 시 알림창 띄우기
+    if (success === 'true') {
+        alert('정보가 수정되었습니다.');
+    }
+</script>
+
+
+<!-- 제이쿼리 3.2.1 -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
+<!-- 파퍼 1.12.9 -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
+<!-- 부트스트랩 5.3.2 자바스크립트 -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+</body>
+</html>

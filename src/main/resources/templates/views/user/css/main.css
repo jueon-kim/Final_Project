@@ -1,0 +1,33 @@
+
+/*  당  신  을  위  한  추  천  상  품 */
+
+.swiper-container {
+
+    border: 3px red solid;
+    position: relative;
+}
+.swiper-slide {
+    overflow: hidden; /* 넘치는 부분을 숨김 */
+    text-align: center;
+
+    display: flex;
+
+    margin-left: 10px;
+    border: 3px red solid;
+}
+
+.bi-arrow-right-circle{
+    font-size: 50px;
+}
+
+.swiper-wrapper{
+    overflow: hidden;
+
+}
+/* product_componet  */
+.img_box:hover {
+    background-color: red;
+    cursor: pointer;
+
+}
+

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<meta charset="UTF-8">
+<head>
+    <title>postForm</title>
+
+    <!-- 부트스트랩 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <!-- 부트스트랩 아이콘 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!--  스와이퍼 라이러리    -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
+
+    <!-- JS -->
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+    <!--  부트스트랩 아이콘 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+
+<body style="width: 1024px; margin: auto">
+
+<div th:include="/views/header/header"></div>
+<form action="/user/createPost" method="post">
+<br>
+    <div style="margin: auto; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <!-- 사진 들어갈곳 -->
+        <div class="postImgcomPonet">
+
+            <div class="imge">
+                <label> 이미지선택
+                    <input type="file" style="display: none;" class="image" multiple onchange="previewImages(this)">
+                </label>
+            </div>
+        </div><br>
+
+        <div id="imagePreview" style="display: flex; flex-wrap: wrap;"></div>
+        <div class="postTitleLoaciton" style="position: static; display: flex;">
+            <!-- 게시물 제목 -->
+            <div class="postTitlecomponet">
+                <div class="postTitlebox">
+                    <label for="name">
+                        <input type="text" id="name" name="title" required minlength="4" maxlength="50" size="10"
+                               placeholder="제목을 입력하세요" style="width: 360px; height: 30px;">
+                    </label>
+                </div>
+            </div>
+
+            <!-- 희망거래장소  -->
+            <div class="postLocationcomponet" style="float: right; margin-left: 15px;">
+                <label>
+                    <input name="location" type="text" placeholder="희망거래장소" style="width: 182px; height: 30px;">
+                </label>
+            </div>
+        </div>
+
+        <br>
+
+        <!-- 글내용 -->
+        <div class="postDetailcomponet">
+            <div class="postTitlebox">
+                <label>
+                    <textarea name="write" type="text" placeholder="상품명(브랜드) &#10;
+                    구매 시기 &#10; 사용여부 &#10;
+                    실제 촬영한 사진과 함께 상세 정보를 입력해주세요 &#10;
+                    안전하고 건전한 거래환경을 위해 과학기술정보통신부, 한국인터넷진흥원 화개장터가 함께합니다"
+                              style="width: 566px; height: 200px; white-space: normal; overflow-wrap: break-word; resize: none;"></textarea>
+                </label>
+            </div>
+        </div>
+        <br>
+
+
+        <div class="postsalecomponet" style="position: static; display: flex;" >
+            <!--가격 -->
+            <div class="postPricecomponet">
+                <div class="pricebox">
+                    <label>
+                        <input name="sale" type="text" placeholder="💲판매가격(숫자만 입력하세요)"
+                               onKeyup="this.value=this.value.replace(/[^0-9]/g,'')" style="width: 260px; height: 50px;">
+                    </label>
+
+                </div>
+            </div>
+
+            <div style=" margin: auto; display: flex;">
+                <!-- 택배거래 여부 -->
+                <div class="postParcelcomponet" style="margin: 10px;">
+                    <label>
+                        <input name="delivery" type="checkbox" placeholder="택배거래">
+                    </label> 택배거래
+                </div>
+
+                <!--  직거래 여부-->
+                <div class="postDealcomponet" style="margin: 10px;">
+                    <label>
+                        <input name="nodelivery" type="checkbox">
+                    </label>직거래
+                </div>
+
+                <!-- 배송비 포함 -->
+                <div class="postParcelcomponet" style="margin: 10px;">
+                    <label>
+                        <input name="taxt" type="checkbox">
+                    </label> 비송비 포함
+                </div>
+            </div>
+        </div>
+        <br>
+
+        <div class="buttonbox" style="margin: auto;">
+            <button type="submit" value="등록" style="width: 100px; margin-left: 10px;">등록하기</button>
+            <button  value="취소" style="width: 100px; margin-left: 90px;">취소</button>
+        </div>
+
+    </div> <!-- post 끝 -->
+</form>
+<br><br><br>
+    <footer>
+        <div th:include="/views/footer/footer.html"></div>
+    </footer>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
+
+    <!--   부   트  스  트  랩  JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+
+
+</body>
+</html>

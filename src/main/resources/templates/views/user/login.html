@@ -41,11 +41,11 @@
     </style>
 </head>
 <body>
-<div th:include="/views/header.html"></div>
+<div th:include="/views/header/header"></div>
 <section class="container mt-3">
     <div style="width:560px; height: auto; margin: 0 auto; background-color: white;">
         <div style="text-align: center;">
-            <img src="/img/logo3.png" style="width: 220px; height: 100px; display: block; margin: 0 auto;">
+            <img src="/img/logo3.png" style="width: 220px; height: 100px; display: block; margin: 0 auto;" alt="">
         </div><br><br><br><br>
         <form action="/user/login" method="post">
             <div class="form-group">
@@ -72,6 +72,13 @@
         </form>
     </div>
 </section>
+<br><br><br><br>
+
+<footer>
+    <div th:include="/views/footer/footer.html"></div>
+</footer>
+
+
 <script type="text/javascript">
     //URL에서 success 매개변수를 확인하여 업데이트 성공 여부를 판단
     var urlParams = new URLSearchParams(window.location.search);

@@ -1,0 +1,33 @@
+section{
+    max-width: 60%;
+    display: flex;
+    justify-content: center;
+}
+.card_wrap {
+    position: relative;
+}
+
+.svg_wrap {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 7px 10px 10px;
+}
+
+.img_wrap {
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.img_wrap:hover {
+    transform: scale(1.04);
+}
+
+.text-center h5 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+}
