@@ -15,4 +15,5 @@ public class ChatDTO {
     String chatContent;
     String chatTime;
 
+
 }

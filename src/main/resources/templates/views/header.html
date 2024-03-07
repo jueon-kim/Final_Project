@@ -9,7 +9,7 @@
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 	<link rel="stylesheet" href="/css/header/header.css">
 
-	<style type="text/css">
+	<style>
 		a{
 			text-decoration: none;
 			color: black;
@@ -20,9 +20,9 @@
 
 
 
-<nav class="navbar" style="width: 100%; height: 150px">
+<div class="navbar" style="width: 100%; margin-bottom: 20px; border-bottom: 1px solid gainsboro;">
 
-	<div class="container-fluid" style="width: 1400px;">
+	<div class="container-fluid" style="width: 1400px; margin-top: 30px;">
 
 		<a href="/index"><img src="/img/logo3.png" style="width: 150px; height: 70px;"></a>
 
@@ -36,7 +36,7 @@
 		<div style="display: flex">
 
 			<div style="margin-top: 20px;">
-				<a class="btn" style="text-decoration: none; color: black; font-size: 18px" href="/user/chat">
+				<a class="btn" style="text-decoration: none; color: black; font-size: 18px" href="/chat/list">
 					<i class="bi bi-chat-dots"></i>
 					<span class="chat">채팅</span>
 				</a>
@@ -79,18 +79,34 @@
 			</div>
 		</div>
 	</div>
-	<br><br><br>
-</nav>
 
-	<div class="bottomHeader" style="width: 1400px;">
+
+	<div class="bottomHeader" style="width: 1400px; margin-top: 30px;">
 
 		<div class="bottomHeader-category">
 			<ul class="bottom-menu">
-				<li class="dropdown-list">
+				<li class="dropdown-list" style="height: 36px;">
 					<a class="navbar-brand" id="category" href="#">
 						<p class="bi bi-list">카테고리</p>
 					</a>
+
 					<ul class="submenu" style="list-style: none;">
+						<li>
+							<a href="#">
+								<p class="submenu-p" style="letter-spacing: 0.5em;">여성의류</p>
+							</a>
+							<ul class="inner-menu" style="list-style: none;">
+								<li><a href="#">티셔츠</a></li>
+								<li><a href="#">바지</a></li>
+								<li><a href="#">아우터</a></li>
+								<li><a href="#">원피스</a></li>
+								<li><a href="#">자켓</a></li>
+								<li><a href="#">블레이저</a></li>
+								<li><a href="#">스커트</a></li>
+								<li><a href="#">언더웨어</a></li>
+							</ul>
+						</li>
+
 						<li>
 							<a href="#">
 								<p class="submenu-p" style="letter-spacing: 0.5em;">남성의류</p>
@@ -109,24 +125,86 @@
 
 						<li>
 							<a href="#">
-								<p class="submenu-p" style="letter-spacing: 0.5em;">여성의류 </p>
+								<p class="submenu-p"  style="letter-spacing: 0.5em;">신발</p>
 							</a>
 							<ul class="inner-menu" style="list-style: none;">
-								<li><a href="#">티셔츠</a></li>
-								<li><a href="#">바지</a></li>
-								<li><a href="#">아우터</a></li>
-								<li><a href="#">원피스</a></li>
-								<li><a href="#">자켓</a></li>
-								<li><a href="#">블레이저</a></li>
-								<li><a href="#">스커트</a></li>
-								<li><a href="#">언더웨어</a></li>
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
 							</ul>
 						</li>
 
-						<li><a href="#">
-							<p class="submenu-p" style="letter-spacing: 0.5em;">가전제품
-							</p></a>
+						<li>
+							<a href="#">
+								<p class="submenu-p"  style="letter-spacing: 0.5em;">가방/지갑</p>
+							</a>
+							<ul class="inner-menu" style="list-style: none;">
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+							</ul>
+						</li>
 
+						<li>
+							<a href="#">
+								<p class="submenu-p"  style="letter-spacing: 0.5em;">시계</p>
+							</a>
+							<ul class="inner-menu" style="list-style: none;">
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+							</ul>
+						</li>
+
+						<li>
+							<a href="#">
+								<p class="submenu-p"  style="letter-spacing: 0.5em;">쥬얼리</p>
+							</a>
+							<ul class="inner-menu" style="list-style: none;">
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+							</ul>
+						</li>
+
+						<li>
+							<a href="#">
+								<p class="submenu-p"  style="letter-spacing: 0.5em;">패션 액세서리</p>
+							</a>
+							<ul class="inner-menu" style="list-style: none;">
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+							</ul>
+						</li>
+
+						<li>
+							<a href="#">
+								<p class="submenu-p" style="letter-spacing: 0.5em;">디지털</p>
+							</a>
+							<ul class="inner-menu" style="list-style: none;">
+								<li><a href="#">삼성</a></li>
+								<li><a href="#">애플</a></li>
+								<li><a href="#">LG</a></li>
+								<li><a href="#">컴퓨터</a></li>
+								<li><a href="#">태블릿</a></li>
+							</ul>
+						</li>
+
+						<li>
+							<a href="#">
+								<p class="submenu-p" style="letter-spacing: 0.5em;">가전제품</p>
+							</a>
 							<ul class="inner-menu" style="list-style: none; ">
 								<li><a href="#">TV</a></li>
 								<li><a href="#">세탁기</a></li>
@@ -139,10 +217,10 @@
 							</ul>
 						</li>
 
-						<li><a href="#">
-							<p class="submenu-p"  style="letter-spacing: 0.5em;">운동용품
-							</p></a>
-
+						<li>
+							<a href="#">
+								<p class="submenu-p"  style="letter-spacing: 0.5em;">스포츠/레저</p>
+							</a>
 							<ul class="inner-menu" style="list-style: none;">
 								<li><a href="#">축구용품</a></li>
 								<li><a href="#">야구용품</a></li>
@@ -152,18 +230,84 @@
 							</ul>
 						</li>
 
-						<li><a href="#">
-							<p class="submenu-p" style="letter-spacing: 0.5em;">전자기기
-							</p></a>
-
+						<li>
+							<a href="#">
+								<p class="submenu-p"  style="letter-spacing: 0.5em;">차량/오토바이</p>
+							</a>
 							<ul class="inner-menu" style="list-style: none;">
-								<li><a href="#">삼성</a></li>
-								<li><a href="#">애플</a></li>
-								<li><a href="#">LG</a></li>
-								<li><a href="#">컴퓨터</a></li>
-								<li><a href="#">태블릿</a></li>
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
 							</ul>
 						</li>
+
+						<li>
+							<a href="#">
+								<p class="submenu-p"  style="letter-spacing: 0.5em;">스타굿즈</p>
+							</a>
+							<ul class="inner-menu" style="list-style: none;">
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+							</ul>
+						</li>
+
+						<li>
+							<a href="#">
+								<p class="submenu-p"  style="letter-spacing: 0.5em;">키덜트</p>
+							</a>
+							<ul class="inner-menu" style="list-style: none;">
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+							</ul>
+						</li>
+
+						<li>
+							<a href="#">
+								<p class="submenu-p"  style="letter-spacing: 0.5em;">예술/희귀/수집품</p>
+							</a>
+							<ul class="inner-menu" style="list-style: none;">
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+							</ul>
+						</li>
+
+						<li>
+							<a href="#">
+								<p class="submenu-p"  style="letter-spacing: 0.5em;">음반/악기</p>
+							</a>
+							<ul class="inner-menu" style="list-style: none;">
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+							</ul>
+						</li>
+
+						<li>
+							<a href="#">
+								<p class="submenu-p"  style="letter-spacing: 0.5em;">도서/티켓/문구</p>
+							</a>
+							<ul class="inner-menu" style="list-style: none;">
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+								<li><a href="#"></a></li>
+							</ul>
+						</li>
+
 					</ul>
 				</li>
 			</ul>
@@ -190,7 +334,8 @@
 				<a class="navbar-brand" href="#">출석체크</a>
 			</div>
 		</div>
-	</div><hr>
+	</div>
+</div>
 
 
 

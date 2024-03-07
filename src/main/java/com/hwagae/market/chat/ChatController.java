@@ -7,16 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class ChatController {
@@ -40,9 +34,18 @@ public class ChatController {
             model.addAttribute("toID", userEntity.getUserNick());
         }
         System.out.println(" ' " + model + " ' "+"과의 채팅방으로 이동");
-        return "views/user/chat2";
+        return "views/user/chat";
     }
 
+
+    @GetMapping("/chat/{userNick}")
+    public String chatChatPage(@PathVariable("userNick") String useNick, Model model) {
+
+        System.out.println("useNick = " + useNick);
+
+
+        return "views/user/chat";
+    }
 
 
     @PostMapping("/chat/send")
@@ -70,13 +73,13 @@ public class ChatController {
     }*/
 
 
-    @PostMapping("/chat/list")
+    @PostMapping("/chat/record")
     @ResponseBody
-    public List<Map<String, Object>> getChatList(@RequestParam("toID") String toID, @RequestParam("fromID") String fromID) {
+    public List<Map<String, Object>> getChatRecord(@RequestParam("toID") String toID, @RequestParam("fromID") String fromID) {
         List<ChatEntity> chatEntities = chatRepository.findByFromIDAndToIDOrFromIDAndToIDOrderByChatTime(fromID, toID, toID, fromID);
         System.out.println("chatEntities = " + chatEntities);
 
-        List<Map<String, Object>> chatList = new ArrayList<>();
+        List<Map<String, Object>> chatRecord = new ArrayList<>();
         for (ChatEntity chatEntity : chatEntities) {
             Map<String, Object> chatMap = new HashMap<>();
             chatMap.put("chatID", chatEntity.getChatID());
@@ -84,10 +87,40 @@ public class ChatController {
             chatMap.put("toID", chatEntity.getToID());
             chatMap.put("chatContent", chatEntity.getChatContent());
             chatMap.put("chatTime", chatEntity.getChatTime());
-            chatList.add(chatMap);
+            chatRecord.add(chatMap);
         }
 
-        return chatList;
+        return chatRecord;
     }
+
+
+
+/*    @PostMapping("/chat/list")
+    public String getChatList(@RequestParam("userNum") String userNum) {
+        chatRepository.findLatestChatsByUserId(userNum);
+        System.out.println("흠;;;; = " + userNum);
+        *//*return chatRepository.findLatestChatsByUserId(userNum);*//*
+        return "/views/user/chat";
+    }*/
+
+
+
+    @GetMapping("/chat/list")
+    public String getChatList(Model model, HttpSession session) {
+        UserDTO userDTO = (UserDTO) session.getAttribute("user");
+        
+        // 세션에서 사용자 닉네임 가져오기
+        String userNick = userDTO.getUser_nick();
+        System.out.println("userNick = " + userNick);
+
+        // 사용자 닉네임을 기반으로 채팅 목록 조회
+        List<ChatEntity> chatList = chatRepository.findLatestChatsByFromID(userNick);
+
+        // 조회된 채팅 목록을 모델에 추가하여 chatList.html로 전달
+        model.addAttribute("chatList", chatList);
+
+        return "/views/user/chatList";
+    }
+
 
 }

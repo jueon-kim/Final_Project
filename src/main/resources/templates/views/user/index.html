@@ -17,15 +17,16 @@
 
     <style>
         section{
-            max-width: 1400px;
-            display: flex;
-            justify-content: center;
+            width: 1400px;
+            margin: auto;
         }
     </style>
 </head>
-<body style="width: 1400px; margin: auto; flex: 1">
-<div th:include="/views/header.html"></div>
-<section class="container mt-3">
+<body>
+
+<header th:include="/views/header.html"></header>
+
+<section>
 
 
     <h2>Hello Spring Boot!!</h2>
@@ -38,8 +39,6 @@
 
 
 
-
-</section>
 
 
 <div class="main">
@@ -402,9 +401,15 @@
 
 <br><br>
 
-<div class="mainimg" style="margin: auto;">
-    <img src="/img/main.png" width="1400px;">
+<div class="mainimg">
+    <img src="/static/img/main.png" alt="" style="width: 1280px; height: 663px;">
 </div>
+
+
+
+<footer th:include="/views/footer"></footer>
+</section>
+
 
 
 
