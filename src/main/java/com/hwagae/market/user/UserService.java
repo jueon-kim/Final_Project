@@ -69,7 +69,10 @@ public class UserService {
         Optional<UserEntity> findPW = userRepository.findByUserName(userDTO.getUser_name());
         if(findPW.isPresent()){
             UserEntity userEntity = findPW.get();
-            if (userEntity.getUserName().equals(userDTO.getUser_name())){
+            if (userEntity.getUserId().equals(userDTO.getUser_id()) &&
+                    userEntity.getUserName().equals(userDTO.getUser_name()) &&
+                    userEntity.getUserEmail().equals(userDTO.getUser_email()) &&
+                    userEntity.getUserPhone().equals(userDTO.getUser_phone())){
                 UserDTO dto = UserDTO.toUserDTO(userEntity);
                 return dto;
             }else{

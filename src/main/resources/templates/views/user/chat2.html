@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>채팅창</title>
+    <!-- 부트스트랩 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- 부트스트랩 아이콘 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.0/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
+
+    <style>
+        .profile_name{
+            background-color: #f8f9fa!important;
+            width:100%;
+            padding: 10px;
+            border-bottom: 5px solid #FF7A6B;
+        }
+        .chat_section{
+            padding-top: 15px;
+        }
+        .incoming_msg {
+            overflow:hidden;
+            margin: 10px;
+            float: left;
+            clear: both;
+        }
+        .received_msg {
+            float: left;
+            width: 350px;
+        }
+        .received_withd_msg p {
+            background: #ebebeb none repeat scroll 0 0;
+            border-radius: 6px;
+            color: #646464;
+            font-size: 14px;
+            margin: 0;
+            padding: 12px;
+            width: 350px;
+            word-wrap: break-word; /* 단어가 길 경우 줄 바꿈 */
+            white-space: normal; /* 공백 처리 */
+        }
+        .time_date {
+            color: #747474;
+            display: block;
+            font-size: 12px;
+            margin: 8px 0 0;
+        }
+        .received_withd_msg {
+            width: 57%;
+        }
+
+        .sent_msg p {
+            background: #050f8f none repeat scroll 0 0;
+            border-radius: 6px;
+            font-size: 14px;
+            margin: 0;
+            color: #fff;
+            padding: 12px;
+            width: 350px;
+            word-wrap: break-word; /* 단어가 길 경우 줄 바꿈 */
+            white-space: normal; /* 공백 처리 */
+        }
+        .outgoing_msg{
+            overflow:hidden;
+            margin: 10px;
+            float: right;
+            clear: both;
+        }
+        .sent_msg {
+            float: right;
+            width: 350px;
+        }
+        .input_msg_write input {
+            background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+            border: medium none;
+            color: #4c4c4c;
+            font-size: 15px;
+            min-height: 48px;
+            width: 100%;
+            padding: 10px;
+        }
+        .type_msg {
+            border-top: 1px solid #c4c4c4;
+            position: relative;
+        }
+        .msg_send_btn {
+            background: #05728f none repeat scroll 0 0;
+            border: medium none;
+            border-radius: 50%;
+            color: #fff;
+            cursor: pointer;
+            font-size: 17px;
+            height: 33px;
+            position: absolute;
+            right: 0;
+            top: 11px;
+            width: 33px;
+        }
+
+    </style>
+</head>
+<body>
+<div th:include="/views/header.html"></div>
+<section class="container mt-3">
+<!--
+    <div class="chat-container">
+        <div id="chatMessages">
+            &lt;!&ndash; 채팅 메시지가 여기에 추가될 것입니다. &ndash;&gt;
+
+        </div>
+    </div>
+-->
+<div style="box-shadow: 0px 0px 28px -5px gray;border-radius: 8px;padding: 8px;">
+
+    <div class="profile_name">
+        &nbsp;&nbsp;&nbsp;&nbsp;<i class="bi bi-chat-left-dots"></i> &nbsp;&nbsp; 채팅방
+    </div>
+    <div class="container-fluid" style="height: 600px; overflow-y: auto;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div id="user_chat_data" class="user_chat_data">
+
+                    <div class="container-fluid chat_section" id="chatMessages">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="type_msg">
+        <div class="input_msg_write">
+            <input type="text" id="toID" th:value="${toID}" style="display:none;">
+            <input name="chatContent" id="chatContent" type="text" class="write_msg" placeholder="메시지를 입력하세요" onkeydown="if (event.keyCode == 13 && !event.shiftKey) sendMessage();" />            <button id="chat-send" onclick="sendMessage()" class="msg_send_btn" type="submit"><i class="bi bi-send"></i></button>
+        </div>
+    </div>
+</div>
+
+    <br><br><br><br><br><br><br><br><br><br><br><br><br>
+<!--
+
+    <div class="chat-input">
+        <textarea name="chatContent" id="chatContent" placeholder="메시지를 입력하세요"></textarea>
+        <button type="submit" onclick="sendMessage()">전송</button>
+    </div>-->
+
+
+
+</section>
+
+
+
+<!-- 제이쿼리 3.6.3 -->
+<script src="https://code.jquery.com/jquery-3.6.3.min.js"
+        integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+
+
+
+
+
+<script th:inline="javascript">
+    function getCurrentDateTime() {
+        var now = new Date();
+        var year = now.getFullYear();
+        var month = String(now.getMonth() + 1).padStart(2, '0');
+        var day = String(now.getDate()).padStart(2, '0');
+        var hours = String(now.getHours()).padStart(2, '0');
+        var minutes = String(now.getMinutes()).padStart(2, '0');
+        var seconds = String(now.getSeconds()).padStart(2, '0');
+        return year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
+    }
+
+    function sendMessage(){
+        var fromID = /*[[${session.user.user_nick}]]*/ ''; // 세션에 저장된 사용자의 user_num을 가져옴
+        var toID = $("#toID").val();
+        var chatContent = $("#chatContent").val();
+        var chatTime = getCurrentDateTime();
+        console.log("로그인 된 유저 닉네임 : "+ fromID);
+
+        $.ajax({
+            type: "post",
+            url: "/chat/send",
+            data: {
+                fromID : encodeURIComponent(fromID),
+                toID : encodeURIComponent(toID),
+                chatContent : chatContent,
+                chatTime : chatTime,
+            },
+            success : function () {
+                // 메시지를 전송한 후에도 새로운 채팅 리스트를 불러옵니다.
+                loadChatList();
+                console.log()
+            }
+        });
+        $("#chatContent").val('');
+        findLastMessage();
+    }
+
+
+
+
+
+
+    function loadChatList() {
+        var fromID = /*[[${session.user.user_nick}]]*/ ''; // 세션에 저장된 사용자의 user_num을 가져옴
+        var toID = $("#toID").val(); // 대화 상대방의 ID를 가져옵니다.
+
+        $.ajax({
+            type: "POST",
+            url: "/chat/list",
+            data: {
+                fromID: encodeURIComponent(fromID),
+                toID: encodeURIComponent(toID),
+            },
+            success: function (data) {
+                if (data.length === 0) return;
+                $('#chatMessages').empty();
+
+                for (var i = 0; i < data.length; i++) {
+                    if(data[i].fromID == fromID){
+                        data[i].fromID = '나';
+                        console.log("몰까"+data[i].fromID);
+                    }
+                    addChat(data[i].fromID, data[i].chatContent, data[i].chatTime);
+                }
+            }
+        });
+
+    }
+
+    function addChat(chatName, chatContent, chatTime){
+        if(chatName == '나') {
+            $('#chatMessages').append(
+/*                '<div class="row" style="width: 500px; float: right; clear: both">'+
+                '<div class="col-lg-12">'+
+                '<div class="media">'+
+                '<div class="media-body text-end">'+
+                '<h5 class="media-heading">'+
+                chatName +
+                '</h5>'+
+                '<span class="text-sm float-start">'+ // 채팅 시간을 왼쪽 정렬
+                chatTime +
+                '</span>'+
+                '<p style="font-size: 20px;" class="text-end">'+ // 채팅 내용 스타일 조정
+                chatContent +
+                '</p>'+
+                '</div>'+
+                '</div>'+
+                '</div>'+
+                '</div>'+*/
+
+                '<div class="outgoing_msg">'+
+                '<div class="sent_msg">'+
+                '<p>'+
+                chatContent +
+                '</p>'+
+                '<span class="time_date">' +
+                chatName + ' | ' + chatTime +
+                '</span>'+
+                '</div>'+
+                '</div>'
+
+            );
+        }else {
+            $('#chatMessages').append(
+/*                '<div class="row" style="width: 500px; float: left; clear: both">'+
+                '<div class="col-lg-12">'+
+                '<div class="media">'+
+                '<div class="media-body">'+
+                '<h5 class="media-heading">'+
+                chatName +
+                '</h5>'+
+                '<span class="text-sm float-end">'+
+                chatTime +
+                '</span>'+
+                '<p style="font-size: 20px;">'+
+                chatContent +
+                '</p>'+
+                '</div>'+
+                '</div>'+
+                '</div>'+
+                '</div>'+*/
+
+                '<div class="incoming_msg">'+
+                '<div class="received_msg">'+
+                '<div class="received_withd_msg">'+
+                '<p>'+
+                chatContent +
+                '</p>'+
+                '<span class="time_date">' +
+                chatName + ' | ' + chatTime +
+                '</span>'+
+                '</div>'+
+                '</div>'+
+                '</div>'
+            );
+        }
+        findLastMessage();
+    }
+
+    function getList(){
+        setInterval(function (){
+            loadChatList();
+        },2000);
+    }
+
+    $(document).ready(function (){
+        loadChatList();
+        getList();
+        findLastMessage();
+    })
+
+    var scrollTop = $('#chatMessages').scrollTop;
+    console.log("스크롤탑"+scrollTop);
+    var innerHeight = $('#chatMessages').innerHeight();
+    console.log("이너헤잇"+innerHeight);
+    var scrollHeight = $('#chatMessages').scrollHeight;
+    console.log("스크롤헤잇"+scrollHeight);
+
+
+    const findLastMessage = () => {
+        const messages = document.getElementById('chatMessages');
+
+    }
+</script>
+
+</body>
+</html>

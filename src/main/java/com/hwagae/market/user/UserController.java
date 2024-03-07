@@ -20,6 +20,7 @@ public class UserController {
     private final UserService userService;
     private final EmailController emailController;
 
+
     @GetMapping("/user/join")
     public String joinForm(){
         System.out.println("회원가입 페이지");
@@ -294,11 +295,9 @@ public class UserController {
 
 
 
-    @GetMapping("/user/chat")
-    public String chatGET(){
-        log.info("@ChatController, chat GET()");
-        System.out.println("채팅하기");
-        return "views/user/chat";
-    }
+
+
+
+
 
 }

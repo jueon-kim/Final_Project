@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>save</title>
+</head>
+<body>
+<form action="/save" method="post">
+    post_num <input type="text" name="post_num"> <br>
+    post_title<input type="text" name="post_title"> <br>
+    post_content<input type="text" name="post_content"> <br>
+    post_price<input type="text" name="post_price"> <br>
+    post_saleState<input type="text" name="post_saleState"> <br>
+    post_regdate<input type="text" name="post_regdate"> <br>
+    post_update<input type="text" name="post_update"> <br>
+    post_location<input type="text" name="post_location"> <br>
+    post_ship<input type="text" name="post_ship"> <br>
+    post_shipAddress<input type="text" name="post_shipAddress"> <br>
+    post_direct<input type="text" name="post_direct"> <br>
+    post_Address<input type="text" name="post_Address"> <br>
+    post_hits<input type="text" name="post_hits"> <br>
+    post_like<input type="text" name="post_like"> <br>
+    post_deliveryFee<input type="text" name="post_deliveryFee"> <br>
+    post_productState<input type="text" name="post_productState"> <br>
+    user_num<input type="text" name="user_num" th:value="${session.user.user_num}"> <br>
+    category_num<input type="text" name="category_num"> <br>
+    file_num<input type="text" name="file_num"> <br>
+    글작성<input type="submit" value="글작성">
+</form>
+</body>
+</html>

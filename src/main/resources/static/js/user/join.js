@@ -109,7 +109,7 @@ function setJoinDate() {
     var day = ('0' + currentDate.getDate()).slice(-2);
     var formattedDate = year + '-' + month + '-' + day;
     // user_joindate 필드의 값을 설정
-    document.getElementById('user_joindate').value = formattedDate;
+        document.getElementById('user_joindate').value = formattedDate;
 }
 
 let isPasswordVisible = false;

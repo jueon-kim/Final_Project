@@ -9,4 +9,11 @@ public class HomeController {
     public String index() {
         return "/views/user/index";
     }
+
+    @GetMapping("/index")
+    public String index2(){
+        System.out.println("홈페이지");
+        return "views/user/index";
+    }
+
 }
