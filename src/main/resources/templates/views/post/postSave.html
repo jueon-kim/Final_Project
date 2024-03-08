@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>글쓰기</title>
+    <!-- 부트스트랩 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- 부트스트랩 아이콘 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+
+
+    <!-- 다음 지도-->
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bf290bec6b7de30eb3c7f533f6f6720a&libraries=services"></script>
+    <!-- 다음 주소검색 -->
+    <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+    <style>
+        section{
+            max-width: 1400px;
+        }
+    </style>
+</head>
+<body>
+<div th:include="/views/header"></div>
+<section class="container mt-3">
+
+    <form action="/post/save" method="post" onsubmit="regdate()">
+
+        <div style="width: 768px; margin: auto">
+            <br>
+            <!-- 사진 들어갈곳 -->
+            <div style="margin: auto; justify-content: center; display: flex">
+                <div class="imge">
+                    <label> 이미지선택
+                        <input type="file" style="display: none;" class="image" multiple onchange="previewImages(this)">
+                    </label>
+                </div>
+            </div><br>    <!-- 사진 들어갈곳 -->
+            <div id="imagePreview"></div>
+            <!--        <div style="justify-content: center; display: flex; margin: 10px;">-->
+            <!--            <select name="category_num">-->
+            <!--                <option>카테고리</option>-->
+            <!--                <option value="1">여성의류</option>-->
+            <!--                <option value="2">남성의류</option>-->
+            <!--                <option value="3">신발</option>-->
+            <!--            </select>-->
+            <!--        </div>-->
+
+            <div class="categoryList" name="category_num" style="display: flex;
+        overflow: auto; width: 300px; height: 200px; border: 5px #f8f9fa solid; scrollbar-width: thin;">
+
+                <ul style="list-style: none;">
+                    <li value="1">
+                        <input type="checkbox" class="checkbox" name="category_num" value="1" hidden>
+                        <label> <p style="font-size: 18px;">여성의류 1</p></label>
+                    </li>
+
+                    <li value="2">
+                        <input type="checkbox" class="checkbox" name="womenClothing" hidden>
+                        <label><p style="font-size: 18px;">여성의류 1</p></label>
+                    </li>
+
+                    <li value="2">
+                        <input type="checkbox" class="checkbox" name="womenClothing" hidden>
+                        <label><p style="font-size: 18px;">여성의류 1</p></label>
+                    </li>
+
+                    <li value="2">
+                        <input type="checkbox" class="checkbox" name="womenClothing" hidden>
+                        <label><p style="font-size: 18px;">여성의류 1</p></label>
+                    </li>
+
+                    <li value="2">
+                        <input type="checkbox" class="checkbox" name="womenClothing" hidden>
+                        <label><p style="font-size: 18px;">여성의류 1</p></label>
+                    </li>
+
+                    <li value="2">
+                        <input type="checkbox" class="checkbox" name="womenClothing" hidden>
+                        <label><p style="font-size: 18px;">여성의류 1</p></label>
+                    </li>
+
+                    <li value="2">
+                        <input type="checkbox" class="checkbox" name="womenClothing" hidden>
+                        <label><p style="font-size: 18px;">여성의류 1</p></label>
+                    </li>
+
+                    <li value="2">
+                        <input type="checkbox" class="checkbox" name="womenClothing" hidden>
+                        <label><p style="font-size: 18px;">여성의류 1</p></label>
+                    </li>
+
+                    <li value="2">
+                        <input type="checkbox" class="checkbox" name="womenClothing" hidden>
+                        <label><p style="font-size: 18px;">여성의류 1</p></label>
+                    </li>
+                </ul>
+            </div>
+
+            <br>
+            <div style="justify-content: center; display: flex">
+
+                <input name="post_title" id="postTitle" required minlength="4" maxlength="50" size="10"
+                       placeholder="제목을 입력하세요" style="width: 768px;  height: 30px;">
+            </div>
+            <br>
+
+            <div style="display: flex; justify-content: center">
+                <!-- 글내용 -->
+                <div class="postDetailcomponet">
+                    <div class="postTitlebox">
+                        <label for="post_content" style="margin: auto">
+                    <textarea name="post_content" id="post_content" type="text" placeholder="상품명(브랜드) &#10;
+                    구매 시기 &#10; 사용여부 &#10;
+                    실제 촬영한 사진과 함께 상세 정보를 입력해주세요 &#10;
+                    안전하고 건전한 거래환경을 위해 과학기술정보통신부, 한국인터넷진흥원 화개장터가 함께합니다"
+                              style="width: 768px; height: 200px; white-space: normal; overflow-wrap: break-word; resize: none;"></textarea>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <br>
+
+            <!--가격 -->
+            <div class="postPricecomponet" style="display: flex; position: relative">
+                <div class="pricebox" style="margin: auto;">
+                    <label for="post_price">
+                        <input id="post_price" name="post_price" type="text" placeholder="💲판매가격(숫자만 입력하세요)"
+                               onKeyup="this.value=this.value.replace(/[^0-9]/g,'')" style="width: 768px; height: 50px;"></label>
+                </div>
+            </div>
+            <br>
+
+            <div style="display: flex; width: 300px; height: 100px;" name="post_productState;">
+
+                <div style="display: flex; width: 100px; height: 100px; align-items: center;">
+                    <input type="checkbox" style="width: 25px; height: 20px;" value="새상품">
+                    <p style="font-size: 17px; margin-left: 10px;">새상품</p>
+                </div>
+
+                <div style="display: flex; width: 100px; height: 100px; align-items: center; margin-left: 40px;">
+                    <input type="checkbox" style="width: 25px; height: 20px;" value="중고">
+                    <p style="font-size: 17px; margin-left: 10px; ">중고</p>
+                </div>
+            </div>
+
+
+            <!--        <div style="justify-content: center; display: flex; margin: 10px;">-->
+            <!--            <select name="post_productState">-->
+            <!--                <option>상품상태</option>-->
+            <!--                <option value="새상품">새상품</option>-->
+            <!--                <option value="중고">중고</option>-->
+            <!--            </select>-->
+            <!--        </div>-->
+
+
+
+
+
+            <div style="display: flex;">
+                <div class="buttonbox" style="display: flex;">
+                    <div style="position: relative;">
+                        <!-- 첫 번째 메뉴 -->
+                        <p class="toggleMenu" style="background-color: transparent; ">택배거래</p>
+
+                        <div class="menu" style="width: 768px; height: 200px; border: 1px solid #ccc; display: none;
+                 position: absolute; background-color: #fff; z-index: 100; top: 50px; left: 0;">
+                            <!-- 메뉴 내용 추가 -->
+                            <ul style="list-style: none; width: 200px; margin: 0; padding: 0;">
+                                <li>
+                                    지도
+
+                                </li>
+                                <li>들어갈</li>
+                                <li>곳</li>
+                                <li style="display: flex; width: 700px;">
+                                    <input type="checkbox" style="width: 25px; height: 50px;" value="배송비별도">
+                                    <p style="font-size: 17px;">배송비 별도</p>
+
+                                    <input type="checkbox" style="width: 25px; height: 50px;" value="배송비포함">
+                                    <p style="font-size: 17px;">배송비 포함</p>
+
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div style="position: relative; margin-left: 20px;">
+                        <!-- 두 번째 메뉴 -->
+                        <p class="toggleMenu" style="text-align: center; background-color: transparent; margin-bottom: 0;">직거래</p>
+
+                        <div class="menu" style="width: 768px; height: 200px; border: 1px solid #ccc; display: none;
+
+                 position: absolute; background-color: #fff; z-index: 100; top: 50px; left: -80px;">
+                            <!-- 메뉴 내용 추가 -->
+                            <ul style="list-style: none; width: 200px; margin: 0; padding: 0;">
+                                <li>여기는</li>
+                                <li>주소</li>
+                                <li>들어갈곳</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!--    <div style="display: flex; margin: auto; justify-content: center;">-->
+            <!--        <div class="postDealcomponet">-->
+            <!--            <label for="post_Address">-->
+            <!--                <input id="post_Address" name="post_Address" type="text" placeholder="희망거래장소">-->
+            <!--            </label>-->
+            <!--        </div>-->
+
+            <!--        <div class="postDealcomponet" style="margin-left: 10px;">-->
+            <!--            <label for="post_shipAddress">-->
+            <!--                <input id="post_shipAddress" name="post_shipAddress" type="text" placeholder="택배배송지주소">-->
+            <!--            </label>-->
+            <!--        </div>-->
+            <!--    </div>-->
+
+            <br>
+
+            <input type="hidden" name="post_regdate" id="post_regdate">
+            <input type="text" class="hidden-field" th:value="${session.user.user_num}" name="user_num" id="user_num">
+
+
+
+            <div style="display: flex; justify-content: center">
+
+                <div style="justify-content: center">
+                    <button type="submit" value="등록" style="width: 100px; margin-left: 10px; background-color: transparent;">등록하기</button>
+                </div>
+
+                <div style="margin-left: 10px; justify-content: center;">
+                    <button value="취소" style="width: 100px; margin-left: 10px; background-color: transparent;">취소</button>
+                </div>
+            </div>
+
+
+
+            <footer>
+                <div th:include="/views/footer.html"></div>
+            </footer>
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                // 모든 li 요소에 클릭 이벤트를 추가
+                var liElements = document.querySelectorAll('ul li');
+
+                liElements.forEach(function(li) {
+                    li.addEventListener('click', function() {
+                        // 클릭된 li 요소의 첫 번째 자식인 checkbox 요소를 토글
+                        var checkbox = li.querySelector('.checkbox');
+                        checkbox.checked = !checkbox.checked;
+
+                        // 선택된 상태에 따라 클래스를 추가 또는 제거하여 스타일 적용
+                        if (checkbox.checked) {
+                            li.classList.add('selected');
+                        } else {
+                            li.classList.remove('selected');
+                        }
+                    });
+                });
+            });
+
+            function regdate() {
+                var now = new Date();
+                var year = now.getFullYear();
+                var month = String(now.getMonth() + 1).padStart(2, '0');
+                var day = String(now.getDate()).padStart(2, '0');
+                var hours = String(now.getHours()).padStart(2, '0');
+                var minutes = String(now.getMinutes()).padStart(2, '0');
+                var seconds = String(now.getSeconds()).padStart(2, '0');
+                // return year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
+
+                document.getElementById("post_regdate").value = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
+            }
+
+
+            document.addEventListener("DOMContentLoaded", function () {
+                let menus = document.querySelectorAll(".menu");
+                let log = document.querySelector("#log");
+
+                document.addEventListener("click", function (e) {
+                    let isToggle = false;
+
+                    // 클릭된 요소가 토글 버튼이거나 메뉴 내부인 경우 토글 상태 유지
+                    for (let i = 0; i < menus.length; i++) {
+                        if (e.target.classList.contains("toggleMenu") || menus[i].contains(e.target)) {
+                            isToggle = true;
+                            break;
+                        }
+                    }
+
+                    // 클릭된 요소가 토글 버튼 또는 메뉴 내부가 아닌 경우 모든 메뉴 숨김
+                    if (!isToggle) {
+                        for (let i = 0; i < menus.length; i++) {
+                            menus[i].style.display = "none";
+                        }
+                        log.textContent = "Menu is hidden";
+                    }
+                });
+
+                // 각 토글 버튼에 대한 이벤트 리스너 추가
+                document.querySelectorAll(".toggleMenu").forEach(function (toggleBtn, index) {
+                    toggleBtn.addEventListener("click", function (e) {
+                        e.stopPropagation(); // 이벤트 전파 방지
+
+                        // 클릭된 토글 버튼에 해당하는 메뉴만 토글
+                        menus[index].style.display = menus[index].style.display === "block" ? "none" : "block";
+
+                        // 나머지 메뉴는 숨김
+                        for (let i = 0; i < menus.length; i++) {
+                            if (i !== index) {
+                                menus[i].style.display = "none";
+                            }
+                        }
+
+                        log.textContent = `Menu ${index + 1} is ${menus[index].style.display === "block" ? "visible" : "hidden"}`;
+                    });
+                });
+            });
+
+        </script>
+
+    </form>
+
+</section>
+    post_num <input type="text" name="post_num"> <br>
+    post_title<input type="text" name="post_title"> <br>
+    post_content<input type="text" name="post_content"> <br>
+    post_price<input type="text" name="post_price"> <br>
+    post_saleState<input type="text" name="post_saleState"> <br>
+    post_regdate<input type="text" name="post_regdate"> <br>
+    post_update<input type="text" name="post_update"> <br>
+    post_location<input type="text" name="post_location"> <br>
+    post_ship<input type="text" name="post_ship"> <br>
+    post_shipAddress<input type="text" name="post_shipAddress"> <br>
+    post_direct<input type="text" name="post_direct"> <br>
+    post_Address<input type="text" name="post_Address"> <br>
+    post_hits<input type="text" name="post_hits"> <br>
+    post_like<input type="text" name="post_like"> <br>
+    post_deliveryFee<input type="text" name="post_deliveryFee"> <br>
+    post_productState<input type="text" name="post_productState"> <br>
+    user_num<input type="text" name="user_num" th:value="${session.user.user_num}"> <br>
+    category_num<input type="text" name="category_num"> <br>
+    file_num<input type="text" name="file_num"> <br>
+    글작성<input type="submit" value="글작성">
+
+<!-- 제이쿼리 3.6.3 --><!-- 제이쿼리 3.6.3 -->
+<script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+
+<!-- 파퍼 1.12.9 -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
+<!-- 부트스트랩 5.3.2 자바스크립트 -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
+
+</body>
+</html>

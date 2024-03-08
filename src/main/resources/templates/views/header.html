@@ -35,12 +35,34 @@
 
 		<div style="display: flex">
 
+
+
 			<div style="margin-top: 20px;">
 				<a class="btn" style="text-decoration: none; color: black; font-size: 18px" href="/chat/list">
 					<i class="bi bi-chat-dots"></i>
 					<span class="chat">채팅</span>
 				</a>
 			</div>
+
+
+			<div style="margin-top: 20px;">
+				<a class="btn" style="text-decoration: none; color: black; font-size: 18px" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions" onclick="chatList();">
+					<i class="bi bi-chat-dots"></i>
+					<span class="chat">채팅</span>
+				</a>
+			</div>
+
+			<div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel" style="width: 560px;">
+				<div class="offcanvas-header">
+					<h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel" style="margin: auto;">채팅</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+				</div>
+				<div class="offcanvas-body" id="offcanvas-body" style="padding: 20px;">
+
+
+				</div>
+			</div>
+
 
 			<div style="margin-top: 20px; ">
 				<a class="btn" style="text-decoration: none; color: black; font-size: 18px" href="/post/save">
@@ -339,6 +361,29 @@
 </div>
 
 
+
+<script>
+	function chatList() {
+		// Ajax 요청을 보냅니다.
+		$.ajax({
+			type: "GET",
+			url: "/chat/list", // 채팅 목록을 가져오는 엔드포인트 URL입니다.
+			success: function (data) {
+				// 서버로부터 받은 HTML 데이터를 offcanvas의 body에 삽입합니다.
+				$("#offcanvas-body").html(data);
+			},
+			error: function () {
+				console.error("채팅 목록을 불러오는 데 실패했습니다.");
+			}
+		});
+	}
+</script>
+
+<script>
+	function chat(){
+
+	}
+</script>
 
 </body>
 </html>

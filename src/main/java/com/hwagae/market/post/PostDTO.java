@@ -18,9 +18,8 @@ public class PostDTO {
     private String post_regdate;
     private String post_update;
     private String post_location;
-    private Integer post_ship;
+    private String post_way;
     private String post_shipAddress;
-    private Integer post_direct;
     private String post_Address;
     private Integer post_hits;
     private Integer post_like;
@@ -41,9 +40,8 @@ public class PostDTO {
         postDTO.setPost_regdate(postEntity.getPost_regdate());
         postDTO.setPost_update(postEntity.getPost_update());
         postDTO.setPost_location(postEntity.getPost_location());
-        postDTO.setPost_ship(postEntity.getPost_ship());
+        postDTO.setPost_way(postEntity.getPost_way());
         postDTO.setPost_shipAddress(postEntity.getPost_shipAddress());
-        postDTO.setPost_direct(postEntity.getPost_direct());
         postDTO.setPost_Address(postEntity.getPost_Address());
         postDTO.setPost_hits(postEntity.getPost_hits());
         postDTO.setPost_like(postEntity.getPost_like());

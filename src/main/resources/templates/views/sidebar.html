@@ -49,8 +49,8 @@
 <nav id="sidebar">
     <h1 class="mb-3 font-semibold"><a href="/myPage">마이 페이지</a></h1>
     <h2 class="mb-3 font-semibold">쇼핑 정보</h2>
-    <a th:href="@{'/myPage/purchaseList/' + ${session.user.user_nick}}" id="menu">구매내역</a>
-    <a th:href="@{'/myPage/saleList/' + ${session.user.user_nick}}" id="menu">판매내역</a>
+    <a th:href="@{'/myPage/purchaseList/{userNick}' + ${session.user.user_nick}}" id="menu">구매내역</a>
+    <a th:href="@{'/post/saleList/{userNick}' + ${session.user.user_nick}}" id="menu">판매내역</a>
     <a id="menu">택배내역</a>
     <a th:href="@{'/myPage/like/' + ${session.user.user_nick}}" id="menu">찜한 상품</a>
     <h2 class="mb-3 font-semibold">내 정보</h2>

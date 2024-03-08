@@ -38,13 +38,10 @@ public class PostEntity {
     private String post_location;
 
     @Column
-    private Integer post_ship;
+    private String post_way;
 
     @Column
     private String post_shipAddress;
-
-    @Column
-    private Integer post_direct;
 
     @Column
     private String post_Address;
@@ -81,9 +78,8 @@ public class PostEntity {
         postEntity.setPost_regdate(postDTO.getPost_regdate());
         postEntity.setPost_update(postDTO.getPost_update());
         postEntity.setPost_location(postDTO.getPost_location());
-        postEntity.setPost_ship(postDTO.getPost_ship());
+        postEntity.setPost_way(postDTO.getPost_way());
         postEntity.setPost_shipAddress(postDTO.getPost_shipAddress());
-        postEntity.setPost_direct(postDTO.getPost_direct());
         postEntity.setPost_Address(postDTO.getPost_Address());
         postEntity.setPost_hits(postDTO.getPost_hits());
         postEntity.setPost_like(postDTO.getPost_like());
