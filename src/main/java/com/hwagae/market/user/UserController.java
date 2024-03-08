@@ -99,6 +99,7 @@ public class UserController {
 
     @GetMapping("/myPage")
     public String MyPage(Model model, HttpSession session) {
+
         List<PostDTO> postDTOList = postService.findAll();
         UserDTO userDTO = (UserDTO) session.getAttribute("user");
         String user_num = String.valueOf(userDTO.getUser_num());

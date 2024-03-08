@@ -37,24 +37,24 @@
 
 
 
-			<div style="margin-top: 20px;">
+<!--			<div style="margin-top: 20px;">
 				<a class="btn" style="text-decoration: none; color: black; font-size: 18px" href="/chat/list">
 					<i class="bi bi-chat-dots"></i>
 					<span class="chat">채팅</span>
 				</a>
-			</div>
+			</div>-->
 
 
 			<div style="margin-top: 20px;">
-				<a class="btn" style="text-decoration: none; color: black; font-size: 18px" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions" onclick="chatList();">
+				<a class="btn" style="text-decoration: none; color: black; font-size: 18px" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling" onclick="chatList();">
 					<i class="bi bi-chat-dots"></i>
 					<span class="chat">채팅</span>
 				</a>
 			</div>
 
-			<div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel" style="width: 560px;">
+			<div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel" style="width: 560px;">
 				<div class="offcanvas-header">
-					<h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel" style="margin: auto;">채팅</h5>
+					<h5 class="offcanvas-title" id="offcanvasExampleLabel" style="margin: auto;">채팅</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 				</div>
 				<div class="offcanvas-body" id="offcanvas-body" style="padding: 20px;">

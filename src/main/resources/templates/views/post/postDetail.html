@@ -17,9 +17,12 @@
 
 </head>
 <body>
-        <div th:each="detail : ${postDetail}">
-<form action="/post/detail" method="post">
+
+<div th:include="/views/header.html"></div>
+
     <section style="width: 1400px; margin: auto; justify-content: center">
+
+        <div th:each="detail : ${postDetail}">
 
         <div style="width: 100%; height: 500px;">
             <img src="" alt="" width="640px" height="500px;">
@@ -47,7 +50,7 @@
                         </li>
                     </ul>
                 </div>
-                <span class="text-jnGray-500 leading-[15px]">4시간 전 · 조회 26 · 찜 0</span>
+                <span id="regdate" th:text="${detail.post_regdate}"></span> · <span>조회 26</span> · <span>찜 0</span>
                 <div style="width: 604px; height:100px; margin: auto;">
                     <ul style="list-style: none;">
                         <li style="display: inline-block; text-align: center">
@@ -90,15 +93,55 @@
 
             </div>
 
-        </div>
 
         <div style="width: 300px; height: 300px;">
             <div th:text="${detail.post_content}"><div>
         </div>
 
-    </section>
-</form>
         </div>
+    </section>
+
+
+
+
+
+
+
+
+
+<script>
+    function formatDate(dateString) {
+        const now = new Date();
+        const date = new Date(dateString);
+        const diff = now - date;
+        const minutes = Math.floor(diff / (1000 * 60));
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const months = Math.floor(diff / (1000 * 60 * 60 * 24 * 30));
+
+        if (minutes < 60) {
+            return minutes + '분 전';
+        } else if (hours < 24) {
+            return hours + '시간 전';
+        } else if (days < 30) {
+            return days + '일 전';
+        } else {
+            return months + '달 전';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const regdateElements = document.querySelectorAll('#regdate');
+
+        regdateElements.forEach(function(element) {
+            var regdate = element.textContent;
+            // 날짜 형식 변환 함수 호출
+            var formattedDate = formatDate(regdate);
+            element.textContent = formattedDate;
+        });
+    });
+</script>
+
 
 
 <!-- 제이쿼리 3.6.3 --><!-- 제이쿼리 3.6.3 -->

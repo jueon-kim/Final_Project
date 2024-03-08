@@ -30,6 +30,71 @@
             text-decoration: none;
             color: black;
         }
+
+        .card_wrap {
+            position: relative;
+        }
+
+        .svg_wrap {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 7px 10px 10px;
+        }
+
+        .img_wrap {
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .img_wrap:hover {
+            transform: scale(1.04);
+        }
+
+        .text-center h5 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: normal;
+        }
+
+        .condition-dropbox ul {
+            list-style-type: none;
+            padding: 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .condition-dropbox li {
+            padding: 10px 0;
+            cursor: pointer;
+        }
+
+        .condition-dropbox li a {
+            text-decoration: none;
+            color: #000;
+        }
+
+        .condition-dropbox li:hover {
+            background-color: #f1f1f1;
+        }
+
+        .condition-dropbox ul li:nth-child(1),
+        .condition-dropbox ul li:nth-child(2) {
+            border-bottom: 1px solid #ccc;
+        }
+
+        .condition-dropbox {
+            width: 150px;
+            text-align: center;
+            position: absolute;
+            right: 10px;
+            top: 50px;
+            background-color: #fff;
+        }
+
     </style>
 </head>
 <body>
@@ -83,13 +148,78 @@
             </div>
         </div>
     </div>
-    <span th:text="${session.user.user_nick}"></span>
 
-        <h1 th:with="totalChatCount=${#lists.size(postList)}">Chat List <span th:text="${totalChatCount}"></span>개 </h1>
+        <div style="width:100%; height: 800px;">
 
+            <div class="container px-4 mt-5 px-lg-5">
+                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
 
+                    <div class="mb-5 col" th:each="post:${postList}">
+                        <a th:href="@{/post/{postNum}(postNum=${post.post_num})}">
+                            <div class="card h-100 card_wrap">
+                                <!-- Product image-->
+                                <div class="img_wrap">
+                                    <img class="card-img-top" src="/img/default.png" height="200" alt="..."/>
+                                    <input type="checkbox" class="heart_checkbox" style="position: absolute; left: -99999px;">
+                                </div>
+                                <!-- like svg -->
+                                <div class="svg_wrap">
+                                    <svg class="heart_empty bi bi-heart" xmlns="http://www.w3.org/2000/svg" width="24"
+                                         height="24"
+                                         fill="#ccc" viewBox="0 0 16 16">
+                                        <path
+                                                d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
+                                    </svg>
+                                </div>
+                                <!-- like 조작하는 스크립트 -->
+                                <script th:inline="javascript">
+                                    document.addEventListener('DOMContentLoaded', function () {
+                                        const heartDivs = document.querySelectorAll('.heart_empty');
+
+                                        heartDivs.forEach(function(heartEmpty) {
+                                            heartEmpty.addEventListener('click', function () {
+                                                if (heartEmpty.classList.contains('filled')) {
+                                                    heartEmpty.innerHTML = ''; // 비워진 상태
+                                                    heartEmpty.classList.remove('filled');
+                                                } else {
+                                                    const filledSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-heart-fill" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"/>
+                                        </svg>`;
+                                                    heartEmpty.innerHTML = filledSvg; // 채워진 상태
+                                                    heartEmpty.classList.add('filled');
+                                                }
+                                            });
+                                        });
+                                    });
+                                </script>
+
+                                <!-- Product details-->
+                                <div class="p-4 card-body">
+                                    <div class="text-center">
+                                        <!-- Product name-->
+                                        <h5 th:text="${post.post_title}"></h5>
+                                        <!-- Product price-->
+                                        <h6 th:text="'가격 : '+${post.post_price}" class="fw-bolder"></h6>
+                                        <span id="location2" th:text="${session.user.user_location2}"></span>
+                                        <span>|</span>
+                                        <span id="regdate" th:text="${post.post_regdate}"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
+
+
+
+    <span th:text="${session.user.user_nick}"></span>
+
+
+
 
 </section>
 <script>
@@ -101,6 +231,51 @@
     if (success === 'true') {
         alert('정보가 수정되었습니다.');
     }
+
+
+    function formatDate(dateString) {
+        const now = new Date();
+        const date = new Date(dateString);
+        const diff = now - date;
+        const minutes = Math.floor(diff / (1000 * 60));
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const months = Math.floor(diff / (1000 * 60 * 60 * 24 * 30));
+
+        if (minutes < 60) {
+            return minutes + '분 전';
+        } else if (hours < 24) {
+            return hours + '시간 전';
+        } else if (days < 30) {
+            return days + '일 전';
+        } else {
+            return months + '달 전';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const regdateElements = document.querySelectorAll('#regdate');
+
+        regdateElements.forEach(function(element) {
+            var regdate = element.textContent;
+            // 날짜 형식 변환 함수 호출
+            var formattedDate = formatDate(regdate);
+            element.textContent = formattedDate;
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const locationElements = document.querySelectorAll('#location2');
+
+        locationElements.forEach(function(element) {
+            var location = element.textContent;
+            // 띄어쓰기를 기준으로 문자열을 분리하여 두 번째 단어를 추출
+            var words = location.split(' ');
+            var secondWord = words.slice(1).join(' '); // 두 번째 단어부터 다시 문자열로 합침
+            element.textContent = secondWord;
+        });
+    });
+
 </script>
 
 <!-- 제이쿼리 3.6.3 -->
