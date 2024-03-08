@@ -64,8 +64,8 @@
             <div style="margin-right: 60px; float: right;">
                 <div style="display: flex;">
                     <div style="width: 80px; color: darkslategray;">판매내역</div>
-                    <div style="margin-left: 20px;">
-                        <span style="color: red; font-size: 22px; font-weight: 900;">1</span> 개
+                    <div style="margin-left: 20px;" th:with="totalChatCount=${#lists.size(postList)}">
+                        <span style="color: red; font-size: 22px; font-weight: 900;" th:text="${totalChatCount}"></span> 개
                     </div>
                 </div>
                 <div style="display: flex;">
@@ -84,6 +84,10 @@
         </div>
     </div>
     <span th:text="${session.user.user_nick}"></span>
+
+        <h1 th:with="totalChatCount=${#lists.size(postList)}">Chat List <span th:text="${totalChatCount}"></span>개 </h1>
+
+
 
     </div>
 

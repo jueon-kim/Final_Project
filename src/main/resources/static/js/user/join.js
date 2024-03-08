@@ -438,3 +438,7 @@ function initializeMap(latitude, longitude) {
         marker.setPosition(map.getCenter());
     });
 }
+
+window.onload = function (){
+    current();
+};

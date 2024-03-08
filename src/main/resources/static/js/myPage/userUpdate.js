@@ -157,8 +157,16 @@ function current() {
         var latitude = position.coords.latitude; // 위도
         var longitude = position.coords.longitude; // 경도
         console.log("내위치 좌표"+latitude, longitude);
-                marker.setPosition(map.getCenter());
 
+        // 입력된 주소가 있는지 확인
+        var userLocation = $("#user_location").val().trim();
+        if (userLocation === "") {
+            // 입력된 주소가 없으면 지도 초기화 함수 호출
+            initializeMap(latitude, longitude);
+            return;
+        }
+
+        // 입력된 주소가 있으면 현재 위치의 주소로 설정하고 지도에 표시
         var geocoder = new kakao.maps.services.Geocoder();
         // 현재 위치 좌표로 주소 변환 요청
         geocoder.coord2Address(longitude, latitude, function(result, status) {
@@ -176,7 +184,6 @@ function current() {
 
                 // 지도 초기화 함수 호출
                 initializeMap(latitude, longitude);
-
             }
         });
     });

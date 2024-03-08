@@ -33,18 +33,25 @@ public class ChatController {
             // userEntity 닉네임 추출하여 모델에 추가
             model.addAttribute("toID", userEntity.getUserNick());
         }
-        System.out.println(" ' " + model + " ' "+"과의 채팅방으로 이동");
+        System.out.println(" ' " + model + " ' "+"님 과의 채팅방으로 이동");
         return "views/user/chat";
     }
 
 
-    @GetMapping("/chat/{userNick}")
-    public String chatChatPage(@PathVariable("userNick") String useNick, Model model) {
+    @GetMapping("/chat/chat/{userNick}")
+    public String chatChatPage(@PathVariable("userNick") String userNick) {
 
-        System.out.println("useNick = " + useNick);
+        System.out.println("채팅 주고받은 닉네임 = " + userNick);
 
-
-        return "views/user/chat";
+        Optional<UserEntity> userEntityOptional = userRepository.findByUserNick(userNick);
+        if (userEntityOptional.isPresent()) {
+            // userNum이 존재하는 경우 해당 값을 userNum으로 리디렉션
+            System.out.println("닉네임을 user_num으로 변환함 : " + userEntityOptional.get().getUserNum());
+            return "redirect:/chat/" + userEntityOptional.get().getUserNum();
+        } else {
+            // 사용자를 찾을 수 없는 경우 적절한 처리를 수행
+            return "error"; // 예시로 에러 페이지를 리턴하도록 수정하세요
+        }
     }
 
 

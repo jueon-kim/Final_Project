@@ -73,7 +73,7 @@
                         </div>
                             <input type="text" name="user_num" th:value="${updateInfo.user_num}">
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">저장</button>
+                            <button type="submit" class="btn btn-primary" onclick="return confirm('비밀번호를 변경하시겠습니까?')">저장</button>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
                         </div>
                     </div>
@@ -121,7 +121,8 @@
                     <input type="text" name="user_num" th:value="${updateInfo.user_num}">
 
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">저장</button>
+                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" onclick="return confirm('닉네임을 변경하시겠습니까?')">저장</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
                     </div>
                 </div>
             </div>
@@ -160,7 +161,8 @@
                         </div>
                         <input type="text" name="user_num" th:value="${updateInfo.user_num}">
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">저장</button>
+                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" onclick="return confirm('프로필사진을 변경하시겠습니까?')">저장</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
                         </div>
                     </div>
                 </div>
@@ -169,20 +171,21 @@
 
 
         <div class="form-group" style="position: relative;">
-            <label class="form-label">활동지역 추가</label>
+            <label class="form-label">활동지역</label>
         <form action="/user/locationUpdate" method="post">
             <input type="text" name="user_num" th:value="${updateInfo.user_num}">
             <input type="hidden" name="user_location" class="form-control" id="user_location" onclick="openZipSearch();" style="width: calc(100% - 90px);" th:value="${updateInfo.user_location}">
             <div class="input-group">
                 <input type="text" name="user_location2" class="form-control" id="user_location2" onclick="openZipSearch();" placeholder="활동지역 수정하기" th:value="${updateInfo.user_location2}">
-                <button type="submit" class="btn btn-primary" style="width: 90px;">변경하기</button>
+                <button type="submit" class="btn btn-primary" style="width: 90px;" onclick="return confirm('활동지역을 변경하시겠습니까?')">변경하기</button>
+
             </div>
         </form>
             <div class="input-group">
             </div>
         </div><br>
         <div id="map" style="width:560px; height:400px;">
-            <i class="bi bi-crosshair" style="font-size: 38px; position: absolute; z-index: 5; color: blue; right: 20px; bottom: 20px;" onclick="current()"></i>
+            <img src="/img/my.png" style="z-index: 5; right: 25px; bottom: 35px; width: 40px; height: 40px; position: absolute; box-shadow: 0px 0px 12px -1px; border-radius: 100px; cursor: pointer;" onclick="current()">
         </div><br><br>
 
         <br>

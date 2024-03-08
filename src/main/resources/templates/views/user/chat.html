@@ -19,68 +19,59 @@
             margin: auto;
         }
         .profile_name{
-            background-color: #f8f9fa!important;
             width:100%;
             padding: 10px;
             border-bottom: 5px solid #FF7A6B;
         }
         .chat_section{
-            padding-top: 15px;
+            padding: 15px;
+            height: 600px;
+            overflow-y: auto;
         }
-        .incoming_msg {
-            overflow:hidden;
+        .send{
+            width: 320px;
+            margin: 10px;
+            float: right;
+            clear: both;
+        }
+        .send_msg{
+            background: #ebebeb;
+            color: #000000;
+            font-size: 16px;
+            padding: 12px;
+            border-radius: 6px;
+            overflow-wrap: break-word;
+        }
+
+        .receive {
+            width: 320px;
             margin: 10px;
             float: left;
             clear: both;
         }
-        .received_msg {
-            float: left;
-            width: 350px;
-        }
-        .received_withd_msg p {
-            background: #ebebeb none repeat scroll 0 0;
-            border-radius: 6px;
-            color: #646464;
-            font-size: 14px;
-            margin: 0;
+
+        .receive_msg{
+            background: #FF7A6B;
+            color: #ffffff;
+            font-size: 16px;
             padding: 12px;
-            width: 350px;
-            word-wrap: break-word; /* 단어가 길 경우 줄 바꿈 */
-            white-space: normal; /* 공백 처리 */
+            border-radius: 6px;
+            overflow-wrap: break-word;
         }
+
         .time_date {
             color: #747474;
             display: block;
             font-size: 12px;
             margin: 8px 0 0;
         }
-        .received_withd_msg {
-            width: 57%;
+
+        .type_msg {
+            border-top: 1px solid #c4c4c4;
+            position: relative;
         }
 
-        .sent_msg p {
-            background: #050f8f none repeat scroll 0 0;
-            border-radius: 6px;
-            font-size: 14px;
-            margin: 0;
-            color: #fff;
-            padding: 12px;
-            width: 350px;
-            word-wrap: break-word; /* 단어가 길 경우 줄 바꿈 */
-            white-space: normal; /* 공백 처리 */
-        }
-        .outgoing_msg{
-            overflow:hidden;
-            margin: 10px;
-            float: right;
-            clear: both;
-        }
-        .sent_msg {
-            float: right;
-            width: 350px;
-        }
         .input_msg_write input {
-            background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
             border: medium none;
             color: #4c4c4c;
             font-size: 15px;
@@ -88,10 +79,7 @@
             width: 100%;
             padding: 10px;
         }
-        .type_msg {
-            border-top: 1px solid #c4c4c4;
-            position: relative;
-        }
+
         .msg_send_btn {
             background: #05728f none repeat scroll 0 0;
             border: medium none;
@@ -119,24 +107,14 @@
             </div>
         </div>
     -->
-    <div style="box-shadow: 0px 0px 28px -5px gray;border-radius: 8px;padding: 8px;">
+    <div style="width: 600px; margin: 60px auto; box-shadow: 0px 0px 28px -5px gray; border-radius: 8px;padding: 8px;">
 
         <div class="profile_name">
             &nbsp;&nbsp;&nbsp;&nbsp;<i class="bi bi-chat-left-dots"></i> &nbsp;&nbsp; 채팅방
         </div>
-        <div class="container-fluid" style="height: 600px; overflow-y: auto;">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div id="user_chat_data" class="user_chat_data">
+        <div class="chat_section" id="chatMessages">
 
-                        <div class="container-fluid chat_section" id="chatMessages">
-
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
-
         <div class="type_msg">
             <div class="input_msg_write">
                 <input type="text" id="toID" th:value="${toID}" style="display:none;">
@@ -202,7 +180,7 @@
             },
             success : function () {
                 // 메시지를 전송한 후에도 새로운 채팅 리스트를 불러옵니다.
-                loadChatList();
+                loadChatRecord();
                 console.log()
             }
         });
@@ -215,7 +193,7 @@
 
 
 
-    function loadChatList() {
+    function loadChatRecord() {
         var fromID = /*[[${session.user.user_nick}]]*/ ''; // 세션에 저장된 사용자의 user_num을 가져옴
         var toID = $("#toID").val(); // 대화 상대방의 ID를 가져옵니다.
 
@@ -235,6 +213,7 @@
                         data[i].fromID = '나';
                         console.log("보내는 사람 : " + data[i].fromID);
                         console.log("받는사람 : " + data[i].toID);
+                        console.log("시간 : "+  data[i].chatTime);
 
                     }
                     addChat(data[i].fromID, data[i].chatContent, data[i].chatTime);
@@ -265,15 +244,13 @@
                                 '</div>'+
                                 '</div>'+*/
 
-                '<div class="outgoing_msg">'+
-                '<div class="sent_msg">'+
-                '<p>'+
+                '<div class="send">'+
+                '<p class="send_msg">'+
                 chatContent +
                 '</p>'+
                 '<span class="time_date">' +
                 chatName + ' | ' + chatTime +
                 '</span>'+
-                '</div>'+
                 '</div>'
 
             );
@@ -297,46 +274,36 @@
                                 '</div>'+
                                 '</div>'+*/
 
-                '<div class="incoming_msg">'+
-                '<div class="received_msg">'+
-                '<div class="received_withd_msg">'+
-                '<p>'+
+                '<div class="receive">'+
+                '<p class="receive_msg">'+
                 chatContent +
                 '</p>'+
                 '<span class="time_date">' +
                 chatName + ' | ' + chatTime +
                 '</span>'+
-                '</div>'+
-                '</div>'+
                 '</div>'
             );
         }
+        $("#chat").scrollTop($("#chat").scrollHeight);
+
         findLastMessage();
     }
 
-    function getList(){
+/*    function getList(){
         setInterval(function (){
-            loadChatList();
+            loadChatRecord();
         },2000);
-    }
+    }*/
 
     $(document).ready(function (){
-        loadChatList();
+        loadChatRecord();
         getList();
         findLastMessage();
     })
 
-    var scrollTop = $('#chatMessages').scrollTop;
-    console.log("스크롤탑"+scrollTop);
-    var innerHeight = $('#chatMessages').innerHeight();
-    console.log("이너헤잇"+innerHeight);
-    var scrollHeight = $('#chatMessages').scrollHeight;
-    console.log("스크롤헤잇"+scrollHeight);
-
 
     const findLastMessage = () => {
         const messages = document.getElementById('chatMessages');
-
     }
 </script>
 
