@@ -106,45 +106,24 @@
 
 
                 <div class="mb-5 col" th:each="post:${postList}">
-                <a th:href="@{/post/{postNum}(postNum=${post.post_num})}">
-                    <div class="card h-100 card_wrap">
+
+                    <div class="card h-100 card_wrap mmmmmm">
                         <!-- Product image-->
-                        <div class="img_wrap">
-                            <img class="card-img-top" src="/img/default.png" height="200" alt="..."/>
-                            <input type="checkbox" class="heart_checkbox" style="position: absolute; left: -99999px;">
-                        </div>
+                            <a th:href="@{/post/{postNum}(postNum=${post.post_num})}">
+                            <div class="img_wrap">
+                                <input type="hidden" class="mmmm" th:value="${post.post_num}">
+                                <img class="card-img-top" src="/img/default.png" height="200" alt="..."/>
+                            </div>
+                            </a>
                         <!-- like svg -->
-                        <div class="svg_wrap">
+                        <button class="svg_wrap" onclick="likeProc(this)">
                             <svg class="heart_empty bi bi-heart" xmlns="http://www.w3.org/2000/svg" width="24"
                                  height="24"
                                  fill="#ccc" viewBox="0 0 16 16">
                                 <path
                                         d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
                             </svg>
-                        </div>
-                        <!-- like 조작하는 스크립트 -->
-                        <script th:inline="javascript">
-                            document.addEventListener('DOMContentLoaded', function () {
-                                const heartDivs = document.querySelectorAll('.heart_empty');
-
-                                heartDivs.forEach(function(heartEmpty) {
-                                    heartEmpty.addEventListener('click', function () {
-                                        if (heartEmpty.classList.contains('filled')) {
-                                            heartEmpty.innerHTML = ''; // 비워진 상태
-                                            heartEmpty.classList.remove('filled');
-                                        } else {
-                                            const filledSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-heart-fill" viewBox="0 0 16 16">
-                                            <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"/>
-                                        </svg>`;
-                                            heartEmpty.innerHTML = filledSvg; // 채워진 상태
-                                            heartEmpty.classList.add('filled');
-                                        }
-                                    });
-                                });
-                            });
-                        </script>
-
-
+                        </button>
 
                         <!-- Product details-->
                         <div class="p-4 card-body">
@@ -159,7 +138,6 @@
                             </div>
                         </div>
                     </div>
-                </a>
                 </div>
 
 
@@ -173,6 +151,33 @@
 
     </div>
 </section>
+
+<!-- like 조작하는 스크립트 -->
+<script th:inline="javascript">
+
+    const likeProc = (button) => {
+        var postIndex = parseInt($(button).closest('.mmmmmm').index());
+        console.log(postIndex);
+        const postNum = document.getElementsByClassName('mmmm')[postIndex].value;
+        console.log(postNum);
+
+        $.ajax({
+            type:"post",
+            url:"/like",
+            data:{
+                "postNum":postNum
+            },
+            success:function (res){
+                console.log(res.postNum);
+                console.log(res.userNum);
+                console.log(res.likeNum);
+            },
+            error:function (err){
+                console.log(err)
+            }
+        });
+    }
+</script>
 
 <script th:inline="javascript">
     document.addEventListener('DOMContentLoaded', function () {

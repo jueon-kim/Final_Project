@@ -1,5 +1,7 @@
 package com.hwagae.market.post;
 
+import com.hwagae.market.like.LikeDTO;
+import com.hwagae.market.like.LikeService;
 import com.hwagae.market.user.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,7 @@ import java.util.List;
 public class PostController {
 
     private  final PostService postService;
+    private final LikeService likeService;
 
     @GetMapping("/post/save")
     public String saveForm(){
@@ -46,18 +49,20 @@ public class PostController {
         List<PostDTO> postDTOList = postService.findAll();
         UserDTO userDTO = (UserDTO) session.getAttribute("user");
             System.out.println("클릭한 닉네임"+userNick);
-        String user_nick = String.valueOf(userDTO.getUser_num());
+        int user_nick = userDTO.getUser_num();
             System.out.println("user_num으로 변환 = " + user_nick);
         List<PostDTO> userPostList = new ArrayList<>();
         for (PostDTO postDTO : postDTOList) {
-            String postUserNum = String.valueOf(postDTO.getUser_num());
+            int postUserNum = postDTO.getUser_num();
             System.out.println("포스트넘?? = " + postUserNum);
-            if (postUserNum.equals(user_nick)) {
+            if (postUserNum==user_nick) {
                 userPostList.add(postDTO);
+                System.out.println("postId"+postDTO.getPost_num());
                 System.out.println("게시물 = " + postDTO);
             }
         }
         model.addAttribute("postList", userPostList);
+        model.addAttribute("user",userDTO);
         System.out.println("model = " + model);
 
         System.out.println("판매내역");
@@ -66,7 +71,7 @@ public class PostController {
     }
 
     @GetMapping("/post/{postNum}")
-    public String postDetail(@PathVariable("postNum") Integer postNum, Model model) {
+    public String postDetail(@PathVariable("postNum") Integer postNum,HttpSession session, Model model) {
         System.out.println("넘어옵니까? = " + postNum);
 
         List<PostDTO> postDTOList = postService.findAll();
@@ -79,19 +84,20 @@ public class PostController {
             System.out.println("글에 있는 포스트 넘버 = " + postDetailNum);
             if (postDetailNum.equals(postNum)) {
 
-
                 userPostList.add(postDetail);
                 System.out.println("게시물 = " + postDetail);
             }
         }
+
+
+        UserDTO userDTO = (UserDTO)session.getAttribute("user");
+        LikeDTO likeDTO = likeService.findByPostNum(postNum,userDTO);
         model.addAttribute("postDetail", userPostList);
+        model.addAttribute("userNum",userDTO);
+        model.addAttribute("like",likeDTO);
         System.out.println("model = " + model);
 
-
-
-
         System.out.println("디테일");
-
 
         return "/views/post/postDetail";
     }

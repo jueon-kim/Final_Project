@@ -83,6 +83,7 @@ public class UserController {
         UserDTO result = userService.login(userDTO);
         if(result != null){
             session.setAttribute("user", result);
+
             System.out.println("로그인 성공");
             return "views/user/index";
         }else{
@@ -102,14 +103,14 @@ public class UserController {
 
         List<PostDTO> postDTOList = postService.findAll();
         UserDTO userDTO = (UserDTO) session.getAttribute("user");
-        String user_num = String.valueOf(userDTO.getUser_num());
+        int user_num =userDTO.getUser_num();
         System.out.println("세션 = " + user_num);
 
         List<PostDTO> userPostList = new ArrayList<>();
         for (PostDTO postDTO : postDTOList) {
-            String postUserNum = String.valueOf(postDTO.getUser_num());
+            int postUserNum = postDTO.getUser_num();
             // userNum 값을 사용하여 원하는 작업 수행
-            if (postUserNum.equals(user_num)) {
+            if (postUserNum==user_num) {
                 userPostList.add(postDTO);
                 System.out.println("게시물 = " + postDTO);
             }
