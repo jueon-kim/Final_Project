@@ -103,11 +103,11 @@
 
                     <div class="mb-5 col" th:each="post:${postList}">
 
-                        <div class="card h-100 card_wrap mmmmmm">
+                        <div class="card h-100 card_wrap">
                             <!-- Product image-->
                             <a th:href="@{/post/{postNum}(postNum=${post.post_num})}">
                                 <div class="img_wrap">
-                                    <input type="hidden" class="mmmm" th:value="${post.post_num}">
+                                    <input type="hidden" class="postNum" th:value="${post.post_num}">
                                     <img class="card-img-top" src="/img/default.png" height="200" alt="..."/>
                                 </div>
                             </a>
@@ -155,9 +155,9 @@
 */
 
     const likeProc = (button) => {
-        var postIndex = parseInt($(button).closest('.mmmmmm').index());
+        var postIndex = parseInt($(button).closest('.card_wrap').index());
         console.log(postIndex);
-        const postNum = document.getElementsByClassName('mmmm')[postIndex].value;
+        const postNum = document.getElementsByClassName('postNum')[postIndex].value;
         console.log(postNum);
 
         $.ajax({
