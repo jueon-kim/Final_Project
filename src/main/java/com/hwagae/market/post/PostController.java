@@ -19,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostController {
 
-    private  final PostService postService;
+    private final PostService postService;
     private final LikeService likeService;
 
     @GetMapping("/post/save")
@@ -101,8 +101,5 @@ public class PostController {
 
         return "/views/post/postDetail";
     }
-
-
-
 
 }

@@ -19,6 +19,7 @@
             top: 0;
             right: 0;
             padding: 7px 10px 10px;
+            border: none;
         }
 
         .img_wrap {
@@ -107,23 +108,44 @@
 
                 <div class="mb-5 col" th:each="post:${postList}">
 
-                    <div class="card h-100 card_wrap mmmmmm">
+                    <div class="card h-100 card_wrap">
                         <!-- Product image-->
-                            <a th:href="@{/post/{postNum}(postNum=${post.post_num})}">
+                        <a th:href="@{/post/{postNum}(postNum=${post.post_num})}">
                             <div class="img_wrap">
-                                <input type="hidden" class="mmmm" th:value="${post.post_num}">
-                                <img class="card-img-top" src="/img/default.png" height="200" alt="..."/>
+                                <img class="card-img-top" src="./img/like_u.png" height="200" alt="..." />
                             </div>
-                            </a>
-                        <!-- like svg -->
-                        <button class="svg_wrap" onclick="likeProc(this)">
-                            <svg class="heart_empty bi bi-heart" xmlns="http://www.w3.org/2000/svg" width="24"
-                                 height="24"
-                                 fill="#ccc" viewBox="0 0 16 16">
+                        </a>
+                        <div class="condition-dropbox" style="display: none;">
+                            <ul>
+                                <li><a href="#">상품수정</a></li>
+                                <li><a href="#">상태변경</a></li>
+                                <li><a href="#">상품삭제</a></li>
+                            </ul>
+                        </div>
+                        <!-- dropbox li의 배경을 클릭해도 a태그로 감싼 텍스트를 누른것처럼 동작하게 하는 스크립트  -->
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function () {
+                                const dropboxItems = document.querySelectorAll('.condition-dropbox ul li');
+
+                                dropboxItems.forEach(function (item) {
+                                    item.addEventListener('click', function () {
+                                        const href = item.querySelector('a').getAttribute('href');
+                                        if (href) {
+                                            window.location.href = href;
+                                        }
+                                    });
+                                });
+                            });
+
+                        </script>
+                        <!--dot svg -->
+                        <div class="svg_wrap">
+                            <svg id="dots_svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#ccc"
+                                 class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
                                 <path
-                                        d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
+                                        d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
                             </svg>
-                        </button>
+                        </div>
 
                         <!-- Product details-->
                         <div class="p-4 card-body">
@@ -140,43 +162,36 @@
                     </div>
                 </div>
 
-
-
             </div>
         </div>
     </div>
 
-
-
-
     </div>
 </section>
 
-<!-- like 조작하는 스크립트 -->
-<script th:inline="javascript">
+<!-- 더보기 스크립트 -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const dotsSvg = document.getElementById('dots_svg');
+        const originalSvg = dotsSvg.cloneNode(true);
+        const newSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ccc" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                                        </svg>`;
+        let isClicked = false;
 
-    const likeProc = (button) => {
-        var postIndex = parseInt($(button).closest('.mmmmmm').index());
-        console.log(postIndex);
-        const postNum = document.getElementsByClassName('mmmm')[postIndex].value;
-        console.log(postNum);
-
-        $.ajax({
-            type:"post",
-            url:"/like",
-            data:{
-                "postNum":postNum
-            },
-            success:function (res){
-                console.log(res.postNum);
-                console.log(res.userNum);
-                console.log(res.likeNum);
-            },
-            error:function (err){
-                console.log(err)
+        dotsSvg.addEventListener('click', function () {
+            if (isClicked) {
+                //드롭박스 기본 컨디션 정의
+                dotsSvg.innerHTML = originalSvg.innerHTML;
+                document.querySelector('.condition-dropbox').style.display = 'none';
+            } else {
+                //svg 누르면 드롭박스 ui div가 나타나도록 함
+                dotsSvg.innerHTML = newSvg;
+                document.querySelector('.condition-dropbox').style.display = 'block';
             }
+            isClicked = !isClicked;
         });
-    }
+    });
 </script>
 
 <script th:inline="javascript">
