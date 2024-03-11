@@ -1,6 +1,8 @@
 package com.hwagae.market.user;
 
 import com.hwagae.market.email.EmailController;
+import com.hwagae.market.post.PostDTO;
+import com.hwagae.market.post.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
@@ -11,6 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Log4j2
 @Controller
@@ -19,6 +23,8 @@ public class UserController {
 
     private final UserService userService;
     private final EmailController emailController;
+    private final PostService postService;
+
 
     @GetMapping("/user/join")
     public String joinForm(){
@@ -78,7 +84,7 @@ public class UserController {
         if(result != null){
             session.setAttribute("user", result);
             System.out.println("로그인 성공");
-            return "views/myPage/myPage";
+            return "views/user/index";
         }else{
             return "redirect:/user/login?loginFailed=true";
         }
@@ -92,8 +98,27 @@ public class UserController {
     }
 
     @GetMapping("/myPage")
-    public String MyPage(){
+    public String MyPage(Model model, HttpSession session) {
+        List<PostDTO> postDTOList = postService.findAll();
+        UserDTO userDTO = (UserDTO) session.getAttribute("user");
+        String user_num = String.valueOf(userDTO.getUser_num());
+        System.out.println("세션 = " + user_num);
+
+        List<PostDTO> userPostList = new ArrayList<>();
+        for (PostDTO postDTO : postDTOList) {
+            String postUserNum = String.valueOf(postDTO.getUser_num());
+            // userNum 값을 사용하여 원하는 작업 수행
+            if (postUserNum.equals(user_num)) {
+                userPostList.add(postDTO);
+                System.out.println("게시물 = " + postDTO);
+            }
+        }
+
+        model.addAttribute("postList", userPostList);
+        System.out.println("model = " + model);
+
         System.out.println("마이페이지");
+
         return "views/myPage/myPage";
     }
 
@@ -294,11 +319,9 @@ public class UserController {
 
 
 
-    @GetMapping("/user/chat")
-    public String chatGET(){
-        log.info("@ChatController, chat GET()");
-        System.out.println("채팅하기");
-        return "views/user/chat";
-    }
+
+
+
+
 
 }
