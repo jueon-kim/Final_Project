@@ -50,6 +50,9 @@ public class UserController {
     public @ResponseBody String idCheck(@RequestParam("user_id") String user_id) {
         System.out.println("userId = " + user_id);
         String checkResult = userService.idCheck(user_id);
+
+
+
         return checkResult;
 /*        if(checkResult != null){
             return "ok";
@@ -79,7 +82,12 @@ public class UserController {
     }
 
     @PostMapping("/user/login")
-    public String Login(@ModelAttribute UserDTO userDTO, HttpSession session){
+    public String Login(@ModelAttribute UserDTO userDTO, HttpSession session, Model model){
+        //글 목록 가져오기
+        List<PostDTO> postDTOList = postService.findAll();
+        model.addAttribute("postList", postDTOList);
+
+
         UserDTO result = userService.login(userDTO);
         if(result != null){
             session.setAttribute("user", result);

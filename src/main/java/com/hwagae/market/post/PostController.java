@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,18 +18,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostController {
 
-    private  final PostService postService;
+    private final PostService postService;
 
     @GetMapping("/post/save")
     public String saveForm(){
+
+
         return "/views/post/postSave";
     }
 
     @PostMapping("/post/save")
-    public String save(@ModelAttribute PostDTO postDTO){
+    public String save(@ModelAttribute PostDTO postDTO) throws IOException {
         System.out.println("postDTO = " + postDTO);
         postService.save(postDTO);
-        return "/views/user/index";
+        return "redirect:/views/user/index";
     }
 
     @GetMapping("/post/list")
@@ -40,6 +43,8 @@ public class PostController {
         System.out.println("글 목록");
         return "/views/post/postList";
     }
+
+
 
     @GetMapping("/post/saleList/{userNick}")
     public String Sale(@PathVariable("userNick") String userNick, Model model, HttpSession session){
@@ -93,33 +98,6 @@ public class PostController {
 
         return "/views/post/postDetail";
     }
-
-
-  /*  @PostMapping("/index/{postNum}")
-    public String postIndex(@PathVariable("postNum") Integer postNum, Model model) {
-        System.out.println("home으로 가는중? = " + postNum);
-
-        List<PostDTO> postDTOindexList = postService.findAll();
-        System.out.println("글 목록"+ postDTOindexList);
-
-        List<PostDTO> indexList = new ArrayList<>();
-        for (PostDTO postDetail : postDTOindexList) {
-            var postDetailNum = postDetail.getPost_num();
-
-            System.out.println("글에 있는 포스트 넘버 = " + postDetailNum);
-            if (postDetailNum.equals(postNum)) {
-                postDTOindexList.add(postDetail);
-                System.out.println("게시물 = " + postDetail);
-            }
-        }
-        model.addAttribute("indexPost", postDTOindexList);
-        System.out.println("model = " + model);
-
-        System.out.println("디테일");
-
-
-        return "views/user/index";
-    }*/
 
 
 

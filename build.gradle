@@ -33,7 +33,7 @@ dependencies {
 	implementation 'commons-io:commons-io:2.11.0'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
-
+	implementation group: 'net.coobird', name: 'thumbnailator', version: '0.4.8'
 
 }
 

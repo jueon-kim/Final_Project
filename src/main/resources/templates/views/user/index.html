@@ -84,11 +84,12 @@
             <swiper-container class="mySwiper" pagination="true" pagination-clickable="true" space-between="30"
                               slides-per-view="4" style="width: 1400px; height: 400px; text-decoration: none; text-align: left">
 
-                <!--10개만 불러오게 설정-->
                 <swiper-slide th:each="post, iterStat : ${postList}" th:if="${iterStat.index < 15}">
-                    <a style="text-decoration: none;">
+                    <a th:href="@{/post/{postNum}(postNum=${post.post_num})}" style="text-decoration: none;">
                         <div class="swiperimgbox">
-                            <img width="250px" height="250px" alt="Post Image"/>
+                            <!-- post_num이 동일한 사진 중 첫 번째 것만 표시 -->
+                            <img th:src="@{|/upload/${#lists.first(post.file_url)}|}" width="250px" height="250px" alt="File Image">
+
                             <p style="text-overflow: ellipsis; width: 200px; white-space: nowrap; overflow: hidden;"></p>
                             <h4><p th:text="${post.post_title}"></p></h4>
                             <p th:text="${post.post_price + '원'}"></p>
@@ -96,118 +97,23 @@
                     </a>
                 </swiper-slide>
 
+<!--                <swiper-slide th:each="post, iterStat : ${postList}" th:if="${iterStat.index < 15}">-->
+<!--                    <a th:href="@{/post/{postNum}(postNum=${post.post_num})}" style="text-decoration: none;">-->
+<!--                        <div class="swiperimgbox">-->
+<!--                            <span th:text="${post.file_url}"></span>-->
 
-                <!--<swiper-slide>
-                    <a href="#" style="list-style: none">
-                        <div class="swiperimgbox">
-                            <img src="" width="250px;" height="250px;" alt="">
-                            <p href="#" style="text-overflow: ellipsis; width: 200px; white-space:
-                                    nowrap; overflow: hidden;">제목</p>
-                            <p><h4>10000원</h4></p>
-                        </div>
-                    </a>
-                </swiper-slide>
+<!--                            &lt;!&ndash; 배열 순회를 통해 각 이미지에 대한 태그 생성 &ndash;&gt;-->
+<!--                            <div th:each="image, imgStat : ${post.file_url}" th:if="${imgStat.index < 3}">-->
+<!--                                <img th:src="@{|/upload/${image}|}" width="250px" height="250px" alt="File Image">-->
+<!--                            </div>-->
 
-                <swiper-slide>
-                    <a href="#" style="list-style: none">
-                        <div class="swiperimgbox">
-                            <img src="" width="250px;" height="250px;" alt="">
-                            <p href="#" style="text-overflow: ellipsis; width: 200px; white-space:
-                                    nowrap; overflow: hidden;">제목</p>
-                            <p><h4>10000원</h4></p>
-                        </div>
-                    </a>
-                </swiper-slide>
+<!--                            <p style="text-overflow: ellipsis; width: 200px; white-space: nowrap; overflow: hidden;"></p>-->
+<!--                            <h4><p th:text="${post.post_title}"></p></h4>-->
+<!--                            <p th:text="${post.post_price + '원'}"></p>-->
+<!--                        </div>-->
+<!--                    </a>-->
+<!--                </swiper-slide>-->
 
-                <swiper-slide>
-                    <a href="#" style="list-style: none">
-                        <div class="swiperimgbox">
-                            <img src="" width="250px;" height="250px;" alt="">
-                            <p href="#" style="text-overflow: ellipsis; width: 200px; white-space:
-                                    nowrap; overflow: hidden;">제목</p>
-                            <p><h4>10000원</h4></p>
-                        </div>
-                    </a>
-                </swiper-slide>
-
-                <swiper-slide>
-                    <a href="#" style="list-style: none">
-                        <div class="swiperimgbox">
-                            <img src="" width="250px;" height="250px;" alt="">
-                            <p href="#" style="text-overflow: ellipsis; width: 200px; white-space:
-                                    nowrap; overflow: hidden;">제목</p>
-                            <p><h4>10000원</h4></p>
-                        </div>
-                    </a>
-                </swiper-slide>
-
-                <swiper-slide>
-                    <a href="#" style="list-style: none">
-                        <div class="swiperimgbox">
-                            <img src="" width="250px;" height="250px;" alt="">
-                            <p href="#"style="text-overflow: ellipsis; width: 200px; white-space:
-                                    nowrap; overflow: hidden;">제목</p>
-                            <p><h4>10000원</h4></p>
-                        </div>
-                    </a>
-                </swiper-slide>
-
-                <swiper-slide>
-                    <a href="#" style="list-style: none">
-                        <div class="swiperimgbox">
-                            <img src="" width="250px;" height="250px;" alt="">
-                            <p th:each="post : ${posts}" href="#"style="text-overflow: ellipsis; width: 200px; white-space:
-                                    nowrap; overflow: hidden;">제목</p>
-                            <p><h4>10000원</h4></p>
-                        </div>
-                    </a>
-                </swiper-slide>
-
-                <swiper-slide>
-                    <a href="#" style="list-style: none">
-                        <div class="swiperimgbox">
-                            <img src="" width="250px;" height="250px;" alt="">
-                            <p href="#"style="text-overflow: ellipsis; width: 200px; white-space:
-                                    nowrap; overflow: hidden;">제목</p>
-                            <p><h4>10000원</h4></p>
-                        </div>
-                    </a>
-                </swiper-slide>
-
-                <swiper-slide>
-                    <a href="#" style="list-style: none">
-                        <div class="swiperimgbox">
-                            <img src="" width="250px;" height="250px;" alt="">
-                            <p href="#"style="text-overflow: ellipsis; width: 200px; white-space:
-                                    nowrap; overflow: hidden;">제목</p>
-                            <p><h4>10000원</h4></p>
-                        </div>
-                    </a>
-                </swiper-slide>
-
-                <swiper-slide>
-                    <a href="#" style="list-style: none">
-                        <div class="swiperimgbox">
-                            <img src="" width="250px;" height="250px;" alt="">
-                            <p href="#"style="text-overflow: ellipsis; width: 200px; white-space:
-                                    nowrap; overflow: hidden;">제목</p>
-                            <p><h4>10000원</h4></p>
-                        </div>
-                    </a>
-                </swiper-slide>
-
-                <swiper-slide>
-                    <a href="#" style="list-style: none">
-                        <div class="swiperimgbox">
-                            <img src="" width="250px;" height="250px;" alt="">
-                            <p href="#"style="text-overflow: ellipsis; width: 200px; white-space:
-                                    nowrap; overflow: hidden;">제목</p>
-                            <p><h4>10000원</h4></p>
-                        </div>
-                    </a>
-
-                </swiper-slide>
--->
             </swiper-container>
 
 
@@ -222,65 +128,86 @@
 
 
     <!-- postcontainerdmf을 감싸는  product_componet 컴포넌트 -->
-    <div class="product_componet" style="display: flex; justify-content: center;">
-        <div style="width: 450px; overflow: hidden;">
+        <!-- postcontainerdmf을 감싸는  product_componet 컴포넌트 -->
+        <div class="product_componet" style="display: flex; justify-content: center;">
+            <div style="width: 450px; overflow: hidden;">
+
+                <swiper-container style="width: 450px;">
+                    <th:block th:each="post, iterStat : ${postList}" th:if="${iterStat.index} &lt; 11">
+
+                        <swiper-slide>
+                            <a th:href="@{/post/{postNum}(postNum=${post.post_num})}" style="list-style: none;">
+                                <div class="swiperimgbox">
+                                    <img src="" width="400px;" height="500px;" alt="">
+                                    <p href="#" style="text-overflow: ellipsis; width: 200px; white-space: nowrap; overflow: hidden;"  th:text="${post.post_title}"></p>
+                                    <p><h4 th:text="${post.post_price}">원</h4>
+                                </div>
+                            </a>
+                        </swiper-slide>
+
+                    </th:block>
+                </swiper-container>
+            </div>
 
 
-            <swiper-container style="width: 450px;">
-                <swiper-slide>
-                    <a href="#" style="list-style: none">
-                        <div class="swiperimgbox">
-                            <img src="" width="400px;" height="500px;" alt="">
-                            <p href="#" style="text-overflow: ellipsis; width: 200px; white-space: nowrap; overflow: hidden;">제목</p>
-                            <p><h4>10000원</h4>
-                        </div>
-                    </a>
-                </swiper-slide>
+            <!--    <div class="product_componet" style="display: flex; justify-content: center;">
+                    <div style="width: 450px; overflow: hidden;">
 
-                <swiper-slide>
-                    <a href="#" style="list-style: none">
-                        <div class="swiperimgbox">
-                            <img src="" width="400px;" height="500px;" alt="">
-                            <p href="#" style="text-overflow: ellipsis; width: 200px; white-space: nowrap; overflow: hidden;">제목</p>
-                            <p><h4>10000원</h4>
-                        </div>
-                    </a>
-                </swiper-slide>
+                        <swiper-container style="width: 450px;">
+                            <swiper-slide>
+                                <a href="#" style="list-style: none">
+                                    <div class="swiperimgbox">
+                                        <img src="" width="400px;" height="500px;" alt="">
+                                        <p href="#" style="text-overflow: ellipsis; width: 200px; white-space: nowrap; overflow: hidden;">제목</p>
+                                        <p><h4>10000원</h4>
+                                    </div>
+                                </a>
+                            </swiper-slide>
 
-                <swiper-slide>
-                    <a href="#" style="list-style: none">
-                        <div class="swiperimgbox">
-                            <img src="" width="400px;" height="500px;" alt="">
-                            <p href="#" style="text-overflow: ellipsis; width: 200px; white-space:
-                                    nowrap; overflow: hidden;">제목</p>
-                            <p><h4>10000원</h4>
-                        </div>
-                    </a>
-                </swiper-slide>
+                            <swiper-slide>
+                                <a href="#" style="list-style: none">
+                                    <div class="swiperimgbox">
+                                        <img src="" width="400px;" height="500px;" alt="">
+                                        <p href="#" style="text-overflow: ellipsis; width: 200px; white-space: nowrap; overflow: hidden;">제목</p>
+                                        <p><h4>10000원</h4>
+                                    </div>
+                                </a>
+                            </swiper-slide>
 
-                <swiper-slide>
-                    <a href="#" style="list-style: none">
-                        <div class="swiperimgbox">
-                            <img src="" width="400px;" height="500px;" alt="">
-                            <p href="#" style="text-overflow: ellipsis; width: 200px; white-space:
-                                    nowrap; overflow: hidden;">제목</p>
-                            <p><h4>10000원</h4>
-                        </div>
-                    </a>
-                </swiper-slide>
+                            <swiper-slide>
+                                <a href="#" style="list-style: none">
+                                    <div class="swiperimgbox">
+                                        <img src="" width="400px;" height="500px;" alt="">
+                                        <p href="#" style="text-overflow: ellipsis; width: 200px; white-space:
+                                                nowrap; overflow: hidden;">제목</p>
+                                        <p><h4>10000원</h4>
+                                    </div>
+                                </a>
+                            </swiper-slide>
 
-                <swiper-slide>
-                    <a href="#" style="list-style: none">
-                        <div class="swiperimgbox">
-                            <img src="" width="400px;" height="500px;" alt="">
-                            <p href="#" style="text-overflow: ellipsis; width: 200px; white-space:
-                                    nowrap; overflow: hidden;">제목</p>
-                            <p><h4>10000원</h4>
-                        </div>
-                    </a>
-                </swiper-slide>
-            </swiper-container>
-        </div>
+                            <swiper-slide>
+                                <a href="#" style="list-style: none">
+                                    <div class="swiperimgbox">
+                                        <img src="" width="400px;" height="500px;" alt="">
+                                        <p href="#" style="text-overflow: ellipsis; width: 200px; white-space:
+                                                nowrap; overflow: hidden;">제목</p>
+                                        <p><h4>10000원</h4>
+                                    </div>
+                                </a>
+                            </swiper-slide>
+
+                            <swiper-slide>
+                                <a href="#" style="list-style: none">
+                                    <div class="swiperimgbox">
+                                        <img src="" width="400px;" height="500px;" alt="">
+                                        <p href="#" style="text-overflow: ellipsis; width: 200px; white-space:
+                                                nowrap; overflow: hidden;">제목</p>
+                                        <p><h4>10000원</h4>
+                                    </div>
+                                </a>
+                            </swiper-slide>
+                        </swiper-container>
+                    </div>-->
 
 
 
