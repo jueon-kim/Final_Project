@@ -1,11 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="https://kit.fontawesome.com/e294802e0f.js"
-            crossorigin="anonymous"></script>
     <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
             rel="stylesheet"
@@ -15,10 +13,8 @@
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
             crossorigin="anonymous"></script>
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    <script type="text/javascript">
-    </script>
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"
+            integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
     <style>
         html,
         body {
@@ -36,70 +32,141 @@
         .section {
             /*헤더 밑 푸터 전체 구역 */
             min-height: calc(100% - (100px + 500px));
-            max-width: 60%;
+            max-width: 1024px;
             padding: 0 35px 0 35px;
         }
 
         .title {
             /* 1:1문의 */
             border-bottom: 1px solid #FF7A6B;
-            color:#FF7A6B;
-        }
-        .Button{
-            border: 1px solid #ff7a6b;
-            color: #ff7a6b;
-        }
-        .custom-grid .col-2 { /* grid간격(이름, 문의제목 ,문의내용 오른쪽 간격 조절한거임)**/
-            margin-left: 13%;
-            padding-left:5%;
-        }
-        .footer{
-            height:500px;
+            color: #FF7A6B;
         }
 
+        .custom-grid .col-2 { /* grid간격(이름, 문의제목 ,문의내용 오른쪽 간격 조절한거임)**/
+            margin-left: 13%;
+            padding-left: 5%;
+        }
+
+        tr {
+            margin-left: 30px;
+            height: 100px;
+        }
+
+        th {
+            padding-left: 100px;
+            width: 200px;
+        }
+
+        tr:nth-child(3) {
+            height: 200px;
+        }
+
+        .comment {
+            border-top: 1px solid #FF7A6B;
+        }
     </style>
 
 </head>
 <body>
-<div th:include="header.html"></div>
+<div th:include="/views/header.html"></div>
 <section class="section mx-auto m-5 ">
-    <div class="text-center py-4 pb-3 mb-5 title">
+    <div class="text-center py-4 pb-5 mb-5 title">
         <p class="fs-3 fw-bold">1:1문의</p>
         <div class="">
-            <div class="text-secondary"><small>AM 09:30 ~ PM 18:20 (점심시간 1:20 ~ 2:30)&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;DAY OFF(토/일/공휴일 휴무)</div></small>
+            <div class="text-secondary"><small>AM 09:30 ~ PM 18:20 (점심시간 1:20 ~ 2:30)&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;DAY
+                OFF(토/일/공휴일 휴무)</small></div>
         </div>
     </div>
-    <p class="text-center pb-3">문의하신 사항은 확인 후 영업일 2-5일 이내 순차적으로 답변 드리겠습니다.^D^</p>
-    <form action="" method="post">
-        <div class="container py-4"><!--신고내용 container-->
-            <div class="row my-4 custom-grid"><!--이름-->
-                <div class="col-2 text-start col-form-label" name="user_name">이름</div>
-                <div class="col-7">
-                    <div class="form-control" name="user_name">임콩떡</div>
-                </div>
-            </div><!--이름 끝-->
 
-            <div class="row my-4 custom-grid"><!--문의 제목-->
-                <div class="col-2 text-start col-form-label" name="qna_title">문의 제목</div>
-                <div class="col-7">
-                    <input type="text" class="form-control" name="qna_title" placeholder="문의 제목을 입력해주세요"></input>
-                </div>
-            </div><!--문의 제목 끝-->
-
-            <div class="row my-4 custom-grid"><!--문의 내용-->
-                <div class="col-2 text-start col-form-label pt-5" name="qna_content">문의 내용</div>
-                <div class="col-7">
-                    <textarea class="form-control" name="qna_cotent" placeholder="문의 내용을 입력해주세요" rows="7"></textarea>
-                </div>
-            </div><!--문의 내용 끝-->
-            <div class="d-flex justify-content-center py-3">
-                <button type="button" class="btn btn-secondary btn-lg mx-3">문의하기</button>
-                <button type="button" class="btn btn-outline-secondary btn-lg">목록보기</button>
-            </div>
-
-        </div><!--container끝(신고내용container)-->
-    </form>
+    <table class="table align-middle my-2 mb-5 qnaTable">
+        <tbody>
+        <tr>
+            <th scope="row" class="pl-5">문의번호</th>
+            <td name="qna_num" th:text="${inquiry.qna_num}"></td>
+        </tr>
+        <tr>
+            <th scope="row" class="pl-5">이름</th>
+            <td name="user_name" th:text="${inquiry.user_name}"></td>
+        </tr>
+        <tr>
+            <th scope="row">문의제목</th>
+            <td name="qna_title" th:text="${inquiry.qna_title}"></td>
+        </tr>
+        <tr>
+            <th scope="row">문의내용</th>
+            <td name="qna_content" th:text="${inquiry.qna_content}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <div id="comment-write" class="comment py-5">
+        작성자 : <input type="text" id="commentWriter" class="form-control" th:value="${session.user != null ? session.user.user_id : ''}" readonly><br>
+        내용 : <input type="text" id="commentContents"class="form-control" placeholder="내용"><br>
+        <button id="comment-write-btn" onclick="commentWrite()">댓글작성</button>
+    </div>
+    <!--댓글 출력-->
+    <div id="comment-list">
+        <table class="table">
+            <tr th:each="comment:${commentList}">
+                <td th:text="${comment.comment_num}"></td>
+                <td th:text="${comment.comment_writer}"></td>
+                <td th:text="${comment.comment_content}"></td>
+                <td th:text="${comment.comment_date}"></td>
+            </tr>
+        </table>
+    </div>
 </section>
-<div th:include="footer.html"></div>
+
 </body>
+<script th:inline="javascript">
+    const commentWrite = () => {
+        const writer = document.getElementById("commentWriter").value;
+        const commentContents = document.getElementById("commentContents");
+        const contents = commentContents.value;
+
+        if (contents === null || contents.trim() === '') {
+            alert("답변 내용을 입력하세요!");
+            commentContents.focus();
+            return;
+        }
+        console.log("작성자", writer);
+        console.log("내용: ", contents);
+         const id = [[${inquiry.qna_num}]];
+         if (id !== undefined) {
+             console.log("id : ", id);
+           $.ajax({
+                 //요청방식: post, 요청주소 : myPage/inquiry ,요청데이터 : 작성자, 작성내용, 문의번호
+                 type: "post",
+                 url: "/myPage/inquiry",
+                 data: {
+                     "comment_writer": writer,
+                     "comment_content": contents,
+                     "qna_num": id
+                 },
+                 success: function (res) {
+                     console.log("요청성공", res);
+                     let output = "<table>";
+                    for (let i in res) {
+                        output += "<tr>";
+                        output += "<td>" + res[i].comment_num + "</td>";
+                        output += "<td>" + res[i].comment_writer + "</td>";
+                        output += "<td>" + res[i].comment_content + "</td>";
+                        output += "<td>" + res[i].comment_date + "</td>";
+                        output += "</tr>";
+                    }
+                    output += "</table>";
+                    document.getElementById('comment-list').innerHTML = output;
+                    document.getElementById('commentWriter').value = '';
+                    document.getElementById('commentContents').value = '';
+
+                },
+                error: function (err) {
+                    console.log("요청실패", err);
+                }
+            });
+        } else {
+            console.log("id 값이 없습니다.");
+            // id 값이 없을 때의 처리
+        }
+    }
+</script>
 </html>

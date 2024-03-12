@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            crossorigin="anonymous">
+    <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"
+            integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            font-family: "Jua", sans-serif;
+            font-style: normal;
+        }
+
+        .btn-toggle-nav a {
+            padding: .1875rem .5rem;
+            margin-top: .125rem;
+            margin-left: 2.1rem;
+            font-size: 15px;
+        }
+
+        .btn-toggle-nav a:hover,
+        .btn-toggle-nav a:focus {
+        }
+
+        .title {
+                    color: #FF7A6B;
+                    padding-left: 35%;
+        }
+        .container{
+            padding:2vh;
+            max-width:1024px;
+        }
+
+        .box {
+            width: 400px;
+            height: 200px;
+            margin: 0 auto;
+        }
+
+    </style>
+</head>
+
+<body>
+<div th:include="views/admin/adminSidebar.html"></div>
+<div class="main">
+    <header class="py-3 my-3 mb-2 pb-1 border-bottom">
+        <p class="fs-2  title">화개장터 관리자 페이지 </p>
+    </header>
+    <div class="container">
+        <img src="/img/adminMenu_img1.png" style="width:100%; height:500px; margin-bottom: 20px;"></img>
+        <p class="fs-4">현재 처리해야할 업무</p>
+        <div class="d-flex justify-content-between mb-2">
+            <div class=" bg-danger-subtle border border-danger-subtle rounded-3 p-2 box"><!--첫 번째 박스-->
+                <p class="text-center fw-bold fs-2 mt-5">0</p>
+                <p class="text-center  fs-4">신고</p>
+            </div><!--첫 번째 박스 끝-->
+            <div class=" bg-info-subtle border border-info-subtle rounded-3 mx-3 box"><!-- 두 번째 박스-->
+                <p class="text-center fw-bold fs-2 mt-5">0</p>
+                <p class="text-center fs-4">문의</p>
+            </div><!--두 번째 박스 끝-->
+            <div class=" bg-success-subtle border border-success-subtle rounded-3 mx-1 box"><!--세 번째 박스-->
+                <p class="text-center fw-bold fs-2 mt-5">0</p>
+                <p class="text-center fs-4">문희는 포도가 먹고찌푼뎅</p>
+            </div><!--세 번째 박스-->
+        </div>
+    </div>
+    </div>
+
+
+    <script type="text/javascript">
+        /* global bootstrap: false */
+        (() => {
+            'use strict'
+            const tooltipTriggerList = Array.from(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            tooltipTriggerList.forEach(tooltipTriggerEl => {
+                new bootstrap.Tooltip(tooltipTriggerEl)
+            })
+        })()
+
+    </script>
+</body>
+</html>
+

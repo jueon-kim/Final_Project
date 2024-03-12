@@ -27,7 +27,7 @@
         .section {
             /*헤더 밑 푸터 전체 구역 */
             min-height: calc(100% - (100px + 500px));
-            max-width: 60%;
+            max-width: 1024px;
             padding: 0 35px 0 35px;
         }
 
@@ -43,20 +43,21 @@
             background-color: inherit;
             color: inherit;
         }
-
-        /*.accordion{*/
-        /*    padding: 0px 25px 0px 25px;*/
-        /*}*/
-
-        /*.accordion-item{*/
-        /*    border-top : none;*/
-        /*    border-left : none;*/
-        /*    border-right : none;*/
-        /*}*/
+        .btn-update{
+            outline: 2px solid var(	--bs-danger-border-subtle);
+            font-weight: bold;
+            margin-right:15px;
+            width:80px;
+        }
+        .btn-delete{
+            outline: 2px solid var(--bs-success-border-subtle);
+            font-weight: bold;
+            width:80px;
+        }
     </style>
 </head>
 <body>
-<div th:include="header.html"></div>
+<div th:include="/views/header.html"></div>
 <section class="section mt-5 mx-auto mb-5 text-center">
     <div class="fs-3 fw-bold text-center py-4 pb-5 title">공지사항</div>
 
@@ -81,8 +82,10 @@
                             <br><br><br>
                             <small> (작성일 : <span th:text="${notice.notice_regdate}"></span>)</small>
                         </div>
-                        <button class="btn btn-primary" th:attr="data-updateNum=${notice.notice_num}" onclick="updateNotice(this)">수정</button>
-                        <button class="btn btn-primary" th:attr="data-deleteNum=${notice.notice_num}" onclick="deleteNotice(this)">삭제</button>
+                        <button th:if="${session.user != null and session.user.user_id == 'admin'}" class="btn btn-update" th:attr="data-updateNum=${notice.notice_num}" onclick="updateEvent(this)">수정</button>
+                        <button th:if="${session.user != null and session.user.user_id == 'admin'}" class="btn btn-delete" th:attr="data-deleteNum=${notice.notice_num}" onclick="deleteEvent(this)">삭제</button>
+
+
                     </div>
                 </div>
             </div>
@@ -92,17 +95,17 @@
 
 </section>
 
-<div th:include="footer.html"></div>
+<!--<div th:include="footer.html"></div>-->
 <script th:inline="javascript">
-    const updateNotice = (button) => {
-        const num = button.getAttribute('data-updateNum');
+    const updateEvent = (button) => {
+        const num = button.dataset.updateNum;
         location.href = "/admin/updateNotice/" + num;
     }
-    const deleteNotice = (button) => {
-        const num = button.getAttribute('data-deleteNum');
+
+    const deleteEvent = (button) => {
+        const num = button.dataset.deleteNum;
         location.href = "/admin/deleteNotice/" + num;
     }
-
 </script>
 </body>
 </html>

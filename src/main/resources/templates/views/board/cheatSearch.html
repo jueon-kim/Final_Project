@@ -35,7 +35,7 @@
         .section {
             /*헤더 밑 푸터 전체 구역 */
             min-height: calc(100% - (100px + 500px));
-            max-width: 60%;
+            max-width: 1024px;
             padding: 0 35px 0 35px;
         }
 
@@ -44,22 +44,24 @@
             border-bottom: 1px solid #FF7A6B;
             color: #FF7A6B;
         }
+        .btn-submit {
+                outline: 2px solid var(--bs-danger-border-subtle);
+                font-weight: bold;
+                margin-right: 15px;
+                width: 80px;
+            }
 
-        .underline {
-            border-bottom: 1px solid #FF7A6B;
-            padding-left: 0;
-        }
     </style>
 </head>
 
 <body>
-<div th:include="header.html"></div>
+<div th:include="/views/header.html"></div>
 <section class="section mx-auto mb-5">
     <div class="fs-3 fw-bold mt-5 py-3 px-3 title">화개장터 사기 조회</div>
     <p class="small my-5">판매자의 휴대폰번호,계좌번호, 메신저ID,이메일로<br>피해 사례 조회를 이용해보세요! </p>
     <form action="" method="post">
         <div class="container pb-5">
-            <select class="form-select">
+            <select class="form-select" name="select">
                 <option value="phone">휴대폰번호</option>
                 <option value="account">계좌번호</option>
                 <option value="id">ID</option>
@@ -68,11 +70,11 @@
                 <div class="col">
                     <label for="search" class="visually-hidden">search</label>
                     <!-- input 요소에 th:field 추가 -->
-                    <input type="text" class="form-control" id="search" placeholder="-는 빼고 입력해주세요.">
+                    <input type="text" class="form-control"  name="" id="search" placeholder="-는 빼고 입력해주세요.">
 
                 </div>
                 <div class="col-auto">
-                    <button type="submit" class="btn btn-light mb-3">&nbsp;&nbsp;&nbsp;조회&nbsp;&nbsp;&nbsp;</button>
+                    <button type="submit" class="btn btn-submit mb-3">&nbsp;&nbsp;&nbsp;조회&nbsp;&nbsp;&nbsp;</button>
                 </div>
             </div>
         </div>

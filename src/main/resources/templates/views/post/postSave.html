@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>글쓰기</title>
+
+    <style>
+        section {
+            max-width: 1400px;
+        }
+
+    </style>
+</head>
+<body>
+<div th:include="/views/header"></div>
+<section class="container mt-3">
+
+    <form action="/post/save" method="post" onsubmit="regdate()" enctype="multipart/form-data">
+
+        <div style="width: 768px; margin: auto">
+            <br>
+            <!-- 사진 들어갈곳 -->
+            <div>
+                <div class="imge">
+                    <label> 이미지선택
+                        <input type="file" style="display: none;" class="image" multiple onchange="previewImages(this)">
+                    </label>
+                </div>
+            </div><br>
+
+
+            <div class="mb-5">
+                <input type="file" name="post_upLoadFile" id="post_upLoadFile" multiple>
+            </div>
+            <br>
+
+
+            <br>
+            <div>
+                <input id="postTitle" name="post_title" class="form-control" required minlength="4" maxlength="50" placeholder="제목을 입력하세요" style="width: 768px;">
+            </div><br>
+
+            <div>
+                <select class="form-select" name="category_num" aria-label="Default select example">
+                    <option value="1" selected>여성의류</option>
+                    <option value="2">남성의류</option>
+                    <option value="3">신발</option>
+                    <option value="4">가방/지갑</option>
+                    <option value="5">시계</option>
+                    <option value="6">쥬얼리</option>
+                    <option value="7">패션 액세서리</option>
+                    <option value="8">디지털</option>
+                    <option value="9">가전제품</option>
+                    <option value="10">스포츠/레저</option>
+                    <option value="11">차량/오토바이</option>
+                    <option value="12">스타굿즈</option>
+                    <option value="13">키덜트</option>
+                    <option value="14">예술/희귀/수집품</option>
+                    <option value="15">음반/악기</option>
+                    <option value="16">도서/티켓/문구</option>
+                    <option value="17">뷰티/미용</option>
+                    <option value="18">가구/인테리어</option>
+                    <option value="19">생활/주방용품</option>
+                    <option value="20">공구/산업용품</option>
+                    <option value="21">식품</option>
+                    <option value="22">유아동/출산</option>
+                    <option value="23">반려동물용품</option>
+                    <option value="24">기타</option>
+                </select>
+            </div><br>
+
+
+            <!-- 글내용 -->
+            <div>
+                <textarea id="post_content" name="post_content" class="form-control"
+                          placeholder="- 상품명(브랜드)&#10;- 구매 시기&#10;- 사용 기간&#10;- 하자 여부&#10;* 실제 촬영한 사진과 함께 상세 정보를 입력해주세요.&#10;* 카카오톡 아이디 첨부 시 게시물 삭제 및 이용제재 처리될 수 있어요.&#10;안전하고 건전한 거래환경을 위해 과학기술정보통신부, 한국인터넷진흥원, 중고나라가 함께합니다."
+                          style="width: 768px; height: 200px;" maxlength="1000"></textarea>
+            </div><br>
+
+            <!--가격 -->
+            <div>
+                <input id="post_price" name="post_price" class="form-control" placeholder="💲판매가격(숫자만 입력하세요)"
+                       onKeyup="this.value=this.value.replace(/[^0-9]/g,'')">
+            </div><br>
+
+            <div>
+                <p>상품상태</p>
+                <input type="radio" class="btn-check" name="post_productState" id="used" autocomplete="off" value="중고" checked>
+                <label class="btn btn-outline-success" for="used">중고</label>
+
+                <input type="radio" class="btn-check" name="post_productState" id="new" autocomplete="off" value="새상품">
+                <label class="btn btn-outline-success" for="new">새상품</label>
+            </div><br>
+
+
+            <div>
+                <p>거래방법</p>
+                <input type="radio" class="btn-check" name="post_way" id="direct" autocomplete="off" value="직거래" checked>
+                <label class="btn btn-outline-success" for="direct">직거래</label>
+
+                <input type="radio" class="btn-check" name="post_way" id="post" autocomplete="off" value="택배">
+                <label class="btn btn-outline-success" for="post">택배</label>
+
+                <input type="radio" class="btn-check" name="post_way" id="both" autocomplete="off" value="직거래, 택배">
+                <label class="btn btn-outline-success" for="both">직거래, 택배</label>
+            </div><br>
+
+
+
+            <div style="width: 768px; height: 400px; border: 3px red solid;">
+                <p style="font-size: 20px;">거래장소</p>
+
+                <div id="map" style="width: 764px; height: 300px; border: 3px red solid;">
+
+                </div>
+
+                <div>
+                    <input id="location" name="post_location" th:value="${session.user.user_location}">
+                    <input id="location2" name="post_location2" th:value="${session.user.user_location2}">
+                </div>
+
+            </div><br>
+            <input type="hidden" name="post_regdate" id="post_regdate">
+            <input type="hidden" name="post_saleState" value="판매중">
+            <input type="text" class="hidden-field" th:value="${session.user.user_num}" name="user_num" id="user_num">
+
+
+            <div style="display: flex; justify-content: center">
+
+                <div style="justify-content: center">
+                    <button type="submit" value="등록"
+                            style="width: 100px; margin-left: 10px; background-color: transparent;">등록하기
+                    </button>
+                </div>
+
+                <div style="margin-left: 10px; justify-content: center;">
+                    <button value="취소" style="width: 100px; margin-left: 10px; background-color: transparent;">취소
+                    </button>
+                </div>
+            </div>
+
+
+<!--            <footer>-->
+<!--                <div th:include="/views/footer.html"></div>-->
+<!--            </footer>-->
+        </div>
+
+    </form>
+
+</section>
+
+
+<script>
+    /*    document.addEventListener('DOMContentLoaded', function () {
+            // 모든 li 요소에 클릭 이벤트를 추가
+            var liElements = document.querySelectorAll('ul li');
+
+            liElements.forEach(function (li) {
+                li.addEventListener('click', function () {
+                    // 클릭된 li 요소의 첫 번째 자식인 checkbox 요소를 토글
+                    var checkbox = li.querySelector('.checkbox');
+                    checkbox.checked = !checkbox.checked;
+
+                    // 선택된 상태에 따라 클래스를 추가 또는 제거하여 스타일 적용
+                    if (checkbox.checked) {
+                        li.classList.add('selected');
+                    } else {
+                        li.classList.remove('selected');
+                    }
+                });
+            });
+        });*/
+
+    function regdate() {
+        var now = new Date();
+        var year = now.getFullYear();
+        var month = String(now.getMonth() + 1).padStart(2, '0');
+        var day = String(now.getDate()).padStart(2, '0');
+        var hours = String(now.getHours()).padStart(2, '0');
+        var minutes = String(now.getMinutes()).padStart(2, '0');
+        var seconds = String(now.getSeconds()).padStart(2, '0');
+        // return year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
+
+        document.getElementById("post_regdate").value = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
+    }
+
+</script>
+
+
+<script>
+    // 페이지 로드 시 initMap 함수 실행
+    window.onload = function () {
+        initializeMap();
+    };
+    // 지도 관련 함수
+    var map; // 지도 객체를 저장하는 변수
+    var marker; // 마커 객체를 저장하는 변수
+
+    // 주소를 검색하여 지도에 표시하는 함수
+    function initializeMap() {
+        var addr = document.getElementById('location').value; // 입력된 주소 가져오기
+        var geocoder = new kakao.maps.services.Geocoder(); // 주소 검색 객체 생성
+
+
+        // 주소 검색 요청
+        geocoder.addressSearch(addr, function (result, status) {
+            if (status === kakao.maps.services.Status.OK) {
+                // 검색된 주소의 좌표로 지도 초기화
+                var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+                // 지도 옵션 설정
+                var mapContainer = document.getElementById('map');
+                var mapOptions = {
+                    center: coords, // 지도 중심 좌표 설정
+                    level: 5// 지도 확대 수준 설정
+                };
+                // 지도 객체 생성
+                map = new kakao.maps.Map(mapContainer, mapOptions);
+
+                // 새로운 마커 생성
+                marker = new kakao.maps.Marker({
+                    position: coords,
+                    map: map
+                });
+            }
+        });
+    }
+</script>
+
+
+</body>
+</html>
