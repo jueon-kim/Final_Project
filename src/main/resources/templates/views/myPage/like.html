@@ -10,6 +10,36 @@
             width: 1400px;
             margin: auto;
         }
+        .card_wrap {
+            position: relative;
+        }
+
+        .svg_wrap {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 7px 10px 10px;
+            border: none;
+        }
+
+        .img_wrap {
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .img_wrap:hover {
+            transform: scale(1.04);
+        }
+
+        .text-center h5 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: normal;
+        }
+
     </style>
 </head>
 <body>
@@ -18,13 +48,88 @@
     <div th:include="/views/sidebar.html"></div>
     <div style="width: 1100px; height: auto; float: right;">
 
-    <div style="width:100%; height: 800px; background-color: lightblue;">
         <h1>찜한 상품</h1>
-        <span th:text="${session.user.user_nick}"></span>
-    </div>
 
+        <div class="container px-4 mt-5 px-lg-5">
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+
+                <div class="mb-5 col posts" th:each="post : ${likedPosts}">
+                    <div class="card h-100 card_wrap">
+                        <!-- Product image-->
+                        <a th:href="@{/post/{postNum}(postNum=${post.post_num})}">
+                            <div class="img_wrap">
+                                <img class="card-img-top" src="/img/default.png" height="200" alt="..."/>
+                            </div>
+                        </a>
+                        <!-- like svg -->
+                        <input type="hidden" class="postNum" th:value="${post.post_num}">
+                        <div class="svg_wrap" id="like_wrap">
+
+                            <div th:if="${session.user != null}">
+                                <button id="liked"
+                                        onclick="likeProc(this)" th:attr="post_num=${post.post_num}"
+                                        style="background:none; border: none">
+                                    <i class="bi bi-heart-fill" style="font-size: 22px; color: red"></i>
+                                </button>
+                            </div>
+
+                        </div>
+
+                        <!-- Product details-->
+                        <div class="p-4 card-body">
+                            <div class="text-center">
+                                <!-- Product name-->
+                                <h5 th:text="${post.post_title}"></h5>
+                                <!-- Product price-->
+                                <h6 th:text="'가격 : '+${post.post_price}" class="fw-bolder"></h6>
+                                <span id="location2" th:text="${session.user.user_location2}"></span>
+                                <span>|</span>
+                                <span id="regdate" th:text="${post.post_regdate}"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
+
+<!-- like 조작하는 스크립트 -->
+<script th:inline="javascript">
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const likeProc = (button) => {
+            const postNum = button.getAttribute("post_num");
+            console.log("postNum : " + postNum);
+            $.ajax({
+                type: "post",
+                url: "/like",
+                data: {
+                    "postNum": postNum
+                },
+                success: function (res) {
+                    console.log("res.postNum : " + res.postNum);
+                    console.log("res.userNum : " + res.userNum);
+                    console.log("res.likeNum : " + res.likeNum);
+
+                    window.location.href = "/myPage/likeList";
+
+                },
+                error: function (err) {
+                    console.log(err)
+                }
+            });
+        }
+
+        // 각각의 좋아요 버튼에 이벤트 리스너 추가
+        var likeButtons = document.querySelectorAll('.svg_wrap button');
+        likeButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                likeProc(this);
+            })
+        });
+    });
+</script>
 
 
 <!-- 제이쿼리 3.6.3 -->

@@ -17,7 +17,7 @@ public class PostEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer post_num;
+    private Integer postNum;
 
     @Column
     private String postTitle;
@@ -74,7 +74,7 @@ public class PostEntity {
 
     public static PostEntity toSaveEntity(PostDTO postDTO) {
         PostEntity postEntity = new PostEntity();
-        postEntity.setPost_num(postDTO.getPost_num());
+        postEntity.setPostNum(postDTO.getPost_num());
         postEntity.setPostTitle(postDTO.getPost_title());
         postEntity.setPost_content(postDTO.getPost_content());
         postEntity.setPost_price(postDTO.getPost_price());
@@ -95,7 +95,7 @@ public class PostEntity {
 
     public static PostEntity toSaveFileEntity(PostDTO postDTO) {
         PostEntity postEntity = new PostEntity();
-        postEntity.setPost_num(postDTO.getPost_num());
+        postEntity.setPostNum(postDTO.getPost_num());
         postEntity.setPostTitle(postDTO.getPost_title());
         postEntity.setPost_content(postDTO.getPost_content());
         postEntity.setPost_price(postDTO.getPost_price());

@@ -14,8 +14,10 @@ public interface LikeRepository extends JpaRepository<LikeEntity, Integer> {
     LikeEntity findByPostEntityAndUserEntity(PostEntity postEntity, UserEntity userEntity);
 /*
 
-    @Query("select l.postEntity.postNum from LikeEntity l where l.userEntity.userNum = :userNum")
-    List<Long> findPostNumsByUserNum(@Param("userNum") Long userNum);
+    // userNum으로 LikeEntity 조회
+    List<LikeEntity> findByUserEntity_UserNum(Integer userNum);
 */
+    @Query("SELECT l.postEntity.postNum FROM LikeEntity l where l.userEntity.userNum = :userNum")
+    List<Integer> findPostNumsByUserNum(@Param("userNum") Integer userNum);
 
 }

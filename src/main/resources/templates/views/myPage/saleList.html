@@ -116,35 +116,6 @@
                                 </svg>
                             </div>
 
-                            <script>
-                                document.addEventListener('DOMContentLoaded', function () {
-                                    // 모든 .svg_wrap 요소를 선택합니다.
-                                    var svgWraps = document.querySelectorAll('.svg_wrap');
-
-                                    svgWraps.forEach(function (svgWrap) {
-                                        const dotsSvg = svgWrap.querySelector('svg'); // 각 .svg_wrap 내의 SVG 요소를 선택합니다.
-                                        const originalSvg = dotsSvg.cloneNode(true);
-                                        const newSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ccc" class="bi bi-x-lg" viewBox="0 0 16 16">
-                                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
-                                    </svg>`;
-                                        let isClicked = false;
-
-                                        // 각 .svg_wrap 요소에 대한 클릭 이벤트 리스너를 추가합니다.
-                                        dotsSvg.addEventListener('click', function () {
-                                            if (isClicked) {
-                                                dotsSvg.innerHTML = originalSvg.innerHTML;
-                                                svgWrap.nextElementSibling.style.display = 'none'; // 해당 .svg_wrap 요소의 다음 형제 요소인 드롭박스를 숨깁니다.
-                                            } else {
-                                                dotsSvg.innerHTML = newSvg;
-                                                svgWrap.nextElementSibling.style.display = 'block'; // 해당 .svg_wrap 요소의 다음 형제 요소인 드롭박스를 보여줍니다.
-                                            }
-                                            isClicked = !isClicked;
-                                        });
-                                    });
-                                });
-
-                            </script>
-
                             <!-- Product details-->
                             <div class="p-4 card-body">
                                 <div class="text-center">
@@ -168,6 +139,83 @@
 
     </div>
 </section>
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const dropboxItems = document.querySelectorAll('.condition-dropbox ul li');
+
+        dropboxItems.forEach(function (item) {
+            item.addEventListener('click', function () {
+                const href = item.querySelector('a').getAttribute('href');
+                if (href) {
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const dotsSvg = document.getElementById('dots_svg');
+        const originalSvg = dotsSvg.cloneNode(true);
+        const newSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ccc" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                                        </svg>`;
+        let isClicked = false;
+
+        dotsSvg.addEventListener('click', function () {
+            if (isClicked) {
+                //드롭박스 기본 컨디션 정의
+                dotsSvg.innerHTML = originalSvg.innerHTML;
+                document.querySelector('.condition-dropbox').style.display = 'none';
+            } else {
+                //svg 누르면 드롭박스 ui div가 나타나도록 함
+                dotsSvg.innerHTML = newSvg;
+                document.querySelector('.condition-dropbox').style.display = 'block';
+            }
+            isClicked = !isClicked;
+        });
+    });
+    /*
+                                    document.addEventListener('DOMContentLoaded', function () {
+                                        const dotsSvg = document.getElementById('dots_svg');
+                                        const originalSvg = dotsSvg.cloneNode(true);
+                                        const newSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ccc" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                                            </svg>`;
+                                        let isClicked = false;
+
+                                        dotsSvg.addEventListener('click', function () {
+                                            if (isClicked) {
+                                                //드롭박스 기본 컨디션 정의
+                                                dotsSvg.innerHTML = originalSvg.innerHTML;
+                                                document.querySelector('.condition-dropbox').style.display = 'none';
+                                            } else {
+                                                //svg 누르면 드롭박스 ui div가 나타나도록 함
+                                                dotsSvg.innerHTML = newSvg;
+                                                document.querySelector('.condition-dropbox').style.display = 'block';
+                                            }
+                                            isClicked = !isClicked;
+                                        });
+
+                                        var mores = document.querySelectorAll('.svg_wrap');
+                                        mores.forEach(function (more) {
+                                            more.addEventListener('click', function () {
+                                                if (isClicked) {
+                                                    // 드롭다운 기본 상태
+                                                    dotsSvg.innerHTML = originalSvg.innerHTML;
+                                                    document.querySelector('.condition-dropbox').style.display = 'none';
+                                                } else {
+                                                    // SVG 클릭시 드롭다운 메뉴 표시
+                                                    dotsSvg.innerHTML = newSvg;
+                                                    document.querySelector('.condition-dropbox').style.display = 'block';
+                                                }
+                                                isClicked = !isClicked;
+                                            });
+                                        });
+                                    });
+                                    */
+</script>
 
 <script th:inline="javascript">
 
@@ -201,13 +249,9 @@
 
                     let isLiked = res.likeNum;
                     if (isLiked === 0) {
-                        button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ccc" class="bi bi-heart" viewBox="0 0 16 16">
-                            <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
-                        </svg>`;
+                        button.innerHTML = `<i class="bi bi-heart-fill" style="font-size: 22px; color: red"></i>`;
                     } else {
-                        button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-heart-fill" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"/>
-                        </svg>`;
+                        button.innerHTML = `<i class="bi bi-heart-fill" style="font-size: 22px; color: red"></i>`;
                     }
                 },
                 error: function (err) {

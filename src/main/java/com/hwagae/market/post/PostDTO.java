@@ -44,7 +44,7 @@ public class PostDTO {
 
     public static PostDTO toPostDTO(PostEntity postEntity){
         PostDTO postDTO = new PostDTO();
-        postDTO.setPost_num(postEntity.getPost_num());
+        postDTO.setPost_num(postEntity.getPostNum());
         postDTO.setPost_title(postEntity.getPostTitle());
         postDTO.setPost_content(postEntity.getPost_content());
         postDTO.setPost_price(postEntity.getPost_price());

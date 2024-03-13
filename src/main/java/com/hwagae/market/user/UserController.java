@@ -1,6 +1,8 @@
 package com.hwagae.market.user;
 
 import com.hwagae.market.email.EmailController;
+import com.hwagae.market.like.LikeDTO;
+import com.hwagae.market.like.LikeService;
 import com.hwagae.market.post.PostDTO;
 import com.hwagae.market.post.PostService;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ public class UserController {
     private final UserService userService;
     private final EmailController emailController;
     private final PostService postService;
+    private final LikeService likeService;
 
 
     @GetMapping("/user/join")
@@ -110,7 +113,11 @@ public class UserController {
             }
         }
 
+        List<PostDTO> likedPosts = likeService.findLikedPostsByUserNum(userDTO.getUser_num());
+        int likedPostsCount = likedPosts.size();
+
         model.addAttribute("postList", userPostList);
+        model.addAttribute("likeCount", likedPostsCount);
         System.out.println("model = " + model);
 
         System.out.println("마이페이지");

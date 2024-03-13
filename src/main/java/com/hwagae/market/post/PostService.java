@@ -33,7 +33,7 @@ public class PostService {
             postRepository.save(postEntity);
         } else {
             PostEntity postEntity = PostEntity.toSaveFileEntity(postDTO);
-            Integer postNum = postRepository.save(postEntity).getPost_num();
+            Integer postNum = postRepository.save(postEntity).getPostNum();
             PostEntity post = postRepository.findById(postNum).get();
 
             for (MultipartFile postFile : postDTO.getPost_upLoadFile()) {
@@ -87,5 +87,29 @@ public class PostService {
         }
         return postList;
     }
+
+    @Transactional(readOnly = true)
+    public List<PostDTO> findPostsByPostNums(List<Integer> postNums){
+        List<PostEntity> postEntityList = postRepository.findAllById(postNums);
+        List<PostDTO> postDTOList = new ArrayList<>();
+        for(PostEntity postEntity : postEntityList){
+            postDTOList.add(PostDTO.toPostDTO(postEntity));
+        }
+        return postDTOList;
+    }
+/*
+
+    public PostDTO getPostByPostNum(Integer postNum){ // 얘를 List로 해야할 거 같다.
+        // postNum에 해당하는 PostEntity 객체 반환
+        Optional<PostEntity> postOptional = postRepository.findById(postNum);
+        // 해당 PostEntity 객체가 존재한다면 get()메서드로 객체를 가져와 PostEntity -> PostDTO 변환 후 PostDTO를 반환
+        if(postOptional.isPresent()){
+            PostEntity postEntity = postOptional.get();
+            return PostDTO.toPostDTO(postEntity);
+        }else{
+            return null;
+        }
+    }
+*/
 
 }
