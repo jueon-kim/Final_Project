@@ -1,12 +1,18 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 	<meta charset="UTF-8">
-	<title>Header</title>
+	<title>Insert title here</title>
 	<!-- 부트스트랩 -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 	<!-- 부트스트랩 아이콘 -->
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+	<!-- swiper -->
+	<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+	<!-- 다음 지도-->
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bf290bec6b7de30eb3c7f533f6f6720a&libraries=services"></script>
+	<!-- 다음 주소검색 -->
+	<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<link rel="stylesheet" href="/css/header/header.css">
 
 	<style>
@@ -338,7 +344,7 @@
 
 		<div class="bottomHeaderMenu" style="display: inline-flex; margin-left: 10px;">
 			<div class="bottomHeaderMenu" style="margin-left: 10px;">
-				<a class="navbar-brand" href="#">EVENT</a>
+				<a class="navbar-brand" href="/templates/views/board/event.html">EVENT</a>
 			</div>
 
 			<div class="bottomHeaderMenu" style="margin-left: 10px;">

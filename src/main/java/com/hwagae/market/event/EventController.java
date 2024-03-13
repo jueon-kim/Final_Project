@@ -61,5 +61,4 @@ public class EventController {
         return "redirect:/board/eventList";
     }
 
-
 }

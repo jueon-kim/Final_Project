@@ -6,10 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 
-public class HwagaeMarketApplication {
+public class HwagageMarketApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(HwagaeMarketApplication.class, args);
+		SpringApplication.run(HwagageMarketApplication.class, args);
 	}
 
 }
