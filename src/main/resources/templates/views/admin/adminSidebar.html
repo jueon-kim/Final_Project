@@ -4,16 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@100..900&display=swap"
-          rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    <link href="https://hangeul.pstatic.net/hangeul_static/css/maru-buri.css" rel="stylesheet">
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            crossorigin="anonymous">
+    <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
             crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"
+            integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
     <style>
         body {
             min-height: 100vh;
@@ -27,15 +29,6 @@
             margin-left: 2%;
             width: 320px;
             min-height: 100%;
-        }
-
-        /*.flex-sh*/
-        /*html {*/
-        /*	height: -webkit-fill-available;*/
-        /*}*/
-
-        .dropdown-toggle {
-            outline: 0;
         }
 
         .btn-toggle {
@@ -86,7 +79,7 @@
 </head>
 <body>
 <div class="flex-shrink-0 px-5 pt-4 my-4 ">
-    <img src="/img/logo2.png" width="150px" class="pb-3 mb-2 pt-1 mx-1" onclick="location.href='adminMenu'">
+    <img src="/img/logo2.png" width="150px" class="pb-3 mb-2 pt-1 mx-1" onclick="location.href='/'">
     <ul class="list-unstyled  ps-0">
         <li class="my-2 mb-3 mx-2">
             <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
@@ -95,9 +88,9 @@
             </button>
             <div class="collapse" id="member-collapse">
                 <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                    <li><a href="userList"
+                    <li><a href="/admin/userList"
                            class="link-body-emphasis d-inline-flex text-decoration-none rounded">회원목록</a></li>
-                    <li><a href="reportUserList"
+                    <li><a href="/admin/reportUserList"
                            class="link-body-emphasis d-inline-flex text-decoration-none rounded">제재 회원 관리</a></li>
                 </ul>
             </div>
@@ -109,9 +102,9 @@
             </button>
             <div class="collapse" id="notice-collapse">
                 <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                    <li><a href="board/notice"
+                    <li><a href="/board/notice"
                            class="link-body-emphasis d-inline-flex text-decoration-none rounded">현재 공지사항</a></li>
-                    <li><a href="insertNotice"
+                    <li><a href="/admin/insertNotice"
                            class="link-body-emphasis d-inline-flex text-decoration-none rounded">공지사항 입력</a></li>
                 </ul>
             </div>
@@ -123,9 +116,9 @@
             </button>
             <div class="collapse" id="event-collapse">
                 <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                    <li><a href="board/eventList"
+                    <li><a href="/board/eventList"
                            class="link-body-emphasis d-inline-flex text-decoration-none rounded">진행중인 이벤트</a></li>
-                    <li><a href="insertEvent"
+                    <li><a href="/admin/insertEvent"
                            class="link-body-emphasis d-inline-flex text-decoration-none rounded">이벤트 입력</a></li>
                     <!--					<li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">이벤트 수정</a></li>-->
                     <!--					<li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">이벤트 삭제</a></li>-->
@@ -140,7 +133,7 @@
             </button>
             <div class="collapse" id="qna-collapse">
                 <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                    <li><a href="inquiryManage/paging"
+                    <li><a href="/admin/inquiryManage/paging"
                            class="link-body-emphasis d-inline-flex text-decoration-none rounded">문의확인</a></li>
                 </ul>
             </div>
@@ -153,7 +146,7 @@
             </button>
             <div class="collapse" id="report-collapse">
                 <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                    <li><a href="reportConfirm"
+                    <li><a href="/admin/reportConfirm/paging"
                            class="link-body-emphasis d-inline-flex text-decoration-none rounded">신고내역 확인</a></li>
 
                 </ul>
@@ -162,8 +155,8 @@
 
         <li class="my-4 mx-2">
             <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
-                    aria-expanded="false" onclick="location.href='/'">
-                화개장터로!
+                    aria-expanded="false" onclick="location.href='/admin/adminMenu'">
+                관리자 메인
             </button>
         </li>
     </ul>

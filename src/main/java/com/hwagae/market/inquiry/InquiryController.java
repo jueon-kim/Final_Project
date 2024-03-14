@@ -54,7 +54,7 @@ public class InquiryController {
     public String findByNum(@PathVariable Integer qna_num, Model model) {
         InquiryDTO inquiryDTO = inquiryService.findByNum(qna_num);
 
-        List<CommentDTO> commentDTOList=commentService.findAll(qna_num);
+        List<CommentDTO> commentDTOList=commentService.qna_findAll(qna_num);
         model.addAttribute("commentList",commentDTOList);
         model.addAttribute("inquiry", inquiryDTO);
         return "views/myPage/inquiry";

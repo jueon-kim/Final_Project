@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        .header {
+            background-color: #FF7A6B;
+            height: 100px;
+
+        }
+
+        .section {
+            /*헤더 밑 푸터 전체 구역 */
+            min-height: calc(100% - (100px + 500px));
+            max-width: 60%;
+            padding: 0 35px 0 35px;
+        }
+
+        .title {
+            /* 1:1문의 */
+            /*border-bottom: 1px solid #FF7A6B;*/
+            color: #FF7A6B;
+        }
+
+        .custom-grid .col-2 {
+            margin-left: 13%; /* 사용자 정의 간격 설정 */
+            padding-left: 5%;
+        }
+        tr{
+            height:70px;
+        }
+        .border-bottom{
+           border-bottom-color: #ff7a6b;
+        }
+
+    </style>
+</head>
+
+<body>
+<div th:include="/views/header.html"></div>
+<section class="section mx-auto m-5 ">
+    <div class="text-center pt-3 mx-2 ">
+        <div class="d-flex w-100 border-bottom pb-2">
+            <p class="fs-4 fw-bold text-start title">내 신고내역</p>
+            <div class="text-secondary pt-3 mx-2"><small>관리자 확인 후 신속히 제재예정이오니, 양해 부탁드립니다.</small></div>
+        </div>
+    </div>
+        <table class="table align-middle">
+            <tr th:if="${not reportList.isEmpty()}" th:each="report : ${reportList}">
+                <td th:text="${report.report_num}" class="text-center small text-secondary"></td>
+                <th><a th:href="@{/myPage/report/{report_num}(report_num=${report.report_num})}" th:utext="${report.report_title}"></a></th>
+                <td th:switch="${report.report_state}" class="text-center small text-secondary">
+                    <span th:case="0">처리예정</span>
+                    <span th:case="1">처리완료</span>
+                </td>
+                <td th:text="${#dates.format(report.report_date, 'yyyy-MM-dd HH:mm:ss')}" class="text-center small text-secondary"></td>
+            </tr>
+        </table>
+
+
+    <!-- 첫번째 페이지로 이동 -->
+    <!-- /board/paging?page=1 -->
+    <ul class="pagination justify-content-center">
+        <li class="page-item">
+            <a class="page-link" th:href="@{/myPage/reportList/paging(page=1)}" tabindex="-1"
+               aria-disabled="true">First</a>
+        </li>
+
+        <li class="page-item" th:class="${reportList.number == 0} ? 'disabled' : ''">
+            <a class="page-link" th:href="@{/myPage/reportList/paging(page=${reportList.number})}"
+               aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+
+        <span th:each="page: ${#numbers.sequence(startPage, endPage)}">
+        <li class="page-item" th:class="${page == reportList.number + 1} ? 'active' : ''">
+            <a th:if="${page == reportList.number + 1}" class="page-link">
+                <span th:text="${page}"></span>
+            </a>
+            <a th:unless="${page == reportList.number + 1}" th:href="@{/myPage/reportList/paging(page=${page})}"
+               class="page-link" th:text="${page}"></a>
+        </li>
+    </span>
+
+        <li class="page-item" th:class="${!reportList.hasNext()} ? 'disabled' : ''">
+            <a class="page-link" th:if="${reportList.hasNext()}"
+               th:href="@{/myPage/reportList/paging(page=${reportList.number + 2})}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+
+        <li class="page-item">
+            <a class="page-link"
+               th:href="@{/myPage/reportList/paging(page=${reportList.totalPages})}">Last</a>
+        </li>
+    </ul>
+<!--    <div class="border text-center fw-bold inquiryBox" th:if="${inquiryList.isEmpty()}">-->
+<!--        등록된 1:1문의가 없습니다.-->
+<!--    </div>-->
+
+
+
+</section>
+<!--<div th:include="footer.html"></div>-->
+<script src="/docs/5.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+
+
+</body>
+
+</html>

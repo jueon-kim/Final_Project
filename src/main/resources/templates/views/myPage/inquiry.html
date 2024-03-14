@@ -98,19 +98,26 @@
         </tr>
         </tbody>
     </table>
-    <div id="comment-write" class="comment py-5">
-        작성자 : <input type="text" id="commentWriter" class="form-control" th:value="${session.user != null ? session.user.user_id : ''}" readonly><br>
-        내용 : <input type="text" id="commentContents"class="form-control" placeholder="내용"><br>
-        <button id="comment-write-btn" onclick="commentWrite()">댓글작성</button>
+    <div id="comment-write" class="py-3 pb-5 mb-5 border-bottom">
+        <div class="d-flex justify-content-between my-2">
+            <input type="text" id="commentWriter" class="border-0 my-2" th:value="${session.user != null ? session.user.user_id : ''}">
+            <button id="comment-write-btn" onclick="commentWrite()" class="btn btn-outline-secondary">댓글 작성</button>
+        </div>
+        <textarea rows="4" id="commentContents" class="form-control w-100 " placeholder="내용을 입력하세요!"></textarea>
     </div>
+<!--    &lt;!&ndash; 댓글 출력&ndash;&gt;-->
+<!--    <div id="comment-list" th:each="comment : ${commentList}" class="border-top my-3 py-3">-->
+<!--        <div th:text="${comment.comment_writer}" class="fw-bold mx-4 my-1"></div>-->
+<!--        <div th:text="${comment.comment_content}" class="mx-4 my-1"></div>-->
+<!--    </div>-->
     <!--댓글 출력-->
     <div id="comment-list">
-        <table class="table">
+        <table class="table align-middle w-100">
             <tr th:each="comment:${commentList}">
                 <td th:text="${comment.comment_num}"></td>
                 <td th:text="${comment.comment_writer}"></td>
                 <td th:text="${comment.comment_content}"></td>
-                <td th:text="${comment.comment_date}"></td>
+                <td th:text="${#dates.format(comment.comment_date, 'yyyy.MM.dd HH:mm:ss')}"></td>
             </tr>
         </table>
     </div>
@@ -118,7 +125,7 @@
 
 </body>
 <script th:inline="javascript">
-    const commentWrite = () => {
+    let commentWrite = () => {
         const writer = document.getElementById("commentWriter").value;
         const commentContents = document.getElementById("commentContents");
         const contents = commentContents.value;
@@ -142,7 +149,7 @@
                      "comment_content": contents,
                      "qna_num": id
                  },
-                 success: function (res) {
+               success: function (res) {
                      console.log("요청성공", res);
                      let output = "<table>";
                     for (let i in res) {
@@ -150,10 +157,14 @@
                         output += "<td>" + res[i].comment_num + "</td>";
                         output += "<td>" + res[i].comment_writer + "</td>";
                         output += "<td>" + res[i].comment_content + "</td>";
-                        output += "<td>" + res[i].comment_date + "</td>";
+                        // 날짜 포맷 변경
+                        // const commentDate = new Date(res[i].comment_date);
+                        // const formattedDate = commentDate.toLocaleString(); // 또는 다른 형식으로 변경 가능
+
+                        output += "<td>" + res[i].comment_date+ "</td>";
                         output += "</tr>";
                     }
-                    output += "</table>";
+                     output += "</table>";
                     document.getElementById('comment-list').innerHTML = output;
                     document.getElementById('commentWriter').value = '';
                     document.getElementById('commentContents').value = '';

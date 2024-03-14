@@ -4,14 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-            crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    <script type="text/javascript">
-    </script>
     <style>
         html,
         body {
@@ -33,86 +25,170 @@
             padding: 0 35px 0 35px;
         }
 
-        .title {
-            /* 1:1문의 */
+        .border {
             border-bottom: 1px solid #FF7A6B;
-            color:#FF7A6B;
-        }
-        .custom-grid .col-2 {
-            margin-left: 13%; /* 사용자 정의 간격 설정 */
-            padding-left:5%;
-        }
-        .footer{
-            height:500px;
         }
 
+        .title {
+            /* 1:1문의 */
+            color: #FF7A6B;
+        }
+
+        .custom-grid .col-2 {
+            margin-left: 13%; /* 사용자 정의 간격 설정 */
+            padding-left: 5%;
+        }
+
+        .title2 {
+            font-size: 20px;
+        }
+
+        .content {
+            font-size: 15px;
+
+        }
     </style>
 </head>
 
 <body>
-<div th:include="header.html"></div>
+<div th:include="/views/header.html"></div>
 <section class="section mx-auto m-5 ">
-    <div class="text-center py-4 pb-3 mb-5 title">
-        <p class="fs-3 fw-bold">신고 접수</p>
-        <div class="">
-            <div class="text-secondary"><small>관리자 확인 후 신속히 제재예정이오니, 양해 부탁드립니다.</small></div>
-        </div>
+    <div class="text-center pt-3 mx-2 border-bottom">
+        <p class="fs-4 fw-bold  text-start title">내 신고 상세보기</p>
     </div>
-    <form action="" method="post">
-        <div class="container py-4"><!--신고내용 container-->
-            <div class="row my-4 custom-grid"><!--이름-->
-                <div class="col-2 text-start col-form-label" name="user_name">신고자명</div>
-                <div class="col-7">
-                    <div class="form-control" name="user_name">임콩떡 </div>
-                </div>
-            </div><!--신고할 닉네임 끝-->
-            <div class="row my-4 custom-grid"><!--신고 제목-->
-                <div class="col-2 text-start col-form-label" name="report_title">신고 제목</div>
-                <div class="col-7">
-                    <input type="text" class="form-control" name="report_title" placeholder="신고 제목을 입력해주세요"></input>
-                </div>
-            </div><!--신고 제목 끝-->
-            <div class="row my-4 custom-grid"><!--신고닉네임-->
-                <div class="col-2 text-start col-form-label" name="report_sNick">신고닉네임</div>
-                <div class="col-7">
-                    <input class="form-control" name="report_sNick" placeholder="신고할 유저의 닉네임을 적어주세요"></input>
-                </div>
-            </div><!--신고할 닉네임 끝-->
-            <div class="row my-4 custom-grid"><!--신고계좌-->
-                <div class="col-2 text-start col-form-label" name="report_sAccount">신고계좌</div>
-                <div class="col-7">
-                    <input class="form-control" name="report_sAccount" placeholder="신고할 유저의 계좌를 적어주세요"></input>
-                </div>
-            </div><!--신고할 닉네임 끝-->
-            <div class="row my-4 custom-grid"><!--이름-->
-                <div class="col-2 text-start col-form-label" name="report_sPhone">신고전화번호</div>
-                <div class="col-7">
-                    <input class="form-control" name="report_sPhone" placeholder="신고할 유저의 전화번호를 적어주세요"></input>
-                </div>
-            </div><!--신고할 닉네임 끝-->
+    <!--        <table class="table">-->
+    <!--            <tr class="py-3"  th:if="${not report.isEmpty()}" th:each="report : ${report}">-->
+    <!--                <td th:text="${report.report_title}"></td>-->
+    <!--                <td th:text="${report.report_state}"></td>-->
+    <!--            </tr>-->
 
-
-            <div class="row my-4 custom-grid"><!--문의 내용-->
-                <div class="col-2 text-start col-form-label" name="report_content">신고 내용</div>
-                <div class="col-7">
-                    <textarea class="form-control" name="report_cotent" placeholder="신고 내용을 입력해주세요" rows="7"></textarea>
+    <!--            </tr>-->
+    <!--        </table>-->
+    <div th:if="${not #lists.isEmpty(report)}" th:each="r : ${report}">
+        <div class="d-flex justify-content-between  py-2 border-bottom"><!-- 제목 -->
+            <div class="left mx-4">
+                <div th:text="${r.report_title}" class="fw-bold py-2 title2"></div>
+                <div class="d-flex text-secondary">
+                    <small>
+                        <div th:text="'No.'+${r.report_num}"></div>
+                    </small>
+                    <small><p class="mx-3" th:text="'|'"></p></small>
+                    <small>
+                        <div th:text="${#dates.format(r.report_date, 'yyyy-MM-dd HH:mm:ss')}"></div>
+                    </small>
                 </div>
-            </div><!--문의 내용 끝-->
-            <div class="d-flex justify-content-center py-3">
-                <button type="button" class="btn btn-secondary btn-lg mx-3">신고접수</button>
-                <button type="button" class="btn btn-outline-secondary btn-lg">목록보기</button>
             </div>
+            <div th:switch="${report.report_state}" class="mx-5 py-4">
+                <span th:case="0">처리예정</span>
+                <span th:case="1">처리완료</span>
+            </div>
+        </div><!--제목 한 줄 끝-->
+        <div class="content py-5 mx-4"><!--내용 -->
+            <p th:text="${'신고한 유저 닉네임 : '+r.report_Snick}" class="py-3"></p>
+            <p th:text="${'신고한 유저 계좌번호 : '+ r.report_Saccount}" class="py-3"></p>
+            <p th:text="${'신고한 유저 전화번호 : '+r.report_Sphone}" class="py-3"></p>
+            <p th:text="${'신고 내용 : ' +  r.report_content}" class="py-3"></p>
+        </div><!--내용 -->
+        <div th:each="fileName: ${r.file_url}">
+            <img th:src="@{|/upload/${fileName}|}" alt="" style="height:500px;" class="px-4 w-100">
+        </div>
+        <!-- 파일 이름 표시 -->
+        <div class="text-secondary small text-end  mx-4 my-2 py-3"> 첨부파일 : <span th:each="fileName, iterStat : ${r.file_url}">
+            <span th:text="${fileName}"></span>
+            <!-- 마지막 파일 이름이 아니면 쉼표 표시 -->
+            <span th:if="${!iterStat.last}"><br></span>
+       </span></div>
+    </div>
+    <div id="comment-write" th:if="${session.user.user_id=='admin'}" class="py-3 mx-4   border-top">
+       <div class="d-flex justify-content-between my-2">
+           <input type="text" id="commentWriter" class="border-0 my-2" th:value="'관리자'">
+           <button id="comment-write-btn"  onclick="commentWrite()" class="btn btn-outline-secondary">답변 작성</button>
+       </div>
+        <textarea rows="4" id="commentContent" class="form-control w-100 " placeholder="답변을 입력하세요"></textarea>
+    </div>
+    <!-- 댓글 출력-->
+    <div id="comment-list" th:each="comment : ${commentList}" class="border-top my-3 py-3">
+        <div th:text="${comment.comment_writer}" class="fw-bold mx-4 my-1"></div>
+        <div th:text="${comment.comment_content}" class="mx-4 my-1"></div>
+    </div>
+    <div class="d-flex justify-content-between">
+        <button class="btn btn-outline-secondary btn-delete mx-4"  th:attr="data-deleteNum=${report.report_num}"  onclick="deleteReport(this)">신고삭제</button>
+        <button class="btn btn-danger btn-list mx-4"><a href="/myPage/reportList/paging">목록</a></button>
+    </div>
 
-        </div><!--container끝(신고내용container)-->
-    </form>
+    <!--<div th:include="footer.html"></div>-->
+    <script src="/docs/5.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+            crossorigin="anonymous"></script>
+    <script th:inline="javascript">
+        const commentWrite = () => {
+            try {
+                const writer = document.getElementById("commentWriter").value;
+                const commentContent = document.getElementById("commentContent");
+                const content = commentContent.value;
+
+                if (content === null || content.trim() === "") {
+                    alert("답변 내용을 입력하세요!");
+                    commentContent.focus();
+                    return;
+                }
+
+                console.log("작성자 : ", writer);
+                console.log("답변내용 : ", content);
+
+                const id = [[${report.report_num}]];
+
+                if (id !== undefined) {
+                    console.log("id : ", id);
+
+                    $.ajax({
+                        type: "post",
+                        url: "/myPage/report",
+                        data: {
+                            "comment_writer": writer,
+                            "comment_content": content,
+                            "report_num": id
+                        },
+                        success: function (res) {
+                            console.log("요청 성공", res);
+
+                            let output = '';
+
+                            if (res.length > 0) {
+                                for (let i in res) {
+                                    output += "<div class='comment'>";
+                                    output += "<div>" + res[i].comment_writer + "</div>";
+                                    output += "<div>" + res[i].comment_content + "</div>";
+                                    output += "</div>";
+                                }
+                            } else {
+                                output = "<p></p>";
+                            }
+
+                            document.getElementById('comment-list').innerHTML = output;
+                            document.getElementById('commentWriter').value = '';
+                            document.getElementById('commentContent').value = '';
+                        },
+                        error: function (err) {
+                            console.log("요청 실패", err);
+                        }
+                    });
+                } else {
+                    console.log("id 값이 없습니다");
+                }
+            } catch (error) {
+                console.error("commentWrite 함수에서 오류 발생:", error);
+            }
+        }
 
 
+        const deleteReport=(button)=>{
+            const num = button.getAttribute("data-deleteNum");
+            location.href="/admin/deleteReport/" + num ;
+        }
+
+    </script>
 </section>
-<div th:include="footer.html"></div>
-<script src="/docs/5.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
-        crossorigin="anonymous"></script>
-
 
 </body>
 

@@ -6,6 +6,8 @@ import com.hwagae.market.inquiry.InquiryDTO;
 import com.hwagae.market.inquiry.InquiryService;
 import com.hwagae.market.notice.NoticeDTO;
 import com.hwagae.market.notice.NoticeService;
+import com.hwagae.market.report.ReportDTO;
+import com.hwagae.market.report.ReportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,6 +29,8 @@ public class AdminController {
     private EventService eventService;
 @Autowired
     private InquiryService inquiryService;
+@Autowired
+private ReportService reportService;
 
     @GetMapping("/admin/adminMenu")
     public String adminMenu() {
@@ -110,5 +114,28 @@ public class AdminController {
         System.out.println("관리자 - 이벤트 입력할게요~");
         return "views/admin/insertEvent";
     }
+
+    @GetMapping("admin/reportConfirm/paging")
+    public String reportConfirm(@PageableDefault(page=1) Pageable pageable, Model model){
+        System.out.println("관리자 - 신고 확인할게요~");
+        Page<ReportDTO> reportList=reportService.paging(pageable);
+
+        System.out.println("reportList: " + reportList);
+        System.out.println("Total Pages: " + reportList.getTotalPages());
+        System.out.println("Page Number: " + pageable.getPageNumber());
+        //보여지는 페이지갯수를 처리하기 위한 변수
+        int blockLimit=10;
+        int startPage=(((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
+        int endPage=((startPage + blockLimit - 1) < reportList.getTotalPages()) ? startPage + blockLimit - 1 :reportList.getTotalPages();
+        // 디버깅 메시지 출력
+        System.out.println("Start Page: " + startPage);
+        System.out.println("End Page: " + endPage);
+
+        model.addAttribute("reportList", reportList);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        return "views/admin/reportConfirm";
+    }
+
 }
 

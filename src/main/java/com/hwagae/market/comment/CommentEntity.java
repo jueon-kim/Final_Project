@@ -1,6 +1,7 @@
 package com.hwagae.market.comment;
 
 import com.hwagae.market.inquiry.InquiryEntity;
+import com.hwagae.market.report.ReportEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -31,6 +32,10 @@ public class CommentEntity {
     @JoinColumn(name="qna_num")
     private InquiryEntity inquiryEntity;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="report_num")
+    private ReportEntity reportEntity;
+
     public static CommentEntity toSaveEntity(CommentDTO commentDTO,InquiryEntity inquiryEntity){
         CommentEntity commentEntity=new CommentEntity();
         commentEntity.setCommentWriter(commentDTO.getComment_writer());
@@ -39,5 +44,12 @@ public class CommentEntity {
         return commentEntity;
     }
 
+    public static CommentEntity toSaveEntity(CommentDTO commentDTO,ReportEntity reportEntity){
+        CommentEntity commentEntity=new CommentEntity();
+        commentEntity.setCommentWriter(commentDTO.getComment_writer());
+        commentEntity.setCommentContent(commentDTO.getComment_content());
+        commentEntity.setReportEntity(reportEntity);
+        return commentEntity;
+    }
 
 }
