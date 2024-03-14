@@ -22,8 +22,6 @@ public class UserDTO {
     private String user_joindate;
     private String user_photo;
     private MultipartFile upLoadFile;
-    private String user_location;
-    private String user_location2;
 
 
 
@@ -40,8 +38,6 @@ public class UserDTO {
         userDTO.setUser_photo(userEntity.getUserPhoto());
         userDTO.setUser_name(userEntity.getUserName());
         userDTO.setUser_joindate(userEntity.getUserJoindate());
-        userDTO.setUser_location(userEntity.getUserLocation());
-        userDTO.setUser_location2(userEntity.getUserLocation2());
         return userDTO;
     }
 

@@ -1,60 +1,110 @@
 package com.hwagae.market.post;
 
-import com.hwagae.market.file.FileEntity;
-import com.hwagae.market.file.FileRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.transaction.Transactional;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
-@Service
-@RequiredArgsConstructor
+@Transactional
 public class PostService {
-
     private final PostRepository postRepository;
-    private final FileRepository fileRepository;
 
-    public void save(PostDTO postDTO) throws IOException {
-        if (postDTO.getPost_upLoadFile().isEmpty()) {
-            PostEntity postEntity = PostEntity.toSaveEntity(postDTO);
-            postRepository.save(postEntity);
-        } else {
-            PostEntity postEntity = PostEntity.toSaveFileEntity(postDTO);
-            Integer postNum = postRepository.save(postEntity).getPost_num();
-            PostEntity post = postRepository.findById(postNum).get();
-
-            for (MultipartFile postFile : postDTO.getPost_upLoadFile()) {
-                String originalFilename = postFile.getOriginalFilename();
-
-                if (originalFilename != null && !originalFilename.isEmpty()) {
-                    String file_url = System.currentTimeMillis() + "_" + originalFilename;
-                    String savePath = "C:/image/" + file_url;
-                    postFile.transferTo(new File(savePath));
-                    FileEntity fileEntity = FileEntity.toFileEntity(post, file_url);
-                    fileRepository.save(fileEntity);
-                } else {
-                    System.out.println("파일이 입력되지않았습니다~" + originalFilename);
-                }
-            }
-        }
+    public PostService(PostRepository postRepository) {
+        this.postRepository = postRepository;
     }
 
-
-    public List<PostDTO> findAll() {
-        List<PostEntity> postEntityList = postRepository.findAll();
-        List<PostDTO> postDTOList = new ArrayList<>();
-        for(PostEntity postEntity: postEntityList){
-            postDTOList.add(PostDTO.toPostDTO(postEntity));
-        }
-        System.out.println("postDTOList = " + postDTOList);
-        return postDTOList;
+    public Long savePost(Post post) {
+        return postRepository.save(post);
     }
 
+    public List<Post> getAllPosts() {
+        return postRepository.findAllPost();
+    }
 
+    public Optional<Post> getPostByNum(Long postNum) {
+        return postRepository.post_num(postNum);
+    }
+
+    public Optional<Post> getPostByTitle(String postTitle) {
+        return postRepository.post_title(postTitle);
+    }
+
+    public Optional<Post> getPostByContent(String postContent) {
+        return postRepository.post_content(postContent);
+    }
+
+    public Optional<Post> getPostByPrice(int postPrice) {
+        return postRepository.post_price(postPrice);
+    }
+
+    public Optional<Post> getPostBySaleState(Enum postSaleState) {
+        return postRepository.post_state(postSaleState);
+    }
+
+    public Optional<Post> getPostByRegDate(Timestamp postRegDate) {
+        return postRepository.post_regedate(postRegDate);
+    }
+
+    public Optional<Post> getPostByUpdate(String postUpdate) {
+        return postRepository.post_update(postUpdate);
+    }
+
+    public Optional<Post> getPostByLocation(String postLocation) {
+        return postRepository.post_location(postLocation);
+    }
+
+    public Optional<Post> getPostByShip(String postShip) {
+        return postRepository.post_ship(postShip);
+    }
+
+    public Optional<Post> getPostByShipAddress(String postShipAddress) {
+        return postRepository.post_shipAddress(postShipAddress);
+    }
+
+    public Optional<Post> getPostByDirect(Boolean postDirect) {
+        return postRepository.post_direct(postDirect);
+    }
+
+    public Optional<Post> getPostByHits(int postHits) {
+        return postRepository.post_hits(postHits);
+    }
+
+    public Optional<Post> getPostByLike(int postLike) {
+        return postRepository.post_like(postLike);
+    }
+
+    public Optional<Post> getPostByDeliveryFree(Boolean postDeliveryFree) {
+        return postRepository.post_deliveryFree(postDeliveryFree);
+    }
+
+    public Optional<Post> getPostByProductState(Enum postProductState) {
+        return postRepository.post_productState(postProductState);
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

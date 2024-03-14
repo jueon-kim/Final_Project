@@ -34,8 +34,8 @@ public class PostEntity {
     @Column
     private String post_regdate;
 
-/*    @Column
-    private String post_update;*/
+    @Column
+    private String post_update;
 
     @Column
     private String post_location;
@@ -52,13 +52,12 @@ public class PostEntity {
     @Column
     private String post_address;
 
-/*
     @Column
     private Integer post_hits;
 
     @Column
     private Integer post_like;
-*/
+
 
     @Column
     private Integer post_deliveryFee;
@@ -95,14 +94,14 @@ public class PostEntity {
         postEntity.setPost_price(postDTO.getPost_price());
         postEntity.setPost_saleState(postDTO.getPost_saleState());
         postEntity.setPost_regdate(postDTO.getPost_regdate());
-        /*        postEntity.setPost_update(postDTO.getPost_update());*/
+        postEntity.setPost_update(postDTO.getPost_update());
         postEntity.setPost_location(postDTO.getPost_location());
         postEntity.setPost_location2(postDTO.getPost_location2());
         postEntity.setPost_way(postDTO.getPost_way());
         postEntity.setPost_shipAddress(postDTO.getPost_shipAddress());
         postEntity.setPost_address(postDTO.getPost_address());
-/*        postEntity.setPost_hits(postDTO.getPost_hits());
-        postEntity.setPost_like(postDTO.getPost_like());*/
+        postEntity.setPost_hits(postDTO.getPost_hits());
+        postEntity.setPost_like(postDTO.getPost_like());
         postEntity.setPost_deliveryFee(postDTO.getPost_deliveryFee());
         postEntity.setPost_productState(postDTO.getPost_productState());
         postEntity.setUser_num(postDTO.getUser_num());
@@ -122,13 +121,13 @@ public class PostEntity {
         postEntity.setPost_price(postDTO.getPost_price());
         postEntity.setPost_saleState(postDTO.getPost_saleState());
         postEntity.setPost_regdate(postDTO.getPost_regdate());
-        /*      postEntity.setPost_update(postDTO.getPost_update());*/
+        postEntity.setPost_update(postDTO.getPost_update());
         postEntity.setPost_location(postDTO.getPost_location());
         postEntity.setPost_way(postDTO.getPost_way());
         postEntity.setPost_shipAddress(postDTO.getPost_shipAddress());
         postEntity.setPost_address(postDTO.getPost_address());
-/*      postEntity.setPost_hits(postDTO.getPost_hits());
-        postEntity.setPost_like(postDTO.getPost_like());*/
+      postEntity.setPost_hits(postDTO.getPost_hits());
+        postEntity.setPost_like(postDTO.getPost_like());
         postEntity.setPost_deliveryFee(postDTO.getPost_deliveryFee());
         postEntity.setPost_productState(postDTO.getPost_productState());
         postEntity.setUser_num(postDTO.getUser_num());
@@ -144,14 +143,14 @@ public class PostEntity {
         postEntity.setPost_price(postDTO.getPost_price());
         postEntity.setPost_saleState(postDTO.getPost_saleState());
         postEntity.setPost_regdate(postDTO.getPost_regdate());
-        /*        postEntity.setPost_update(postDTO.getPost_update());*/
+        postEntity.setPost_update(postDTO.getPost_update());
         postEntity.setPost_location(postDTO.getPost_location());
         postEntity.setPost_location2(postDTO.getPost_location2());
         postEntity.setPost_way(postDTO.getPost_way());
         postEntity.setPost_shipAddress(postDTO.getPost_shipAddress());
         postEntity.setPost_address(postDTO.getPost_address());
-/*        postEntity.setPost_hits(postDTO.getPost_hits());
-        postEntity.setPost_like(postDTO.getPost_like());*/
+        postEntity.setPost_hits(postDTO.getPost_hits());
+        postEntity.setPost_like(postDTO.getPost_like());
         postEntity.setPost_deliveryFee(postDTO.getPost_deliveryFee());
         postEntity.setPost_productState(postDTO.getPost_productState());
         postEntity.setUser_num(postDTO.getUser_num());

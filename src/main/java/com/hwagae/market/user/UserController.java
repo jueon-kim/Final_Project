@@ -1,10 +1,8 @@
 package com.hwagae.market.user;
 
+
 import com.hwagae.market.email.EmailController;
-import com.hwagae.market.post.PostDTO;
-import com.hwagae.market.post.PostService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,18 +11,13 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
-@Log4j2
 @Controller
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
     private final EmailController emailController;
-    private final PostService postService;
-
 
     @GetMapping("/user/join")
     public String joinForm(){
@@ -50,9 +43,6 @@ public class UserController {
     public @ResponseBody String idCheck(@RequestParam("user_id") String user_id) {
         System.out.println("userId = " + user_id);
         String checkResult = userService.idCheck(user_id);
-
-
-
         return checkResult;
 /*        if(checkResult != null){
             return "ok";
@@ -82,17 +72,12 @@ public class UserController {
     }
 
     @PostMapping("/user/login")
-    public String Login(@ModelAttribute UserDTO userDTO, HttpSession session, Model model){
-        //글 목록 가져오기
-        List<PostDTO> postDTOList = postService.findAll();
-        model.addAttribute("postList", postDTOList);
-
-
+    public String Login(@ModelAttribute UserDTO userDTO, HttpSession session){
         UserDTO result = userService.login(userDTO);
         if(result != null){
             session.setAttribute("user", result);
             System.out.println("로그인 성공");
-            return "views/user/index";
+            return "views/myPage/myPage";
         }else{
             return "redirect:/user/login?loginFailed=true";
         }
@@ -106,27 +91,8 @@ public class UserController {
     }
 
     @GetMapping("/myPage")
-    public String MyPage(Model model, HttpSession session) {
-        List<PostDTO> postDTOList = postService.findAll();
-        UserDTO userDTO = (UserDTO) session.getAttribute("user");
-        String user_num = String.valueOf(userDTO.getUser_num());
-        System.out.println("세션 = " + user_num);
-
-        List<PostDTO> userPostList = new ArrayList<>();
-        for (PostDTO postDTO : postDTOList) {
-            String postUserNum = String.valueOf(postDTO.getUser_num());
-            // userNum 값을 사용하여 원하는 작업 수행
-            if (postUserNum.equals(user_num)) {
-                userPostList.add(postDTO);
-                System.out.println("게시물 = " + postDTO);
-            }
-        }
-
-        model.addAttribute("postList", userPostList);
-        System.out.println("model = " + model);
-
+    public String MyPage(){
         System.out.println("마이페이지");
-
         return "views/myPage/myPage";
     }
 
@@ -210,25 +176,6 @@ public class UserController {
 
         return "redirect:/myPage/userUpdate";
     }
-
-
-    @PostMapping("/user/locationUpdate")
-    public String UpdateLocation(@ModelAttribute UserDTO userDTO, HttpSession session) throws IOException {
-        userService.updateLocation(userDTO);
-        UserDTO updatedUser = userService.login(userDTO);
-
-        UserDTO sessionUser = (UserDTO) session.getAttribute("user");
-        // 사용자 정보 업데이트
-        sessionUser.setUser_location2(userDTO.getUser_location2()); // 닉네임으로 변경 예시
-        // 세션에서 기존 사용자 정보 제거
-        session.removeAttribute("user");
-        // 업데이트된 사용자 정보를 세션에 설정
-        session.setAttribute("user", sessionUser);
-
-        return "redirect:/myPage/userUpdate";
-    }
-
-
 
 /*    @PostMapping("/user/photoUpdate")
     public String UpdatePhoto(@ModelAttribute UserDTO userDTO) throws IOException {
@@ -324,11 +271,6 @@ public class UserController {
             return "views/myPage/unRegister"; // 회원탈퇴 페이지로 다시 이동
         }
     }
-
-
-
-
-
 
 
 

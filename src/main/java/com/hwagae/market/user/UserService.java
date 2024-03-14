@@ -69,10 +69,7 @@ public class UserService {
         Optional<UserEntity> findPW = userRepository.findByUserName(userDTO.getUser_name());
         if(findPW.isPresent()){
             UserEntity userEntity = findPW.get();
-            if (userEntity.getUserId().equals(userDTO.getUser_id()) &&
-                    userEntity.getUserName().equals(userDTO.getUser_name()) &&
-                    userEntity.getUserEmail().equals(userDTO.getUser_email()) &&
-                    userEntity.getUserPhone().equals(userDTO.getUser_phone())){
+            if (userEntity.getUserName().equals(userDTO.getUser_name())){
                 UserDTO dto = UserDTO.toUserDTO(userEntity);
                 return dto;
             }else{
@@ -104,8 +101,6 @@ public class UserService {
             userDTO.setUser_name(optionalUserEntity.get().getUserName());
             userDTO.setUser_joindate(optionalUserEntity.get().getUserJoindate());
             userDTO.setUser_photo(optionalUserEntity.get().getUserPhoto());
-            userDTO.setUser_location(optionalUserEntity.get().getUserLocation());
-            userDTO.setUser_location2(optionalUserEntity.get().getUserLocation2());
         }else {
             throw new NullPointerException("에러");
         }
@@ -123,14 +118,27 @@ public class UserService {
             userDTO.setUser_name(optionalUserEntity.get().getUserName());
             userDTO.setUser_joindate(optionalUserEntity.get().getUserJoindate());
             userDTO.setUser_photo(optionalUserEntity.get().getUserPhoto());
-            userDTO.setUser_location(optionalUserEntity.get().getUserLocation());
-            userDTO.setUser_location2(optionalUserEntity.get().getUserLocation2());
         }else {
             throw new NullPointerException("에러");
         }
         userRepository.save(UserEntity.toUserUpdateEntity(userDTO));
     }
 
+/*    public void updatePhoto(UserDTO userDTO) {
+        Optional<UserEntity> optionalUserEntity = userRepository.findById(userDTO.getUser_num());
+        if(optionalUserEntity.isPresent()){
+            userDTO.setUser_id(optionalUserEntity.get().getUserId());
+            userDTO.setUser_pw(optionalUserEntity.get().getUserPw());
+            userDTO.setUser_phone(optionalUserEntity.get().getUserPhone());
+            userDTO.setUser_email(optionalUserEntity.get().getUserEmail());
+            userDTO.setUser_birth(optionalUserEntity.get().getUserBirth());
+            userDTO.setUser_name(optionalUserEntity.get().getUserName());
+            userDTO.setUser_joindate(optionalUserEntity.get().getUserJoindate());
+        }else {
+            throw new NullPointerException("에러");
+        }
+        userRepository.save(UserEntity.toUserUpdateEntity(userDTO));
+    }*/
 
     public void updatePhoto(UserDTO userDTO) {
         Optional<UserEntity> optionalUserEntity = userRepository.findById(userDTO.getUser_num());
@@ -143,23 +151,13 @@ public class UserService {
         }
     }
 
-    public void updateLocation(UserDTO userDTO) {
-        Optional<UserEntity> optionalUserEntity = userRepository.findById(userDTO.getUser_num());
-        if(optionalUserEntity.isPresent()){
-            userDTO.setUser_id(optionalUserEntity.get().getUserId());
-            userDTO.setUser_pw(optionalUserEntity.get().getUserPw());
-            userDTO.setUser_nick(optionalUserEntity.get().getUserNick());
-            userDTO.setUser_phone(optionalUserEntity.get().getUserPhone());
-            userDTO.setUser_email(optionalUserEntity.get().getUserEmail());
-            userDTO.setUser_birth(optionalUserEntity.get().getUserBirth());
-            userDTO.setUser_name(optionalUserEntity.get().getUserName());
-            userDTO.setUser_joindate(optionalUserEntity.get().getUserJoindate());
-            userDTO.setUser_photo(optionalUserEntity.get().getUserPhoto());
-        }else {
-            throw new NullPointerException("에러");
-        }
-        userRepository.save(UserEntity.toUserUpdateEntity(userDTO));
-    }
+
+
+/*    public void update(UserDTO userDTO) throws IOException {
+            userRepository.save(UserEntity.toUserUpdateEntity(userDTO));
+    }*/
+
+
 
     @Transactional
     public void deleteUser(String userId) {
@@ -197,7 +195,4 @@ public class UserService {
             return "ok";
         }
     }
-
-
-
 }

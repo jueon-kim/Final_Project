@@ -6,17 +6,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<UserEntity, Integer> {
-    @Transactional
-    void deleteByUserId(String userId);
-
     Optional<UserEntity> findByUserId(String userId);
 
     Optional<UserEntity> findByUserName(String userName);
 
+    @Transactional
+    void deleteByUserId(String userId);
+
     Optional<UserEntity> findByUserNick(String userNick);
 
     Optional<UserEntity> findByUserEmail(String userEmail);
-
-
-    UserEntity findByUserNum(Integer userNum);
 }
