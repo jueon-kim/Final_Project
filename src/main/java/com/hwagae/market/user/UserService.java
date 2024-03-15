@@ -3,7 +3,10 @@ package com.hwagae.market.user;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Optional;
 
 @Service
@@ -21,6 +24,7 @@ public class UserService {
         // repository의 save 메소드 호출 (조건 = entity객체를 넘겨줘야 함)
     }
 
+    /* service 로직 추가 if문=================================*/
     public UserDTO login(UserDTO userDTO) {
         Optional<UserEntity> id = userRepository.findByUserId(userDTO.getUser_id());
         if (id.isPresent()){
@@ -36,21 +40,36 @@ public class UserService {
         }
     }
 
+//    public String isValidUserPW(String User_id, String User_pw){
+//        UserDTO user = UserRepository.findByUserId(User_id);
+//        return user != null && user.getUser_pw().equals(User_pw);
+//    }
 
-    public UserDTO findID(UserDTO userDTO) {
+
+
+    public String findID(UserDTO userDTO) {
         Optional<UserEntity> findID = userRepository.findByUserName(userDTO.getUser_name());
         if(findID.isPresent()){
             UserEntity userEntity = findID.get();
-            if (userEntity.getUserName().equals(userDTO.getUser_name())){
-                UserDTO dto = UserDTO.toUserDTO(userEntity);
-                return dto;
-            }else{
-                return null;
+            if (userEntity.getUserName().equals(userDTO.getUser_name()) &&
+                    userEntity.getUserEmail().equals(userDTO.getUser_email()) &&
+                    userEntity.getUserPhone().equals(userDTO.getUser_phone())) {
+                return userEntity.getUserId();
+            } else {
+                String message = "일치하는 정보가 없습니다. ";
+                if (!userEntity.getUserEmail().equals(userDTO.getUser_email()) || !userEntity.getUserPhone().equals(userDTO.getUser_phone())) {
+                    message += "이메일주소 혹은 전화번호를 다시 확인하세요. ";
+                }
+                if (!userEntity.getUserName().equals(userDTO.getUser_name())) {
+                    message += "이름 혹은 이메일주소를 다시 확인하세요. ";
+                }
+                return message;
             }
-        }else {
-            return null;
+        } else {
+            return "일치하는 정보가 없습니다.";
         }
     }
+
 
 
     public UserDTO findPW(UserDTO userDTO) {
@@ -78,26 +97,73 @@ public class UserService {
         }
     }
 
-
-    public void update(UserDTO userDTO) {
-        /*UserEntity userEntity = UserEntity.toUserEntity(userDTO);
-        userRepository.save(userEntity);*/
-        if(userDTO.getUser_photo2().isEmpty()){
-            //첨부파일 없음
-            userRepository.save(UserEntity.toUserUpdateEntity(userDTO));
-
+    public void updatePw(UserDTO userDTO) {
+        Optional<UserEntity> optionalUserEntity = userRepository.findById(userDTO.getUser_num());
+        if(optionalUserEntity.isPresent()){
+            userDTO.setUser_id(optionalUserEntity.get().getUserId());
+            userDTO.setUser_nick(optionalUserEntity.get().getUserNick());
+            userDTO.setUser_phone(optionalUserEntity.get().getUserPhone());
+            userDTO.setUser_email(optionalUserEntity.get().getUserEmail());
+            userDTO.setUser_birth(optionalUserEntity.get().getUserBirth());
+            userDTO.setUser_name(optionalUserEntity.get().getUserName());
+            userDTO.setUser_joindate(optionalUserEntity.get().getUserJoindate());
+            userDTO.setUser_photo(optionalUserEntity.get().getUserPhoto());
         }else {
-            //첨부파일 없음
-            // 1. DTO에 담긴 파일 꺼내고
-            // 2. 파일 이름 가져오고
-            // 3. 서버저장용 이름으로 수정
-            // 4. 저장경로 설정
-            // 5. 해당 경로에 파일 저장
-            // 6. user테이블에 해당 데이터 update
-            // 8. user_file 테이블에 해당 데이터 update
+            throw new NullPointerException("에러");
         }
-
+        userRepository.save(UserEntity.toUserUpdateEntity(userDTO));
     }
+
+    public void updateNick(UserDTO userDTO) {
+        Optional<UserEntity> optionalUserEntity = userRepository.findById(userDTO.getUser_num());
+        if(optionalUserEntity.isPresent()){
+            userDTO.setUser_id(optionalUserEntity.get().getUserId());
+            userDTO.setUser_pw(optionalUserEntity.get().getUserPw());
+            userDTO.setUser_phone(optionalUserEntity.get().getUserPhone());
+            userDTO.setUser_email(optionalUserEntity.get().getUserEmail());
+            userDTO.setUser_birth(optionalUserEntity.get().getUserBirth());
+            userDTO.setUser_name(optionalUserEntity.get().getUserName());
+            userDTO.setUser_joindate(optionalUserEntity.get().getUserJoindate());
+            userDTO.setUser_photo(optionalUserEntity.get().getUserPhoto());
+        }else {
+            throw new NullPointerException("에러");
+        }
+        userRepository.save(UserEntity.toUserUpdateEntity(userDTO));
+    }
+
+/*    public void updatePhoto(UserDTO userDTO) {
+        Optional<UserEntity> optionalUserEntity = userRepository.findById(userDTO.getUser_num());
+        if(optionalUserEntity.isPresent()){
+            userDTO.setUser_id(optionalUserEntity.get().getUserId());
+            userDTO.setUser_pw(optionalUserEntity.get().getUserPw());
+            userDTO.setUser_phone(optionalUserEntity.get().getUserPhone());
+            userDTO.setUser_email(optionalUserEntity.get().getUserEmail());
+            userDTO.setUser_birth(optionalUserEntity.get().getUserBirth());
+            userDTO.setUser_name(optionalUserEntity.get().getUserName());
+            userDTO.setUser_joindate(optionalUserEntity.get().getUserJoindate());
+        }else {
+            throw new NullPointerException("에러");
+        }
+        userRepository.save(UserEntity.toUserUpdateEntity(userDTO));
+    }*/
+
+    public void updatePhoto(UserDTO userDTO) {
+        Optional<UserEntity> optionalUserEntity = userRepository.findById(userDTO.getUser_num());
+        if(optionalUserEntity.isPresent()){
+            UserEntity userEntity = optionalUserEntity.get();
+            userEntity.setUserPhoto(userDTO.getUser_photo()); // 사용자 사진 업데이트
+            userRepository.save(userEntity); // 변경된 정보를 저장
+        } else {
+            throw new NullPointerException("에러");
+        }
+    }
+
+
+
+/*    public void update(UserDTO userDTO) throws IOException {
+            userRepository.save(UserEntity.toUserUpdateEntity(userDTO));
+    }*/
+
 
 
     @Transactional
@@ -127,4 +193,15 @@ public class UserService {
             return "ok";
         }
     }
+
+    public String emailCheck(String userEmail) {
+        Optional<UserEntity> byUserEmail = userRepository.findByUserEmail(userEmail);
+        if(byUserEmail.isPresent()){
+            return null;
+        }else {
+            return "ok";
+        }
+    }
+
+
 }

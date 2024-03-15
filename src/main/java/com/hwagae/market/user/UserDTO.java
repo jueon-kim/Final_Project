@@ -17,15 +17,13 @@ public class UserDTO {
     private String user_phone;
     private String user_email;
     private String user_birth;
-    private String user_photo;
     private String user_name;
     private String user_role;
     private String user_joindate;
+    private String user_photo;
+    private MultipartFile upLoadFile;
 
-    private MultipartFile user_photo2;
-    private String originalFileName; //원본파일 이름
-    private String storedFileName;  // 서버저장용 이름
-    private int fileAttached;
+
 
 
     public static UserDTO toUserDTO(UserEntity userEntity) {

@@ -35,16 +35,13 @@ public class UserEntity {
     private String userBirth;
 
     @Column(nullable = false)
-    private String userPhoto;
-
-    @Column(nullable = false)
     private String userName;
 
     @Column(nullable = false)
     private String userJoindate;
 
-    @Column
-    private int fileAttached;
+    @Column(nullable = false)
+    private String userPhoto;
 
     public static UserEntity toUserEntity(UserDTO userDTO) {
         UserEntity userEntity = new UserEntity();
@@ -73,7 +70,6 @@ public class UserEntity {
         userEntity.setUserPhoto(userDTO.getUser_photo());
         userEntity.setUserName(userDTO.getUser_name());
         userEntity.setUserJoindate(userDTO.getUser_joindate());
-        userEntity.setFileAttached(0);
         return userEntity;
     }
 }
