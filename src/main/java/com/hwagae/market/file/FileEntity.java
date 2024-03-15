@@ -3,6 +3,7 @@ package com.hwagae.market.file;
 import com.hwagae.market.event.EventEntity;
 import com.hwagae.market.notice.NoticeEntity;
 import com.hwagae.market.post.PostEntity;
+import com.hwagae.market.report.ReportEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,6 +33,11 @@ public class FileEntity {
     @JoinColumn(name="post_num")
     private PostEntity postEntity;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="report_num")
+    private ReportEntity reportEntity;
+
+
     public static FileEntity toFileEntity(NoticeEntity noticeEntity, String fileUrl){
         FileEntity fileEntity=new FileEntity();
         fileEntity.setFileUrl(fileUrl);
@@ -54,6 +60,12 @@ public class FileEntity {
         FileEntity fileEntity=new FileEntity();
         fileEntity.setFileUrl(fileUrl);
         fileEntity.setPostEntity(postEntity);
+        return fileEntity;
+    }
+    public static FileEntity toFileEntity(ReportEntity reportEntity, String fileUrl){
+        FileEntity fileEntity=new FileEntity();
+        fileEntity.setFileUrl(fileUrl);
+        fileEntity.setReportEntity(reportEntity);
         return fileEntity;
     }
 

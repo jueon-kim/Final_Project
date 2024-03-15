@@ -24,6 +24,7 @@ public class UserService {
         // repository의 save 메소드 호출 (조건 = entity객체를 넘겨줘야 함)
     }
 
+    /* service 로직 추가 if문=================================*/
     public UserDTO login(UserDTO userDTO) {
         Optional<UserEntity> id = userRepository.findByUserId(userDTO.getUser_id());
         if (id.isPresent()){
@@ -38,6 +39,12 @@ public class UserService {
                 return null;
         }
     }
+
+//    public String isValidUserPW(String User_id, String User_pw){
+//        UserDTO user = UserRepository.findByUserId(User_id);
+//        return user != null && user.getUser_pw().equals(User_pw);
+//    }
+
 
 
     public String findID(UserDTO userDTO) {
@@ -195,4 +202,6 @@ public class UserService {
             return "ok";
         }
     }
+
+
 }

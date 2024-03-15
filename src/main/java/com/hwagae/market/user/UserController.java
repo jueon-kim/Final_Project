@@ -2,6 +2,7 @@ package com.hwagae.market.user;
 
 
 import com.hwagae.market.email.EmailController;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +20,14 @@ public class UserController {
     private final UserService userService;
     private final EmailController emailController;
 
+
+//    관리자 로그인
+    @GetMapping("/admin/adminMenu")
+    public String adminMenu() {
+        System.out.println("관리자 페이지 입장 쑈쑈쑈");
+        return "views/admin/adminMenu";
+        //userController에 admin id로 로그인해서 로그인 되면 adminMenu로 올수있게 설정해놔야됨
+    }
     @GetMapping("/user/join")
     public String joinForm(){
         System.out.println("회원가입 페이지");
@@ -71,17 +80,59 @@ public class UserController {
         return "views/user/login";
     }
 
+
+/*    @PostMapping("/user/login")
+    public String login(@ModelAttribute UserDTO userDTO, HttpSession session) {
+        if (userService.login(userDTO.getUser_id(), userDTO.getUser_pw())) {
+            UserDTO result = userService.login(userDTO);
+            if (result != null && "admin".equals(result.getUser_id())) {
+                session.setAttribute("admin", result);
+                System.out.println("관리자 로그인 성공");
+                return "redirect:/admin/adminMenu";
+            } else {
+                return "redirect:/"; // 아이디가 "admin"이 아니면 인덱스 페이지로 리다이렉트
+            }
+        } else {
+            return "redirect:/user/login?loginFailed=true"; // 비밀번호가 틀릴 경우 로그인 실패 처리
+        }
+    }*/
+
     @PostMapping("/user/login")
+    public String Login(@ModelAttribute UserDTO userDTO, HttpSession session) {
+        String loginResult = String.valueOf(userService.login(userDTO));
+
+        switch (loginResult) {
+            case "admin":
+                session.setAttribute("admin", userDTO);
+                System.out.println("관리자 로그인 성공");
+                return "redirect:/admin/adminMenu";
+            case "user":
+                session.setAttribute("user", userDTO);
+                System.out.println("일반 회원 로그인 성공");
+                return "views/user/index";
+            case "invalidPassword":
+                return "redirect:/user/login?loginFailed=true&reason=invalidPassword";
+            case "invalidUserId":
+                return "redirect:/user/login?loginFailed=true&reason=invalidUserId";
+            default:
+                return "redirect:/user/login?loginFailed=true";
+        }
+    }
+
+
+/*    @PostMapping("/user/login")
     public String Login(@ModelAttribute UserDTO userDTO, HttpSession session){
         UserDTO result = userService.login(userDTO);
-        if(result != null){
-            session.setAttribute("user", result);
-            System.out.println("로그인 성공");
-            return "views/myPage/myPage";
+
+        if(result.getUser_id().equals("admin")) {
+            session.setAttribute("admin", result);
+
+            System.out.println("관리자 로그인 성공");
+            return "redirect:/admin/adminMenu";
         }else{
             return "redirect:/user/login?loginFailed=true";
         }
-    }
+    }*/
 
     @GetMapping("/user/logout")
     public String Logout(HttpSession session) {
@@ -90,7 +141,7 @@ public class UserController {
         return "views/user/login";
     }
 
-    @GetMapping("/myPage")
+    @GetMapping("/user/myPage")
     public String MyPage(){
         System.out.println("마이페이지");
         return "views/myPage/myPage";
