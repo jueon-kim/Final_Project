@@ -2,8 +2,8 @@ package com.hwagae.market.report;
 
 import com.hwagae.market.comment.CommentDTO;
 import com.hwagae.market.comment.CommentService;
-import com.hwagae.market.inquiry.InquiryDTO;
 import com.hwagae.market.user.UserDTO;
+import com.hwagae.market.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 import javax.xml.stream.events.Comment;
@@ -25,6 +26,7 @@ import java.util.List;
 public class ReportController {
     private final ReportService reportService;
     private final CommentService commentService;
+    private final UserService userService;
 
     @GetMapping("myPage/insertReport")
     public String reportForm(){
@@ -113,8 +115,18 @@ public class ReportController {
     public String delete(@PathVariable Integer report_num){
         reportService.delete(report_num);
         System.out.println("report_num = " + report_num);
-        return "views/myPage/reportList";
+        return "redirect:/myPage/reportList/paging";
     }
+
+    @PostMapping("/admin/reportManage")
+    public String suspectSelect(String report_Sphone, String report_Snick, String report_Saccount, Model model) {
+        List<UserDTO> users = userService.findUsersByReportConditions(report_Sphone, report_Snick);
+        model.addAttribute("account",report_Saccount);
+        model.addAttribute("suspectList", users);
+        return "/views/admin/reportManage";
+    }
+
+
 
 
 }

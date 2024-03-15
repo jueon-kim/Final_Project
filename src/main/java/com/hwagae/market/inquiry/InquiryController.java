@@ -34,8 +34,8 @@ public class InquiryController {
         } else {
             return null;
         }
-
     }
+
 
     @GetMapping("myPage/insertInquiry")
     public String inQuiry() {

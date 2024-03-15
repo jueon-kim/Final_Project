@@ -67,7 +67,7 @@ public class CommentService {
 
 
     public Integer report_save(CommentDTO commentDTO){
-        System.out.println("report_num값= " + commentDTO.getQna_num());
+        System.out.println("report_num값= " + commentDTO.getReport_num());
         Optional<ReportEntity> optionalReportEntity=reportRepository.findById(commentDTO.getReport_num());
         if(optionalReportEntity.isPresent()){
             ReportEntity reportEntity=optionalReportEntity.get();

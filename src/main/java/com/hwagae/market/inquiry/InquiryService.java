@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -18,12 +19,12 @@ import java.util.Optional;
 public class InquiryService {
     private final InquiryRepository inquiryRepository;
     private final UserRepository userRepository;
-
+    @Transactional
     public void save(InquiryDTO inquiryDTO) {
         InquiryEntity inquiryEntity = InquiryEntity.toSaveEntity(inquiryDTO);
         inquiryRepository.save(inquiryEntity);
     }
-
+    @Transactional
     public List<InquiryDTO> findAll() {
         List<InquiryEntity> inquiryEntityList = inquiryRepository.findAll();
         List<InquiryDTO> inquiryDTOList = new ArrayList<>();
@@ -32,7 +33,7 @@ public class InquiryService {
         }
         return inquiryDTOList;
     }
-
+    @Transactional
     public List<InquiryDTO> findAllByUserNum(Integer user_num) {
         UserEntity userEntity = userRepository.findById(user_num).orElse(null);
         if (userEntity != null) {
@@ -47,7 +48,7 @@ public class InquiryService {
         }
     }
 
-
+    @Transactional
     public InquiryDTO findByNum(Integer qna_num) {
         Optional<InquiryEntity> optionalInquiryEntity = inquiryRepository.findById(qna_num);
         if (optionalInquiryEntity.isPresent()) {
@@ -57,7 +58,7 @@ public class InquiryService {
         }
         return null;
     }
-
+    @Transactional
     public Page<InquiryDTO> paging(Pageable pageable) {
         int page = pageable.getPageNumber() - 1;
         int pageLimit = 10; //한 페이지에 보여줄 글 갯수
@@ -80,6 +81,18 @@ public class InquiryService {
                 inquiry.getQnaTitle(),inquiry.getUserEntity().getUserId(), inquiry.getUserEntity().getUserName(), inquiry.getUserEntity().getUserPhone(),inquiry.getQnaStatus()));
         return inquiryDTOS;
     }
+
+    @Transactional
+    // 전체 신고 수를 반환하는 메서드
+    public int getTotalQna() {
+        return inquiryRepository.getTotalQnaCount();
+    }
+
+    @Transactional    // 처리 완료된 신고 수를 반환하는 메서드
+    public int getCompletedQna() {
+        return inquiryRepository.getCompletedQnaCount();
+    }
+
 }
 
 

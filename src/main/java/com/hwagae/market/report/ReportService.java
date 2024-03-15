@@ -113,7 +113,7 @@ public class ReportService {
         UserEntity userEntity = new UserEntity();
         userEntity.setUserNum(user_num);
 
-        int page = pageable.getPageNumber() - 1;
+        int page = pageable.getPageNumber()-1;
         int pageLimit = 10;
 
         Page<ReportEntity> reportEntities = reportRepository.findByUserEntity(
@@ -139,11 +139,33 @@ public class ReportService {
         ));
         return reportDTOS;
     }
-
+@Transactional
     public void delete(Integer report_num){reportRepository.deleteById(report_num);}
+@Transactional
+    // 전체 신고 수를 반환하는 메서드
+    public int getTotalReports() {
+        return reportRepository.getTotalReportsCount();
+    }
 
-
-
+@Transactional    // 처리 완료된 신고 수를 반환하는 메서드
+    public int getCompletedReports() {
+        return reportRepository.getCompletedReportsCount();
+    }
+@Transactional
+public List<ReportDTO> findReportsByConditions(String reportSphone, String reportSaccount, String reportSnick) {
+    List<ReportEntity> reportEntities = reportRepository.findReportsByConditions(reportSphone, reportSaccount, reportSnick);
+    List<ReportDTO> reportDTOList = new ArrayList<>();
+    for (ReportEntity reportEntity : reportEntities) {
+        ReportDTO reportDTO = new ReportDTO();
+        reportDTO.setReport_Snick(reportEntity.getReportSnick());
+        reportDTO.setReport_Saccount(reportEntity.getReportSaccount());
+        reportDTO.setReport_Sphone(reportEntity.getReportSphone());
+        reportDTO.setReport_date(reportEntity.getReportDate());
+        reportDTO.setUser_num(reportEntity.getUserEntity().getUserNum());
+        reportDTOList.add(reportDTO);
+    }
+    return reportDTOList;
+    }
 }
 
 

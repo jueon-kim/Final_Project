@@ -3,6 +3,7 @@ package com.hwagae.market.report;
 import com.hwagae.market.comment.CommentDTO;
 import com.hwagae.market.comment.CommentEntity;
 import com.hwagae.market.file.FileEntity;
+import com.hwagae.market.restrictedUser.ResUserEntity;
 import com.hwagae.market.user.UserEntity;
 import lombok.Getter;
 import lombok.Setter;
@@ -57,6 +58,10 @@ public class ReportEntity {
     @JoinColumn(name = "user_num" ,insertable = true,updatable = false)
     private UserEntity userEntity;
 
+    @ManyToOne
+    @JoinColumn(name = "res_num") // 제재회원의 식별자를 외래키로 사용
+    private ResUserEntity resUserEntity;
+
     @OneToMany(mappedBy = "reportEntity",cascade =CascadeType.REMOVE,orphanRemoval = true,fetch = FetchType.LAZY)
     private List<FileEntity> fileEntityList=new ArrayList<>();
 
@@ -79,7 +84,5 @@ public class ReportEntity {
         reportEntity.setUserEntity(userEntity);
         return reportEntity;
     }
-
-
 
 }
