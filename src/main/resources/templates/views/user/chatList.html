@@ -3,18 +3,52 @@
         text-decoration: none;
     }
 </style>
-        <!-- 채팅 목록 렌더링 -->
-            <th:block th:each="chat : ${chatList}">
-                <a th:href="@{/chat/chat/{userNick}(userNick=${chat.toID})}">
-                    <img src="/img/default.png" style="width: 60px; height: 60px; border-radius: 100px; float: left; margin-right: 20px;">
-                    <div style="box-shadow: 0px 1px 1px -1px; height: 80px;">
-                        <div style="margin-bottom: 10px;">
-                            <span id="userNick"  th:text="${chat.toID}" style="font-size: 20px;"></span>
-                            <span th:text="${chat.chatTime}" style="color: gray; font-size: 12px;"></span>
-                        </div>
-                        <span th:text="${chat.chatContent}" style="font-size: 18px; color: darkgray;"></span>
-                    </div>
-                </a><br>
-            </th:block>
+<!-- 채팅 목록 렌더링 -->
+<th:block th:each="chat : ${chatList}">
+    <a th:href="@{/chat/chat/{userNick}(userNick=${chat.toID})}">
+        <img src="/img/default.png" style="width: 60px; height: 60px; border-radius: 100px; float: left; margin-right: 20px;">
+        <div style="box-shadow: 0px 1px 1px -1px; height: 80px;">
+            <div style="margin-bottom: 10px;">
+                <span id="userNick"  th:text="${chat.toID}" style="font-size: 20px;"></span>
+                <span th:text="${chat.chatTime}" style="color: gray; font-size: 12px;"></span>
+            </div>
+            <span th:text="${chat.chatContent}" style="font-size: 18px; color: darkgray;"></span>
+        </div>
+    </a><br>
+</th:block>
 
+<script>
+    function loadChatRecord() {
+        var fromID = /*[[${session.user.user_nick}]]*/ ''; // 세션에 저장된 사용자의 user_num을 가져옴
+        var toID = $("#toID").val(); // 대화 상대방의 ID를 가져옵니다.
 
+        $.ajax({
+            type: "POST",
+            url: "/chat/record",
+            data: {
+                fromID: encodeURIComponent(fromID),
+                toID: encodeURIComponent(toID),
+            },
+            success: function (data) {
+                if (data.length === 0) return;
+                $('#chatMessages').empty();
+
+                for (var i = 0; i < data.length; i++) {
+                    if(data[i].fromID == fromID){
+                        data[i].fromID = '나';
+                        console.log("보내는 사람 : " + data[i].fromID);
+                        console.log("받는사람 : " + data[i].toID);
+                        console.log("시간 : "+  data[i].chatTime);
+
+                    }
+                    addChat(data[i].fromID, data[i].chatContent, data[i].chatTime);
+                }
+            }
+        });
+
+    }
+
+    $(document).ready(function (){
+        loadChatRecord();
+    })
+</script>

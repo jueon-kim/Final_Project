@@ -7,6 +7,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -35,7 +37,7 @@ public class UserService {
                 return null;
             }
         }else {
-                return null;
+            return null;
         }
     }
 
@@ -199,5 +201,36 @@ public class UserService {
     }
 
 
+    ///////////////////포스트랑 유저 엮은 부분////////////////////////////////
+    public UserEntity getUserByUserNum(Integer userNum) {
+        Optional<UserEntity> optionalUserEntity = userRepository.findById(userNum);
+        return optionalUserEntity.orElse(null);
+    }
+
+    public UserDTO getUserByUserNick(String postNick) {
+        Optional<UserEntity> userDTO = userRepository.findByUserNick(postNick);
+        if(userDTO.isPresent()){
+            UserEntity userEntity = userDTO.get();
+            return UserDTO.toUserDTO(userEntity);
+        }else{
+            return null;
+        }
+    }
+
+
+    public List<UserDTO> findUsersByReportConditions(String reportSphone, String reportSnick) {
+        List<UserEntity> userEntities = userRepository.findUsersByReportConditions(reportSphone, reportSnick);
+        List<UserDTO> userDTOs = new ArrayList<>();
+        for (UserEntity userEntity : userEntities) {
+            UserDTO userDTO = UserDTO.toUserDTO(userEntity); // 변환 메소드 호출
+            userDTOs.add(userDTO);
+        }
+        return userDTOs;
+    }
+
+    public UserEntity findByNum(Integer user_num) {
+        Optional<UserEntity> optionalUser = userRepository.findById(user_num);
+        return optionalUser.orElse(null); // optional에서 UserEntity 추출
+    }
 
 }

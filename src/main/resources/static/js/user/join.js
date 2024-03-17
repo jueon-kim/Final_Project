@@ -4,13 +4,6 @@ function PhoneNumber(input) {
     var phoneNumber = input.value.replace(/[^0-9]/g, "");
     // 숫자만 입력된 값으로 입력 필드의 값을 설정
     input.value = phoneNumber;
-    // 입력된 전화번호의 길이가 10자리 이상인 경우 전송 버튼을 활성화
-    if (phoneNumber.length >= 11) {
-        document.getElementById("phoneToken").disabled = false;
-    } else {
-        // 전화번호가 10자리 미만인 경우 전송 버튼을 비활성화
-        document.getElementById("phoneToken").disabled = true;
-    }
 }
 
 // 전화번호 입력 필드의 입력 이벤트에 함수 연결
@@ -32,53 +25,6 @@ function phone(e) {
     }
     e.value = phone;
 }
-
-let timer2;
-let phoneTimer = false; //타이머 작동여부
-let phoneAuth = () => {
-    if (phoneTimer === false) {
-        // 타이머가 작동 중이 아닐 때
-        phoneTimer = true; // 타이머 작동 상태로 변경
-        document.getElementById("phoneFinish").disabled = false; // 인증 확인 버튼 활성화
-        const token = Math.floor(100000 + Math.random() * 900000); // 6자리 랜덤 숫자 생성
-        document.getElementById("phoneAuthKey").value = token; // 생성된 랜덤 숫자를 입력 필드에 설정
-        document.getElementById("phoneConfirmNum").style.display = "block"; // 인증번호 입력 영역 표시
-        let time = 60;
-        timer2 = setInterval(function () {
-            if (time >= 0) {
-                // 시간이 0초 이상이면
-                const min = Math.floor(time / 60);
-                const sec = String(time % 60).padStart(2, "0");
-                document.getElementById("timer2").innerText = min + ":" + sec;
-                time = time - 1;
-            } else {
-                // 시간이 0초 이하이면
-                time += 1;
-                const min = Math.floor(time / 60);
-                const sec = String(time % 60).padStart(2, "0");
-                document.getElementById("phoneFinish").disabled = true; // 인증 확인 버튼 비활성화
-                phoneTimer = false;
-                clearInterval(timer2); // 타이머 중지
-                document.getElementById("phoneAuthKey").value = ""; // 인증번호 입력 필드 초기화
-            }
-        }, 1000);
-    } else {
-        // 타이머가 작동 중일 때
-    }
-};
-let isAuthCompleted = false;
-let phoneAuthFinish = () => {
-    if (phoneTimer) {
-        //phoneTimer true 일 때(타이머가 작동 중일 때)
-        alert("인증이 완료되었습니다");
-        clearInterval(timer2);
-        document.getElementById("phoneToken").disabled = true;
-        document.getElementById("phoneFinish").textContent = "인증 완료"; //인증 확인 버튼을 인증 완료 버튼으로 변경
-        document.getElementById("phoneFinish").disabled = true;
-        isAuthCompleted = true; // 인증 완료 상태로 변경
-        checkJoinButton(); // 회원가입 버튼 상태를 확인하여 변경
-    }
-};
 
 function checkJoinButton() {
     if (isAuthCompleted) {
@@ -289,7 +235,7 @@ function emailAuthFinish() {
             console.log("입력한 인증번호"+emailAuthKey);
             if(res == "ok"){
                 console.log("인증 성공");
-                alert("인증이 왼료되었습니다.");
+                alert("인증이 완료되었습니다.");
                 clearInterval(timer1); // 타이머 중지
                 document.getElementById("emailToken").disabled = true;
                 document.getElementById("emailFinish").textContent = "인증 완료"; //인증 확인 버튼을 인증 완료 버튼으로 변경
@@ -307,6 +253,7 @@ function emailAuthFinish() {
         }
 
     });
+    checkJoinButton(); // 회원가입 버튼 상태를 확인하여 변경
 
 }
 

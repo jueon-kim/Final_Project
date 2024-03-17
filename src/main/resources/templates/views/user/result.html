@@ -5,7 +5,8 @@
     <title>조회결과</title>
     <style>
         section{
-            max-width: 60%;
+            width: 1400px;
+            margin: auto;
             display: flex;
             justify-content: center;
         }
@@ -14,9 +15,7 @@
 <body>
 
 <div th:include="/views/header.html"></div>
-<section class="container mt-3">
-
-
+<section>
 
     <th:block th:choose>
         <th:block th:if="${not #strings.isEmpty(findID)}">
@@ -27,5 +26,5 @@
         </th:block>
     </th:block>
 
-
-</section>
+</section><br><br><br><br><br><br><br><br>
+<footer th:include="/views/footer"></footer>

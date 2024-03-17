@@ -1,7 +1,6 @@
 package com.hwagae.market.user;
 
 import com.hwagae.market.email.EmailController;
-import com.hwagae.market.like.LikeDTO;
 import com.hwagae.market.like.LikeService;
 import com.hwagae.market.post.PostDTO;
 import com.hwagae.market.post.PostService;
@@ -28,7 +27,6 @@ public class UserController {
     private final PostService postService;
     private final LikeService likeService;
 
-
     @GetMapping("/user/join")
     public String joinForm(){
         System.out.println("회원가입 페이지");
@@ -43,9 +41,9 @@ public class UserController {
             System.out.println("userDTO = " + userDTO);
             userService.save(userDTO);
             System.out.println("회원가입 완료");
-            return "redirect:user/login?success=true"; // 회원가입 성공 시 login 페이지로 리다이렉트하고 success=true 파라미터를 전달
+            return "redirect:/user/login?success=true"; // 회원가입 성공 시 login 페이지로 리다이렉트하고 success=true 파라미터를 전달
         }else {
-            return "redirect:user/join?success=false";
+            return "redirect:/user/join?success=false";
         }
     }
 
@@ -70,24 +68,26 @@ public class UserController {
         return "views/user/login";
     }
 
-    @PostMapping("/user/login")
+    @PostMapping("user/login")
     public String Login(@ModelAttribute UserDTO userDTO, HttpSession session, Model model){
         //글 목록 가져오기
         List<PostDTO> postDTOList = postService.findAll();
         model.addAttribute("postList", postDTOList);
 
-
         UserDTO result = userService.login(userDTO);
         if(result != null){
             session.setAttribute("user", result);
+            if(result.getUser_id().equals("admin")){
+                return  "redirect:/admin/adminMenu";
+            }
             System.out.println("로그인 성공");
-            return "views/user/index";
+            return "/views/user/index";
         }else{
-            return "redirect:user/login?loginFailed=true";
+            return "redirect:/user/login?loginFailed=true";
         }
     }
 
-    
+
     @GetMapping("/user/logout")
     public String Logout(HttpSession session) {
         session.invalidate();
@@ -95,19 +95,28 @@ public class UserController {
         return "views/user/login";
     }
 
-    @GetMapping("/myPage/{userNum}")
-    public String MyPage(Model model, HttpSession session) {
 
-        List<PostDTO> postDTOList = postService.findAll();
+    @GetMapping("/myPage/{userNick}")
+    public String MyPage(@PathVariable("userNick") String userNick, Model model, HttpSession session) {
+
+        //세션정보 가져오기
         UserDTO userDTO = (UserDTO) session.getAttribute("user");
+        //세션의 user_num을 문자열 user_num으로 설정
+        if (userDTO == null) {
+            // 세션 값이 없을 경우 로그인 페이지로 리다이렉트
+            return "views/user/login";
+        }
         String user_num = String.valueOf(userDTO.getUser_num());
         System.out.println("세션 = " + user_num);
+        //게시물목록 조회
+        List<PostDTO> postDTOList = postService.findAll();
 
+        //해당하는 게시물 가져오는 리스트
         List<PostDTO> userPostList = new ArrayList<>();
         for (PostDTO postDTO : postDTOList) {
-            String postUserNum = String.valueOf(postDTO.getUser_num());
+            String postUser_num = String.valueOf(postDTO.getUser_num());
             // userNum 값을 사용하여 원하는 작업 수행
-            if (postUserNum.equals(user_num)) {
+            if (postUser_num.equals(user_num)) {
                 userPostList.add(postDTO);
                 System.out.println("게시물 = " + postDTO);
             }
@@ -116,17 +125,52 @@ public class UserController {
         List<PostDTO> likedPosts = likeService.findLikedPostsByUserNum(userDTO.getUser_num());
         int likedPostsCount = likedPosts.size();
 
-        model.addAttribute("postList", userPostList);
         model.addAttribute("likeCount", likedPostsCount);
+        model.addAttribute("postList", userPostList);
         System.out.println("model = " + model);
 
         System.out.println("마이페이지");
+        return "views/myPage/myPage";
+    }
+
+    @GetMapping("/userPage/{postNick}")
+    public String userPage(@PathVariable("postNick") String postNick, Model model) {
+        //선택 된 유저 정보 가져오기
+        UserDTO userDTO = userService.getUserByUserNick(postNick);
+        //선택 된 유저 정보에서 문자열 user_num 세팅
+        String user_num = String.valueOf(userDTO.getUser_num());
+        System.out.println("user_num = " + user_num);
+
+        //게시물목록 조회
+        List<PostDTO> postDTOList = postService.findAll();
+
+        //해당하는 게시물 가져오는 리스트
+        List<PostDTO> userPostList = new ArrayList<>();
+        //각각의 게시물 확인
+        for (PostDTO postDTO : postDTOList) {
+            //post리스트에서 문자열 user_num 세팅
+            String postUser_num = String.valueOf(postDTO.getUser_num());
+            System.out.println("postUserNum = " + postUser_num);
+
+            // user_num 값을 사용하여 원하는 작업 수행
+            if (postUser_num.equals(user_num)) {
+                userPostList.add(postDTO);
+                System.out.println("게시물 = " + postDTO);
+            }
+        }
+        model.addAttribute("postList", userPostList);
+        model.addAttribute("userInfo", userDTO);
+
+        System.out.println("model = " + model);
+
+        System.out.println("유저페이지");
         if (userDTO != null){
-            return "views/myPage/myPage";
+            return "views/myPage/userPage";
         }else {
             return "views/user/login";
         }
     }
+
 
 
     @GetMapping("/user/find")
@@ -173,8 +217,8 @@ public class UserController {
     public String UpdatePW(@ModelAttribute UserDTO userDTO, HttpSession session) throws IOException {
         // 세션에 저장된 사용자 정보 가져오기
         UserDTO sessionUser = (UserDTO) session.getAttribute("user");
-
         // 세션의 user_num과 폼에서 전송된 user_num이 일치하는 경우에만 수행
+
         if (sessionUser.getUser_num().equals(userDTO.getUser_num())) {
             // 비밀번호 업데이트 수행
             userService.updatePw(userDTO);
@@ -184,7 +228,7 @@ public class UserController {
             session.setAttribute("user", sessionUser);
         }
 
-        return "redirect:myPage/userUpdate";
+        return "redirect:/myPage/userUpdate";
     }
 
 
@@ -201,7 +245,7 @@ public class UserController {
         // 업데이트된 사용자 정보를 세션에 설정
         session.setAttribute("user", sessionUser);
 
-        return "redirect:myPage/userUpdate";
+        return "redirect:/myPage/userUpdate";
     }
 
 
@@ -218,7 +262,7 @@ public class UserController {
         // 업데이트된 사용자 정보를 세션에 설정
         session.setAttribute("user", sessionUser);
 
-        return "redirect:myPage/userUpdate";
+        return "redirect:/myPage/userUpdate";
     }
 
     @PostMapping("/user/photoUpdate")
@@ -244,18 +288,8 @@ public class UserController {
             session.setAttribute("user", sessionUser);
 
         }
-        return "redirect:myPage/userUpdate";
+        return "redirect:/myPage/userUpdate";
     }
-
-
-
-
-
-
-
-
-
-
 
 
     @GetMapping("/myPage/purchaseList/{userNick}")
@@ -263,7 +297,6 @@ public class UserController {
         System.out.println("구매내역");
         return "views/myPage/purchaseList";
     }
-
 
 
     @GetMapping("/myPage/like/{userNick}")

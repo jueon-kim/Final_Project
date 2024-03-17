@@ -112,6 +112,7 @@
 
 
 </section>
+<footer th:include="/views/footer"></footer>
 
 
 <script th:inline="javascript">
@@ -153,11 +154,6 @@
         findLastMessage();
     }
 
-
-
-
-
-
     function loadChatRecord() {
         var fromID = /*[[${session.user.user_nick}]]*/ ''; // 세션에 저장된 사용자의 user_num을 가져옴
         var toID = $("#toID").val(); // 대화 상대방의 ID를 가져옵니다.
@@ -191,24 +187,6 @@
     function addChat(chatName, chatContent, chatTime){
         if(chatName == '나') {
             $('#chatMessages').append(
-                /*                '<div class="row" style="width: 500px; float: right; clear: both">'+
-                                '<div class="col-lg-12">'+
-                                '<div class="media">'+
-                                '<div class="media-body text-end">'+
-                                '<h5 class="media-heading">'+
-                                chatName +
-                                '</h5>'+
-                                '<span class="text-sm float-start">'+ // 채팅 시간을 왼쪽 정렬
-                                chatTime +
-                                '</span>'+
-                                '<p style="font-size: 20px;" class="text-end">'+ // 채팅 내용 스타일 조정
-                                chatContent +
-                                '</p>'+
-                                '</div>'+
-                                '</div>'+
-                                '</div>'+
-                                '</div>'+*/
-
                 '<div class="send">'+
                 '<p class="send_msg">'+
                 chatContent +
@@ -221,24 +199,6 @@
             );
         }else {
             $('#chatMessages').append(
-                /*                '<div class="row" style="width: 500px; float: left; clear: both">'+
-                                '<div class="col-lg-12">'+
-                                '<div class="media">'+
-                                '<div class="media-body">'+
-                                '<h5 class="media-heading">'+
-                                chatName +
-                                '</h5>'+
-                                '<span class="text-sm float-end">'+
-                                chatTime +
-                                '</span>'+
-                                '<p style="font-size: 20px;">'+
-                                chatContent +
-                                '</p>'+
-                                '</div>'+
-                                '</div>'+
-                                '</div>'+
-                                '</div>'+*/
-
                 '<div class="receive">'+
                 '<p class="receive_msg">'+
                 chatContent +
@@ -249,22 +209,20 @@
                 '</div>'
             );
         }
-
         findLastMessage();
     }
 
-/*    function getList(){
-        setInterval(function (){
-            loadChatRecord();
-        },2000);
-    }*/
+        function getList(){
+            setInterval(function (){
+                loadChatRecord();
+            },2000);
+        }
 
     $(document).ready(function (){
         loadChatRecord();
         getList();
         findLastMessage();
     })
-
 
     const findLastMessage = () => {
         var chatContainer = document.getElementById("chatMessages");

@@ -36,32 +36,4 @@ public class ChatService {
         return chatRepository.findByFromIDAndToIDOrFromIDAndToIDOrderByChatTime(fromID, toID, toID, fromID);
     }
 
-
-
-/*
-    public List<ChatDTO> getChatListByID(String fromID, String toID) {
-        // fromID와 toID로 채팅 리스트를 가져오는 메서드
-        List<ChatEntity> chatEntities = chatRepository.findByFromIDAndToIDOrFromIDAndToIDOrderByChatTime(fromID, toID, toID, fromID);
-
-        // ChatEntity 리스트를 ChatDTO 리스트로 변환
-        List<ChatDTO> chatDTOs = new ArrayList<>();
-        for (ChatEntity chatEntity : chatEntities) {
-            ChatDTO chatDTO = new ChatDTO();
-            chatDTO.setChatID(chatEntity.getChatID());
-            chatDTO.setFromID(chatEntity.getFromID());
-            chatDTO.setToID(chatEntity.getToID());
-            chatDTO.setChatContent(chatEntity.getChatContent());
-            chatDTO.setChatTime(chatEntity.getChatTime());
-            chatDTOs.add(chatDTO);
-        }
-
-        return chatDTOs;
-    }
-*/
-
-
-
-
-
-
 }

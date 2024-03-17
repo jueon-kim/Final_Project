@@ -1,22 +1,22 @@
 package com.hwagae.market.like;
 
 import com.hwagae.market.post.PostDTO;
-import com.hwagae.market.post.PostEntity;
 import com.hwagae.market.post.PostService;
 import com.hwagae.market.user.UserDTO;
 import com.hwagae.market.user.UserService;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -28,7 +28,7 @@ public class LikeController {
     private final LikeService likeService;
 
     @PostMapping("/like")
-    public ResponseEntity likeProc(@ModelAttribute LikeDTO likeDTO, HttpSession session, Model model){
+    public ResponseEntity likeProc(@ModelAttribute LikeDTO likeDTO, HttpSession session){
         UserDTO userDTO = (UserDTO) session.getAttribute("user");
         likeDTO.setUserNum(userDTO.getUser_num());
         System.out.println("LikeDTO = "+likeDTO);
@@ -42,7 +42,8 @@ public class LikeController {
         }
     }
 
-    @GetMapping("/myPage/likeList")
+    // 좋아요 List
+    @GetMapping("/myPage/like")
     public String likedPostList(HttpSession session, Model model){
 
         UserDTO userDTO = (UserDTO) session.getAttribute("user");
@@ -56,6 +57,7 @@ public class LikeController {
             LikeDTO likeDTO = likeService.findByPostNum(post.getPost_num(), userDTO);
             likesList.add(likeDTO);
         }
+        Collections.reverse(likedPosts);
 
         model.addAttribute("likedPosts",likedPosts);
         model.addAttribute("likesList",likesList);
@@ -63,26 +65,4 @@ public class LikeController {
         return "views/myPage/like";
     }
 
-/*
-    @GetMapping("/myPage/likeList")
-    public String getLikedPosts(HttpSession session, Model model){
-
-        UserDTO userDTO = (UserDTO) session.getAttribute("user");
-        List<Integer> likedPostNums = likeService.getLikedPostsByUserNum(userDTO.getUser_num());
-
-        List<PostDTO> likedPosts = new ArrayList<>();
-        // 좋아요 정보가 있는지 조건 추가
-        for (Integer postNum : likedPostNums){
-            PostDTO postDTO = postService.getPostByPostNum(postNum);
-            if(postDTO != null){
-                likedPosts.add(postDTO);
-            }
-        }
-
-        model.addAttribute("likedPosts",likedPosts);
-        model.addAttribute("user",userDTO);
-
-        return "views/myPage/like";
-    }
-    */
 }

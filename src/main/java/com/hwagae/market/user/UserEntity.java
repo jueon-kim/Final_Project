@@ -1,10 +1,14 @@
 package com.hwagae.market.user;
 
+import com.hwagae.market.like.LikeEntity;
+import com.hwagae.market.post.PostEntity;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -14,6 +18,7 @@ public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_num")
     private Integer userNum;
 
     @Column(nullable = false, unique = true)
@@ -48,6 +53,13 @@ public class UserEntity {
 
     @Column
     private String userLocation2;
+
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<LikeEntity> likeEntityList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<PostEntity> postEntityList = new ArrayList<>();
+
 
 
     public static UserEntity toUserEntity(UserDTO userDTO) {

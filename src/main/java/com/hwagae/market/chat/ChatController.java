@@ -122,7 +122,7 @@ public class ChatController {
     @GetMapping("/chat/list")
     public String getChatList(Model model, HttpSession session) {
         UserDTO userDTO = (UserDTO) session.getAttribute("user");
-        
+
         // 세션에서 사용자 닉네임 가져오기
         String userNick = userDTO.getUser_nick();
         System.out.println("userNick = " + userNick);
